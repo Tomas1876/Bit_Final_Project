@@ -4,12 +4,12 @@ function fn_formSubmit(){
 	var validateCONTENT = document.form.FREE_CONTENT.value.replace(/\s|　/gi, '');
 	
 	if (validateTITLE == "") {
-		alert("글 제목을 입력해주세요.");
+		swal("글 제목을 입력해주세요.", "", "warning");
 		form.FREE_TITLE.focus();
 		return;
 	}
 	if (validateCONTENT == "") {
-		alert("글 내용을 입력해주세요.");
+		swal("글 내용을 입력해주세요.", "", "warning");
 		form.FREE_CONTENT.focus();
 		return;
 	}
@@ -121,7 +121,7 @@ function fnChkByte(obj, maxByte)
      if(rbyte > maxByte)
      {
   // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
-  alert("제목은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  swal("제목은 최대 " + maxByte + "byte를 초과할 수 없습니다.", "", "warning");
   str2 = str.substr(0,rlen);                                  //문자열 자르기
   obj.value = str2;
   fnChkByte(obj, maxByte);
@@ -168,7 +168,7 @@ function fnChkByte1(obj, maxByte)
      if(rbyte > maxByte)
      {
   // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
-  alert("내용은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  swal("내용은 최대 " + maxByte + "byte를 초과할 수 없습니다.","", "warning");
   str2 = str.substr(0,rlen);                                  //문자열 자르기
   obj.value = str2;
   fnChkByte(obj, maxByte);

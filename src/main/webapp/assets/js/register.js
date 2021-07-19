@@ -84,7 +84,7 @@ function validation() {
 	$('#emailCheckBtn').click(function() {
 		let email = $('#email').val().trim();
 
-		console.log(email);
+
 		if (email == '') {
 
 			swal("인증할 이메일을 입력해주세요.", "", "error");
@@ -99,7 +99,7 @@ function validation() {
 			type: "get",
 			dataType: "text",
 			success: function(data) {
-				console.log(data);
+				
 				if (data == 'disable') {
 
 					swal("이미 가입된 이메일입니다.", "", "error");
@@ -123,31 +123,28 @@ function validation() {
 					$.ajax({
 						url: "register/emailcheck.ajax",
 						data: {
-							email: email
+							"receiveMail": email
 						},
 						type: "post",
 						dataType: "text",
 						success: function(data) {
-							console.log(data);
-
-							let result = data.split("-");
-							if (result[0] == 'fail') {
+							
+							if (data == "") {
 
 								swal("인증 메일 발송에 실패했습니다.", "", "error");
 
 							} else {
 
-								dice = result[1];
-								console.log("랜덤 숫자 : ", dice);
+								console.log("랜덤 숫자 : ", data);
 
 								//이메일 인증번호 확인
 								$("#emailCheckNumberBtn").click(function() {
 
 									$("#emailCheckNumber").val();
 									console.log("인증확인 클릭");
-									console.log(dice);
+									console.log(data);
 
-									if (dice == $("#emailCheckNumber").val()) {
+									if (data == $("#emailCheckNumber").val()) {
 										swal("인증이 완료되었습니다.", "", "success");
 										$('#emailCheckBtn').html('인증완료');
 										$('#emailCheckBtn').attr('disabled', 'true');
@@ -155,7 +152,7 @@ function validation() {
 
 									} else if ($("#emailCheckNumber").val() == "") {
 										swal("인증번호를 입력해주세요.", "", "error");
-									} else if (dice != $("#emailCheckNumber").val()) {
+									} else if (data != $("#emailCheckNumber").val()) {
 										swal("다시 입력해주세요.", "", "error");
 									}
 

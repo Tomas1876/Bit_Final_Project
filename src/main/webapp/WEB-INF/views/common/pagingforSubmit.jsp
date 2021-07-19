@@ -10,8 +10,11 @@
 		<c:if test="${searchVO.page>1}">
 <!-- 			<a href="javascript:fnSubmitForm(1);" class="page-link">[처음]</a> -->
 			<li class="page-item">
+			<a href="javascript:fnSubmitForm(1);" class="page-link"><span class="fas fa-angle-double-left"></span></a>
+			</li>
+			<li class="page-item">
 <%-- 			<a href="javascript:fnSubmitForm(${searchVO.page-1});" class="page-link">[이전]</a> --%>
-			<a href="javascript:fnSubmitForm(${searchVO.page-1});" class="page-link" aria-label="first link"><span class="fas fa-angle-double-left"></span></a>
+			<a href="javascript:fnSubmitForm(${searchVO.page-1});" class="page-link" aria-label="first link"><span class="fas fa-chevron-left"></span></a>
 			</li>
 		</c:if>
 		<c:forEach var="i" begin="${searchVO.pageStart}" end="${searchVO.pageEnd}" step="1">
@@ -33,8 +36,10 @@
 		<c:if test="${searchVO.totPage > searchVO.page}">
 <%-- 			<a href="javascript:fnSubmitForm(${searchVO.page+1});">[다음]</a> --%>
 			<li class="page-item">
-			<a href="javascript:fnSubmitForm(${searchVO.page+1});" class="page-link" aria-label="first link"><span class="fas fa-angle-double-right"></span></a>
-<%-- 			<a href="javascript:fnSubmitForm(${searchVO.totPage});">[마지막]</a> --%>
+			<a href="javascript:fnSubmitForm(${searchVO.page+1});" class="page-link" aria-label="first link"><span class="fas fa-chevron-right"></span></a>
+			</li>
+			<li class="page-item">
+			<a href="javascript:fnSubmitForm(${searchVO.totPage});" class="page-link"><span class="fas fa-angle-double-right"></span></a>
 			</li>
 		</c:if>
 		</ul>

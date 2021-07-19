@@ -108,7 +108,7 @@
                     				<input type="text" value="${membervo.MEMBER_ID}" name="member_id" hidden>
                     				<div class="Leader_DetailBox">
                     				<div class="LeaderImg_Box">
-                    				<img src="${pageContext.request.contextPath}/resources/upload/${membervo.MEMBER_IMAGE}">
+                    				<img src="${pageContext.request.contextPath}/images/${membervo.MEMBER_IMAGE}">
                     				</div>
                     				<p><b>${membervo.MEMBER_NICKNAME}</b></p>
                     				</div>

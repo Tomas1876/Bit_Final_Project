@@ -315,28 +315,44 @@ public class ProjectService {
 	
 	// ----------------------------------------------------------
 	// 프로젝트 생성
-	public String setProjectInsert(ProjectVo p) {
+	@Transactional
+	public String CreateProject(ProjectVo project,P_DetailVo p_detail, 
+					List<P_SkillVo> skill, List<P_MemberVo> member) {
 		ProjectDao dao = sqlsession.getMapper(ProjectDao.class);
 		
-		dao.setProjectInsert(p);
+		// 프로젝트 insert
+		dao.setProjectInsert(project);
 		
-		return p.getProject_id();
+		// 프로젝트 테이블 먼저 insert 후 project_id 값 리턴이 된다.
+		// 그후 리턴된 id 값을 각 Vo 객체에 주입 시켜준다.
+		p_detail.setProject_id(project.getProject_id());
 		
+		for(int i = 0 ; i < skill.size(); i++) {
+			skill.get(i).setProject_id(project.getProject_id());
+		}
+		for(int i = 0 ; i < member.size(); i++) {
+			member.get(i).setProject_id(project.getProject_id());
+		}
+		
+		// 프로젝트상세 insert
+		dao.setProjectDetail(p_detail);
+		
+		// 프로젝트스킬 insert
+		dao.setProjectSkillList(skill);
+		
+		// 프로젝트멤버 insert
+		dao.setProjectMemberList(member);
+				
+		return project.getProject_id();
 	}
-	
-	// 프로젝트 상세정보
-	public void setProjectDetail(P_DetailVo p) {
-		ProjectDao dao = sqlsession.getMapper(ProjectDao.class);
-		
-		dao.setProjectDetail(p);;
-		
-	}
+	// ---------------------------------------------------------
+
 	
 	// 프로젝트 + 기술
 	public void setProjectSkillList(List<P_SkillVo> p) {
 		ProjectDao dao = sqlsession.getMapper(ProjectDao.class);
 		
-		dao.setProjectSkillList(p);;
+		dao.setProjectSkillList(p);
 		
 	}
 	
@@ -344,12 +360,9 @@ public class ProjectService {
 		public void setProjectMemberList(List<P_MemberVo> m) {
 			ProjectDao dao = sqlsession.getMapper(ProjectDao.class);
 			
-			dao.setProjectMemberList(m);;
+			dao.setProjectMemberList(m);
 			
 		}
-	// ---------------------------------------------------------
-
-  
 			
 	// 프로젝트 지원내역
 	public int CheckProjectApply(ApplyVo apply) {
@@ -639,14 +652,22 @@ public class ProjectService {
 	public int ToHandOverAuth(ApplyVo apply, P_MemberVo member, AlarmVo alarm) {
 		ProjectDao dao = sqlsession.getMapper(ProjectDao.class);
 		AlarmDao alarmdao = sqlsession.getMapper(AlarmDao.class);
+		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
 		
 		// 리더 변경
 		int result = dao.ToHandOverAuth(apply);
+		M_AuthVo mauth = new M_AuthVo("3",apply.getMember_id());
+		memberdao.UpdateAuth(mauth);
+		
 		// 리더 -> 멤버로 변경
 		dao.ReaderMemberChange(member);
+		M_AuthVo memberCh = new M_AuthVo("2",member.getMember_id());
+		memberdao.UpdateAuth(memberCh);
 		
 		// 권한 받은 멤버 삭제
 		dao.getAuthMemberDel(apply);
+		
+		
 		
 		//알림 테이블 인서트
 		alarmdao.insertAlarm(alarm);

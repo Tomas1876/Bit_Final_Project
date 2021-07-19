@@ -195,34 +195,22 @@ public class ProjectController {
 			List<P_MemberVo> MemberList = new ArrayList<P_MemberVo>();
 			List<P_SkillVo> SkillList = new ArrayList<P_SkillVo>();
 			
-			
-			// 프로젝트 insert  // insert 한 프로젝트 ID값 가져옴
-			String ProjectId = service.setProjectInsert(projectvo);
-			
-			// 가져온 ID 값 디테일 VO에 넣어주기
-			detail.setProject_id(ProjectId);
-			
-			// 프로젝트 디테일 insert
-			service.setProjectDetail(detail);
-			
 			// 포지션VO 받아온대로  List에 add 
 			for(int i = 0 ; i < position_code.length; i++) {
 				for(int j = 0; j < field_selectCount[i]; j++) {
-					MemberList.add(new P_MemberVo(null, ProjectId, position_code[i]));
+					MemberList.add(new P_MemberVo(null, null, position_code[i]));
 				}
 				
 			}	
 			
 			// 스킬VO 받아온대로 List에 add
 			for(String skill : skil_code) {
-				SkillList.add(new P_SkillVo(ProjectId,skill));
+				SkillList.add(new P_SkillVo(null,skill));
 			}
 			
-			// 포지션 insert
-			service.setProjectMemberList(MemberList);
-			// 스킬 insert
-			service.setProjectSkillList(SkillList);
-			
+			// 프로젝트 insert service
+			String project_id = service.CreateProject(projectvo, detail, SkillList, MemberList);
+					
 			
 			int memberID = member.getMEMBER_ID();
 			int have_Point = member.getHAVE_POINT();
@@ -242,9 +230,9 @@ public class ProjectController {
 			ChangeAuth chau = new ChangeAuth("ROLE_TEAMMANGER");
 			
 			model.addAttribute("msg", "true");
-			model.addAttribute("projectId",ProjectId);
+			model.addAttribute("projectId",project_id);
 			
-			session.setAttribute("project_id", ProjectId);
+			session.setAttribute("project_id", project_id);
 			session.setAttribute("p_title", detail.getP_title());
 		}
 	

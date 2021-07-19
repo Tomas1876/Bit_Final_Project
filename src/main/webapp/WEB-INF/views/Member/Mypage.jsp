@@ -33,8 +33,8 @@
 		<div id="wrap">
 			<div id="profile_img">
 				<!-- <img src="assets/img/member_detail/cycoding_img.png"> -->
-				<%-- <img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}"> --%>
-				<img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}">
+				<%-- <img id ="target_img" src="${pageContext.request.contextPath}/images/${member.MEMBER_IMAGE}"> --%>
+				<img id ="target_img" src="${pageContext.request.contextPath}/images/${member.MEMBER_IMAGE}">
 				<form action="editprofile" method="post" enctype="multipart/form-data" id="img_form">
 				<input type="hidden" id="id" name="id" value="${member.MEMBER_EMAIL}">
 				<input type="file" id="file" name="uploadFile" style="display:none;">

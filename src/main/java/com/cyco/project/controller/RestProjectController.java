@@ -134,6 +134,9 @@ public class RestProjectController {
 
 		int check = service.CheckProjectApply(apply);
 		int project = service.Ismember(apply.getMember_id());
+		
+		System.out.println("check: " + check);
+		System.out.println("project: " + project);
 
 		if (check > 0 || project > 0) {
 			returnUrl = "isProject";
@@ -312,6 +315,7 @@ public class RestProjectController {
 		} else {
 			returnUrl = "false";
 		}
+		ChangeAuth chau = new ChangeAuth("ROLE_MEMBER");
 
 		return returnUrl;
 	}
@@ -416,6 +420,12 @@ public class RestProjectController {
 
 		String returnURL = service.ProjectWithdrawal(member_id, project_id, state);
 		
+		// 팀장 권한에서 팀원으로 보내기
+		M_AuthVo mauth = new M_AuthVo("2", member_id);
+		memberservice.UpdateAuth(mauth);
+
+		// 시큐리티 권한 변경
+		ChangeAuth chau = new ChangeAuth("ROLE_MEMBER");
 
 		return returnURL;
 	}
@@ -505,7 +515,7 @@ public class RestProjectController {
 	}
 
 	// 플젝 완료
-	@RequestMapping(value = "projectcomplete", method = RequestMethod.GET)
+	@RequestMapping(value = "projectcomplete", method = RequestMethod.POST)
 	public String projectComplete(HttpSession session, P_DetailVo p_detail) {
 		String returnURL = "false";
 

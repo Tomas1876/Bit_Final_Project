@@ -98,73 +98,9 @@ $(document).ready(function() {
 	
 	//더보기 클릭
    $(".moreBtn").click(function() {
-	
+     console.log("memberList: " + memberList)
 	moreBtn(memberList,start);
-      
    });
-
-   /* 더보기 memberMore.cy 
-   //더보기 인덱스
-   var startIndex = 1;
-   var endIndex = 8;
-   var indexStep = 8;
-
-   //목록 마지막이면 더보기 버튼 없애기
-   var cardNum = $('.cardNum').length;
-   console.log("cardNum"+cardNum);
-   console.log("endIndex"+endIndex);
-   if (cardNum < endIndex) {
-      $(".moreBtn").css('display', 'none');
-      endIndex = endIndex+indexStep;
-   }
-
-   function moreRead() {
-      $.ajax({
-         url: "memberMore",
-         type: 'get',
-         success: function(memberList) {
-
-            $.each(memberList, function(index, member) {
-               //let cardList = "";
-               //console.log("index세는중: "+index);
-               //console.log("member로우넘: " + member.rownum);
-
-               if (startIndex <= member.rownum && member.rownum <= endIndex) {
-                  let card = '<div class="cardNum">'
-					 card += '<div class="card shadow">'
-					 card += '<div class="m_img">'
-					 card += '<img class="m_img_size"'
-					 card += 'src="${pageContext.request.contextPath}/resources/upload/' + member.m_image + '">'
-					 card += '</div>'
-					 card += '<div class="card-body">'
-					 card += '<h3 class="h5 mt-3 card-title">' + member.m_nick + '</h3>'
-					 card += '<p class="card-text">' + member.position + '</p>'
-					 card += '<p class="tags"># '+ member.skill +'</p>'
-					 if($("#ismember").val() == 0 ){ 
-						//premember인 경우 멤버 상세 못 보게 경고
-						card += '<a href="#" class="card_link deny_premember">VIEW MORE</a>'
-					} else{
-						card += '<a href="memberdetailpage?memberid='+memberList[current].m_id+'" class="card_link">VIEW MORE</a>'
-					}
-					 card += '</div> </div> </div>'
-                  $(card_section).append(card);
-               }
-
-            })
-            
-            //더보기버튼 지우기
-               //노출된 카드 개수
-               var new_cardNum = $('.cardNum').length;
-               console.log("new_cardNum"+new_cardNum);
- 			   console.log("endIndex"+endIndex);
-               if (new_cardNum < endIndex) {
-                  $(".moreBtn").css('display', 'none');
-                  endIndex = endIndex+indexStep;
-            	}
-         }
-      })
-   }
-   */
    
    
    	//필터링 후 더보기버튼 작동되게 수정완료
@@ -188,12 +124,13 @@ $(document).ready(function() {
                  end : 이번 for문의 끝
              */
              for(start =current+step; current<start; current++){
-                     
+					console.log("current" + current);
+                     console.log(memberList[current].m_nick);
      				 card = '<div class="cardNum">'
 					 card += '<div class="card shadow">'
 					 card += '<div class="m_img">'
 					 card += '<img class="m_img_size"'
-					 card += 'src="${pageContext.request.contextPath}/resources/upload/' + memberList[current].m_image + '">'
+					 card += 'src="/images/' + memberList[current].m_image + '">'
 					 card += '</div>'
 					 card += '<div class="card-body">'
 					 card += '<h3 class="h5 mt-3 card-title">' + memberList[current].m_nick + '</h3>'

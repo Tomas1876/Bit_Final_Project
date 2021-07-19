@@ -411,8 +411,8 @@ $('#alram').click(function() {
 	var ws;
 	var logineduser = "${sessionScope.member_id}";
 	var loginednickname = "${sessionScope.nickname}"
-	//var wsurl = "ws://localhost:8090/websocket/${sessionScope.member_id}"	
-	var wsurl = "ws://192.168.0.11:8090/websocket/${sessionScope.member_id}"
+	var wsurl = "ws://192.168.0.111:8090/websocket/${sessionScope.member_id}"	
+	
 	
 	function openSocket() {
 	/*var ws = new WebSocket("wss://localhost:8090/alarm/{code, sender, receiver}");   */

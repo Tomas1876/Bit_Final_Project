@@ -60,8 +60,8 @@
 				<div class="form-group">
 				<input type="hidden" name="FREE_ID" value="<c:out value="${boardInfo.FREE_ID}"/>">
 				<input type="hidden" name="MEMBER_ID" value="${sessionScope.member_id }">
-				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte(this,'80')" placeholder="댓글을 작성해주세요."></textarea>
-				<span id="byteInfo">0</span>/ 80byte
+				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte(this,'60')" placeholder="댓글을 작성해주세요."></textarea>
+				<span id="byteInfo">0</span>/ 60byte
 				<div class="text-right">
 					<button type="button" onclick="fn_formSubmit()" class="btn btn-outline-primary text-right boardBtn">저장</button>
 				</div>
@@ -115,8 +115,8 @@
 			<form name="form2" action="replysave" method="post">
 				<input type="hidden" name="FREE_ID" value="<c:out value="${boardInfo.FREE_ID}"/>"> 
 				<input type="hidden" name="REPLY_ID"> 
-				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte1(this,'80')" placeholder="수정할 댓글을 작성해주세요."></textarea>
-				<span id="byteInfo1">0</span>/ 80byte
+				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte1(this,'60')" placeholder="수정할 댓글을 작성해주세요."></textarea>
+				<span id="byteInfo1">0</span>/ 60byte
 				<button onclick="fn_replyUpdateSave()" class="btn btn-outline-primary text-right boardBtn">저장</button>
 				<button type="button" onclick="fn_replyUpdateCancel()" class="btn btn-default text-right boardBtn">취소</button>
 			</form>
@@ -130,8 +130,8 @@
 				<input type="hidden" name="REPLY_ID">
 				<input type="hidden" name="REPLY_REF">
 				<input type="hidden" name="MEMBER_ID" value="${sessionScope.member_id}">
-				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte2(this,'80')" placeholder="댓글을 작성해주세요."></textarea>
-				<span id="byteInfo2">0</span>/ 80byte
+				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte2(this,'60')" placeholder="댓글을 작성해주세요."></textarea>
+				<span id="byteInfo2">0</span>/ 60byte
 				<button onclick="fn_replyReplySave()" class="btn btn-outline-primary text-right boardBtn">저장</button>
 				<button type="button" onclick="fn_replyReplyCancel()" class="btn btn-default text-right boardBtn">취소</button>
 			</form>
@@ -143,6 +143,9 @@
 			<a href="form?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-primary boardBtn">수정</a>
 	        <a href="delete?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-black boardBtn">삭제</a>
 	        <a href="list" class="btn btn-outline-black boardBtn">목록</a>
+	 </c:if>
+	 <c:if test="${sessionScope.nickname eq '관리자'}">
+	 		<a href="delete?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-black boardBtn">삭제</a>
 	 </c:if>
 	 <c:if test="${sessionScope.nickname ne boardInfo.MEMBER_NICKNAME}">
 			<a href="list" class="btn btn-outline-black boardBtn">목록</a>
