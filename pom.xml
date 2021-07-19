@@ -388,7 +388,7 @@
 				 <artifactId>tomcat-maven-plugin</artifactId>
 				 <version>1.1</version>
 				 <configuration>
-					 <url>http://3.36.159.228:8090/manager/text</url>
+					 <url>http://3.36.159.228:8080/manager/text</url>
 					 <path>/Cycoding</path>
 					 <username>admin</username>
 					 <password>10041004</password>

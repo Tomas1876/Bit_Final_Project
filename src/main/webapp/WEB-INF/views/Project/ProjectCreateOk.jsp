@@ -52,7 +52,7 @@
 						<div class="cardNum">
 								<div class="m_img">
 									<img class="m_img_size"
-										src="${pageContext.request.contextPath}/images/${member.m_image}">
+										src="${pageContext.request.contextPath}/resources/upload/${member.m_image}">
 								</div>
 								<div class="Project_card-body">
 									<h3 class="card-title">${member.m_nick}</h3>

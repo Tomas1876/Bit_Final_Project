@@ -19,6 +19,9 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.cyco.member.vo.EmailVo;
 
+
+ 
+ 
 @Service // 서비스 빈으로 등록
 public class EmailService{
  

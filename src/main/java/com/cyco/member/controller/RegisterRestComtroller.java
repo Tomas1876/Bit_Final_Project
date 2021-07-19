@@ -88,7 +88,7 @@ public class RegisterRestComtroller {
 		int random = 0; 
 		
 		vo.setSenderName("CYCO");
-		vo.setSenderMail("cycoding1004@gmail.com");
+		vo.setSenderMail("cycoding196@gmail.com");
 		vo.setSubject("[CYCODING]사이좋게 코딩하자 사이코딩 인증 메일입니다");
 		
 		System.out.println(vo);
