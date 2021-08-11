@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<http pattern="/resources/**" security="none"></http>
+
+	<http auto-config="true" use-expressions="true" create-session="never">
+	
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/project/detail" access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
+		<intercept-url pattern="/member/memberdetailpage" access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
+		<intercept-url pattern="/board/**" access="hasAnyRole('ROLE_PREMEMBER','ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
+		<intercept-url pattern="/mypage/**" access="hasAnyRole('ROLE_PREMEMBER','ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
+		<intercept-url pattern="/alarm/**" access="hasAnyRole('ROLE_PREMEMBER','ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
+		<intercept-url pattern="/**" access="permitAll" />
+		<access-denied-handler ref="userDeniedHandler"/>
+		
+		<form-login login-page="/login" 
+			login-processing-url="/login" 
+			authentication-success-handler-ref="userLoginSuccessHandler"
+			authentication-failure-handler-ref="userLoginFailureHandler"
+			username-parameter="username" password-parameter="password" />
+		<session-management>
+		<!-- error-if-maximum-exceeded="false" 이 속성이 살아있으니 중복로그인 방지가 안됨...일단 주석 -->
+			<concurrency-control max-sessions="1" expired-url="/login" />
+		</session-management>
+		<logout delete-cookies="JSESSIONID" logout-success-url="/main" logout-url="/**/logout" invalidate-session="true" success-handler-ref="" />
+
+		<!-- 보안 토큰 -->
+
+		<csrf disabled="true"/>
+	</http>
+	
+	<beans:bean id="userDeniedHandler" 	class="com.cyco.member.security.UserDeniedHandler"></beans:bean>
+	<beans:bean id="userLoginSuccessHandler" class="com.cyco.member.security.UserLoginSuccessHandler"></beans:bean>
+	<beans:bean id="userLoginFailureHandler" class="com.cyco.member.security.UserLoginFailureHandler"></beans:bean>
+
+	<authentication-manager>
+	<authentication-provider>
+		<jdbc-user-service data-source-ref="dataSource"
+			users-by-username-query="select MEMBER_EMAIL as username, MEMBER_PWD as password, 1 enabled from member where MEMBER_EMAIL=?"
+			authorities-by-username-query="select m.MEMBER_EMAIL as username, a.AUTHORITY_NAME as authority
+											from member m left join m_auth ma
+											on m.MEMBER_ID = ma.MEMBER_ID left join auth a
+											on ma.AUTHORITY_ID = a.AUTHORITY_ID
+											where m.MEMBER_EMAIL=?"
+		/>
+		<password-encoder ref="bCryptPasswordEncoder"/>
+	</authentication-provider>
+
+</authentication-manager>				
+	
+		<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<beans:constructor-arg name="strength" value="256"></beans:constructor-arg>
+	</beans:bean>
+</beans:beans>
+

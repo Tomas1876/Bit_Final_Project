@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardMapper">
+	
+<!-- 	검색 공통 부분 -->
+	<sql id="includeBoard">
+    <if test="searchKeyword!=null and searchKeyword!=''">
+        <foreach item="item" index="index" collection="searchTypeArr">
+            WHERE ${item} LIKE CONCAT(CONCAT('%', #{searchKeyword}),'%' )
+         </foreach>
+    </if>
+</sql>
+
+	<!-- 전체 데이터 갯수 구하기 -->
+	<select id="selectBoardCount" resultType="Integer" parameterType="com.cyco.utils.SearchVO">
+		SELECT COUNT(*)
+		FROM BOARD
+		<include refid="includeBoard"/>
+	</select>
+	<!-- 전체 목록 가져오기 -->
+	<select id="selectBoardList"
+		resultType="com.cyco.board.vo.BoardVo" parameterType="com.cyco.utils.SearchVO">
+		SELECT FREE_ID, FREE_TITLE, MEMBER_ID, FREE_DATE, FREE_VIEWS
+		  , (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_ID=DS.MEMBER_ID) MEMBER_NICKNAME
+		FROM (
+		SELECT FREE_ID, FREE_TITLE, MEMBER_ID, FREE_DATE, FREE_VIEWS
+		, ROW_NUMBER() OVER(ORDER BY FREE_ID DESC) BD_SEQ
+		FROM BOARD
+		<include refid="includeBoard"/>
+		) DS
+		WHERE BD_SEQ BETWEEN ${rowStart} AND ${rowEnd}
+		ORDER BY FREE_ID DESC
+	</select>
+
+	<!-- 게시글 등록 -->
+	<insert id="insertBoard" parameterType="com.cyco.board.vo.BoardVo">
+		<selectKey resultType="Long" keyProperty="FREE_ID" order="BEFORE">
+            SELECT BD_SEQ.NEXTVAL FROM DUAL
+        </selectKey> 
+		INSERT INTO BOARD(FREE_ID, FREE_TITLE, FREE_CONTENT,
+		MEMBER_ID)
+		VALUES (#{FREE_ID} , #{FREE_TITLE}, #{FREE_CONTENT}, #{MEMBER_ID})
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateBoard"
+		parameterType="com.cyco.board.vo.BoardVo">
+		UPDATE BOARD
+		SET FREE_TITLE=#{FREE_TITLE}
+		, MEMBER_ID=#{MEMBER_ID}
+		, FREE_CONTENT=#{FREE_CONTENT}
+		WHERE FREE_ID=#{FREE_ID}
+	</update>
+	<!-- 게시글 조회 -->
+	<select id="selectBoardOne" parameterType="String"
+		resultType="com.cyco.board.vo.BoardVo">
+		SELECT B.FREE_ID, B.FREE_TITLE,B.MEMBER_ID, B.FREE_CONTENT,B.FREE_DATE, B.FREE_VIEWS, M.MEMBER_NICKNAME
+		FROM BOARD B LEFT JOIN MEMBER M
+		ON B.MEMBER_ID=M.MEMBER_ID
+		WHERE FREE_ID=#{FREE_ID}
+	</select>
+<!-- 	게시글 댓글 수 계산 -->
+	<update id="updateReplyCount" parameterType="String">
+	update board b
+	set b.replycnt = (select count(REPLY_ID)
+    					           from B_reply
+                    				where FREE_ID= #{FREE_ID})
+	where b.FREE_ID = #{FREE_ID}
+	</update>
+	<!-- 조회수 증가 -->
+	<update id="updateBoardRead" parameterType="String">
+		UPDATE BOARD
+		SET FREE_VIEWS = FREE_VIEWS + 1
+		WHERE FREE_ID=#{FREE_ID}
+	</update>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoardOne" parameterType="String">
+		DELETE
+		FROM BOARD
+		WHERE FREE_ID=#{FREE_ID}
+	</delete>
+	<!-- 파일 불러오기 -->
+	<select id="selectBoardFileList" resultType="com.cyco.utils.FileVO" parameterType="String">
+        SELECT FILENO, FILENAME, REALNAME, FILESIZE
+          FROM B_FILE
+         WHERE FREE_ID=#{FREE_ID}
+         ORDER BY FILENO DESC 
+    </select> 
+	<!--  파일 저장 -->
+	<insert id="insertBoardFile" parameterType="com.cyco.utils.FileVO" >
+    	INSERT INTO B_FILE (FREE_ID, FILENO, FILENAME, REALNAME, FILESIZE)
+		VALUES (#{parentPK}, FILENO_SEQ.NEXTVAL, #{filename}, #{realname}, #{filesize})
+	</insert>
+	<!-- 파일 삭제 -->
+	<delete id="deleteBoardFile" parameterType="hashmap"> 
+        DELETE 
+          FROM B_FILE
+         WHERE FILENO IN (
+			  <foreach item="item" index="index" collection="fileno" separator=",">
+		        	 ${item}
+			  </foreach>  
+		)	         
+    </delete>
+    <!-- 댓글 리스트 -->
+    <select id="selectBoardReplyList" resultType="com.cyco.board.vo.BoardReplyVo" parameterType="String">
+<!--         SELECT FREE_ID, REPLY_ID, MEMBER_ID, REPLY_CONTENT, REPLY_DATE, REPLY_REF, DEPT, STEP -->
+<!--           FROM B_REPLY -->
+<!--          WHERE FREE_ID=#{FREE_ID} -->
+<!--          ORDER BY STEP -->
+         SELECT R.FREE_ID, R.REPLY_ID, R.MEMBER_ID, R.REPLY_CONTENT, R.REPLY_DATE, R.REPLY_REF, R.DEPT, R.STEP, M.MEMBER_NICKNAME
+         FROM B_REPLY R LEFT JOIN MEMBER M
+         ON R.MEMBER_ID = M.MEMBER_ID
+         WHERE FREE_ID=#{FREE_ID}
+         ORDER BY STEP
+    </select>
+    <!-- 댓글 등록 -->
+    <insert id="insertBoardReply" parameterType="com.cyco.board.vo.BoardReplyVo" >
+    <selectKey resultType="String" keyProperty="REPLY_ID" order="BEFORE">
+        SELECT NVL(MAX(REPLY_ID),0)+1 FROM B_REPLY
+    </selectKey>
+    INSERT INTO B_REPLY(FREE_ID, REPLY_ID, MEMBER_ID, REPLY_CONTENT, STEP, REPLY_REF, DEPT)
+    VALUES (#{FREE_ID}, #{REPLY_ID}, #{MEMBER_ID}, #{REPLY_CONTENT}, #{STEP},
+    		<choose>
+                       <when test="REPLY_REF==null">#{REPLY_ID}, 0</when>
+                       <otherwise>#{REPLY_REF}, #{DEPT}</otherwise>
+            </choose>
+               )
+</insert>
+	<!-- 부모댓글 정보 가져오기 -->
+	<select id="selectBoardReplyParent" resultType="com.cyco.board.vo.BoardReplyVo" parameterType="String">
+		SELECT FREE_ID, DEPT+1 DEPT, STEP 
+		FROM B_REPLY
+		WHERE REPLY_ID=#{REPLY_REF}
+    </select>
+	<!-- 순서 수정 -->
+    <update id="updateBoardReplyOrder" parameterType="com.cyco.board.vo.BoardReplyVo"> 
+		UPDATE B_REPLY
+		SET STEP = STEP + 1 
+		WHERE FREE_ID=#{FREE_ID} AND STEP>#{STEP}       
+    </update> 
+	<!-- 게시물 내 최대 순서 -->
+    <select id="selectBoardReplyMaxOrder" resultType="Integer" parameterType="String">
+        SELECT NVL(MAX(STEP),0)+1
+          FROM B_REPLY
+         WHERE FREE_ID=#{FREE_ID}
+    </select>
+<!-- 	자식 댓글 수 계산 -->
+    <select id="selectBoardReplyChild" resultType="Integer" parameterType="String">
+		SELECT COUNT(*)
+		FROM B_REPLY
+		WHERE REPLY_REF=#{REPLY_REF} AND REPLY_ID!=#{REPLY_REF}
+    </select>
+
+<!-- 	댓글 삭제 -->
+	<delete id="deleteBoardReply" parameterType="String"> 
+		DELETE
+		FROM B_REPLY
+		WHERE REPLY_ID=#{REPLY_ID}
+    </delete> 
+<!--     댓글 삭제 후 순서 조정 -->
+    <update id="updateBoardReplyOrderDelete" parameterType="com.cyco.board.vo.BoardReplyVo"> 
+        UPDATE B_REPLY TBR1
+         INNER JOIN B_REPLY TBR2 ON TBR2.FREE_ID=TBR1.FREE_ID AND TBR1.STEP >TBR2.STEP
+           SET TBR1.STEP = TBR1.STEP - 1 
+         WHERE TBR2.REPLY_ID=#{REPLY_ID} 
+    </update>
+<!-- 댓글 수정 -->
+<update id="updateBoardReply" parameterType="com.cyco.board.vo.BoardReplyVo">
+    UPDATE B_REPLY
+       SET REPLY_CONTENT=#{REPLY_CONTENT}
+     WHERE REPLY_ID=#{REPLY_ID}
+</update>
+</mapper>

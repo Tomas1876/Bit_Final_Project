@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyco.member.dao.MemberDao">
+
+
+	<!-- 회원가입할 때 정보 확인  -->
+	<select id="checkEmail" resultType="integer">
+		
+		select MEMBER_ID from member where MEMBER_EMAIL = #{email}
+	
+	</select>
+	
+	<select id="checkNickName" resultType="integer">
+		
+		select MEMBER_ID from member where MEMBER_NICKNAME = #{nickName}
+	
+	</select>
+	
+	<select id="checkPhone" resultType="integer">
+		
+		select MEMBER_ID from member where MEMBER_PHONE = #{phone}
+	
+	</select>
+	<!-- 회원가입할 때 정보 확인  -->
+	
+	<!-- 회원 가입 -->
+	<insert id="registMember" parameterType="com.cyco.common.vo.MemberVo">
+	
+		insert into member(MEMBER_ID, MEMBER_EMAIL,MEMBER_PWD,MEMBER_NAME,MEMBER_NICKNAME,MEMBER_PHONE,MEMBER_IMAGE,ENABLED) 
+		values (M_SEQ.nextval,#{MEMBER_EMAIL},#{MEMBER_PWD},#{MEMBER_NAME},#{MEMBER_NICKNAME},#{MEMBER_PHONE},'defualt.jpg',1)
+		
+	</insert>
+	
+	<select id="getLoginedName" resultType="java.util.HashMap">
+		select member_nickname, member_id from member where member_email=#{memberemail}
+	</select>
+	
+	<!-- 로그인시 탈퇴날짜 null로 업데이트 -->
+	<update id="checkDeleteDate">
+	
+		update m_detail set delete_count=null where member_id=${memberid}
+	
+	</update>
+	
+	<!-- 로그인시 미확인 알림 있으면 알림창 한 번 띄워주기 -->
+	<select id="getOldAlarm" resultType="Integer">
+	
+		select count(*) from ALARM where member_id=${memberid} and Alarm_OK=0
+	
+	</select>
+	
+	<!-- 로그인시 팀장으로 참여중인 프로젝트 있는지 확인 -->
+	<select id="isProjectManager" resultType="com.cyco.project.vo.P_DetailVo">
+		select pd.p_title, pd.project_id from p_detail pd left join project p
+		on pd.project_id=p.project_id
+		where p.member_id=${memberid} and (pd.p_state='진행중' or pd.p_state='모집중')
+	</select>
+	
+	<select id="isInProject" resultType="java.util.HashMap">
+		select pm.project_id, pd.p_title from p_member pm left join p_detail pd
+		on pm.project_id=pd.project_id
+		where pm.member_id=${memberid} and (pd.p_state='진행중' or pd.p_state='모집중')
+	</select>
+	
+	<!-- 이메일,비밀번호찾기 -->
+	
+	<!-- 이메일찾기 전 존재하는지 확인 -->
+	<select id="beforeFindEmail" resultType="_int">
+		select count(*)from member where member_name = #{param1} and member_phone=#{param2}
+	</select>
+	
+	<!-- 이메일찾기 -->
+	<select id="findEmail" resultType="String">
+		select member_email from member where member_name = #{param1} and member_phone=#{param2}
+	</select>
+	
+	<!-- 비밀번호찾기 전 존재 확인 -->
+	<select id="beforeFindPwd" resultType="_int">
+		select count(*) from member where member_name = #{param1} and member_email=#{param2}
+	</select>
+	
+	<!-- 비밀번호 변경 findPwdEdit -->
+	<update id="findPwdEdit">
+		update member set MEMBER_PWD=#{param2} where MEMBER_EMAIL=#{param1}
+	</update>
+	
+	
+
+</mapper>

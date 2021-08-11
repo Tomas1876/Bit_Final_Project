@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyco.member.dao.MemberDao">
+	
+	<!-- 멤버 정보 가져오기 -->
+	<select id="getMember" resultType="com.cyco.common.vo.MemberVo">
+		SELECT MEMBER_ID, MEMBER_EMAIL, MEMBER_IMAGE, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_PWD, HAVE_POINT, USE_POINT FROM v_m_p WHERE MEMBER_EMAIL = #{email}
+	</select>
+	
+	<!-- 멤버리스트 최초로딩-->
+	<select id="getMemberList" resultType="com.cyco.member.vo.V_MlistVo">
+
+		select rownum, dis_mlist.*
+		from 
+			( select row_number() over
+				( partition by v_mlist.m_id order by v_mlist.m_id ) 
+			as rnum, v_mlist.* from v_mlist 
+			) dis_mlist
+		where rnum = 1
+
+	</select>
+
+	<select id="getPositionList" resultType="com.cyco.common.vo.PositionVo">
+		select position_id, position_name, position_enabled
+		from position
+		order by position_id
+	</select>
+	
+	<!-- getMemberPosition -->
+	<!-- select rownum, m_id, m_nick, m_image, position, skill, p_enabled, s_enabled
+		from V_MLIST
+		where position like '%${position}%' -->
+	<select id="getMemberPosition" resultType="com.cyco.member.vo.V_MlistVo">
+		SELECT rownum, dis_mlist.*
+		FROM 
+			( SELECT row_number() over
+				( partition by v_mlist.m_id order by v_mlist.m_id ) 
+			as rnum, v_mlist.* from v_mlist 
+			) dis_mlist
+		WHERE rnum = 1
+		  AND dis_mlist.position like '%${position}%'
+	</select>
+	
+	<select id="getMemberNickname" resultType="com.cyco.member.vo.V_MlistVo">
+		SELECT rownum, dis_mlist.*
+		FROM 
+			( SELECT row_number() over
+				( partition by v_mlist.m_id order by v_mlist.m_id ) 
+			as rnum, v_mlist.* from v_mlist 
+			) dis_mlist
+		WHERE rnum = 1
+		  AND dis_mlist.m_nick like '%${nickname}%'
+	</select>
+	
+	<!-- 포인트 관리 쿼리 -->
+	<update id="updatePoint">
+		UPDATE POINT SET HAVE_POINT = ${have_point}, USE_POINT = ${use_point} WHERE MEMBER_ID = #{member_id}
+	</update>
+	
+	<!-- 멤버 권한 변경 -->
+	<update id="UpdateAuth">
+		UPDATE M_AUTH SET AUTHORITY_ID = ${authority_id} WHERE MEMBER_ID = ${member_id}
+	</update>
+	
+	
+</mapper>

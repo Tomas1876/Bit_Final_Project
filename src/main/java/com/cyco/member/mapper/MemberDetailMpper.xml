@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyco.member.dao.MemberDao">
+	
+	<!-- 마이페이지 진입시 기본 개인정보 불러오기 -->
+	<select id="getMyDetail" resultType="com.cyco.common.vo.MemberVo">
+		
+		select  m.MEMBER_ID, m.MEMBER_EMAIL, m.MEMBER_NICKNAME, m.MEMBER_NAME, m.MEMBER_PWD, m.MEMBER_PHONE, m.MEMBER_EMAIL, m.MEMBER_IMAGE, p.HAVE_POINT
+			    from member m left join point p
+			    on m.MEMBER_ID=p.MEMBER_ID
+			    where member_email=#{useremail}
+		
+	</select>
+	
+	<!-- 마이페이지 개인정보 수정 -->
+	<update id="editPersnalInfo">
+		
+		update member set ${param1}=#{param2} where MEMBER_ID=#{param3}
+
+	</update>
+	
+	<!-- 마이페이지 이미지 수정 -->
+	<update id="editProfile">
+	
+		update member set MEMBER_IMAGE=#{param2} where MEMBER_EMAIL=#{param1}
+	
+	</update>
+	
+	
+	<!-- 먀이페이지 모달에 기술 태그 뿌리기 -->
+	<select id="getSkills" resultType="com.cyco.common.vo.SkillVo">
+		
+		select skill_name, skill_code, skill_enabled from skill where skill_enabled=1
+		
+	</select>
+	
+		<!-- 먀이페이지 회원이 선택한 기술 뿌리기 -->
+		<select id="getPreferSkills" resultType="com.cyco.member.vo.MemberDetailPageVo">
+		
+		select s.skill_name, s.skill_enabled from skill s left join m_skill ms
+				on s.skill_code = ms.skill_code left join member m
+				on ms.member_id = m.member_id
+				 where s.skill_enabled=1 and m.member_email=#{userid}
+				 order by ms_count
+		
+	</select>
+
+	<!-- 먀이페이지 모달에 포지션 태그 뿌리기 -->
+	<select id="getPositions" resultType="com.cyco.common.vo.PositionVo">
+		
+		select position_name, position_id, position_enabled from position where position_enabled=1
+		
+	</select>
+	
+		<!-- 먀이페이지 회원 선호 포지션 태그 뿌리기 -->
+		<select id="getPreferPosition" resultType="com.cyco.member.vo.MemberDetailPageVo">
+		
+			select p.position_id, p.position_name, p.position_enabled from position p left join m_detail md
+			    on p.position_id=md.position_id left join member m
+			    on md.member_id=m.member_id
+			    where m.member_email=#{userid}
+		
+	</select>
+	
+	
+	<!-- 먀이페이지 모달에 기간 선택지 태그 뿌리기 -->
+<!-- 	<select id="getDurations" resultType="com.cyco.member.vo.V_Duration">
+		
+		select du_date from v_duration group by du_date
+		
+	</select> -->
+	<select id="getDurations" resultType="com.cyco.project.vo.P_DurationVO">
+		
+		select duration_date, duration_id from p_duration
+		
+	</select>
+	
+	<!-- 먀이페이지 회원 선호 기간 태그 뿌리기 -->
+	<select id="getPreferDurations" resultType="com.cyco.member.vo.MemberDetailPageVo">
+		
+		select d.du_date from v_duration d left join member m
+			on d.m_id = m.member_id
+			where m.member_email=#{userid}		
+		
+	</select>	
+	<!-- 먀이페이지 회원 프로젝트 경험 있는지 없는지 미입력한건지 체크 -->
+	<select id="haveExperience" resultType="String">
+	
+		select md.P_EXPERIENCE from m_detail md left join member m
+			on md.member_id=m.member_id
+			where m.member_email=#{userid}
+	
+	</select>
+	
+	<!-- 먀이페이지 회원 프로젝트 경험 있을 경우, 리스트 뿌리기 -->
+	<select id="getExperiences" resultType="com.cyco.member.vo.M_ExperienceVo">
+	
+		select e.exp_title, e.ex_position, e.ex_skill, e.ex_duration, e.ex_content, e.ex_count from m_experience e left join member m
+    		on e.member_id=m.member_id
+    		where m.member_email=#{userid}
+    		order by e.ex_count	
+	
+	</select>
+	
+	<!-- 마이페이지 회원 선택 기술 바꿀 때 우선 기존 기술 삭제 -->
+	<delete id="deleteSkills">
+	
+		delete from m_skill where MEMBER_ID=${memberid}
+	
+	</delete>
+	
+	<insert id="insertSkills" parameterType="String">
+	
+		INSERT INTO m_skill (ms_count, member_id, skill_code)
+	VALUES(
+		(SELECT nvl(MAX(ms_count),0)+1 FROM m_skill where member_id=${param1}),
+    	${param1},#{param2}	)
+
+	
+	</insert>
+	
+	<insert id="insertExperiences" parameterType="com.cyco.member.vo.M_ExperienceVo">
+	
+		insert into m_experience (MEMBER_ID,EXP_TITLE,EX_POSITION,EX_SKILL,EX_DURATION,EX_CONTENT,EX_COUNT) 
+			values(${MEMBER_ID},#{EXP_TITLE},#{EX_POSITION},#{EX_SKILL},#{EX_DURATION},#{EX_CONTENT},(SELECT nvl(MAX(EX_COUNT),0)+1 FROM m_experience where MEMBER_ID=${MEMBER_ID}))
+	
+	</insert>
+	
+	<!-- 마이페이지 회원 프로젝트 경험 삭제 -->
+	<delete id="deleteExperience">
+	
+		delete m_experience where ex_count=${param1} and member_id=${param2}
+	
+	</delete>
+	
+	<!-- 마이페이지 회원 선호 포지션 변경 -->
+	<update id="updatePosition">
+	
+		update m_detail set position_id=#{param2} where member_id=${param1}
+	
+	</update>
+	
+	<!-- 마이페이지 회원 선호 기간 바꿀 때 우선 기존 기간 삭제 -->
+	<delete id="deleteDurations">
+	
+		delete from v_duration where M_ID=${param1}
+	
+	</delete>
+	
+	<!-- 마이페이지 새로 선택한 선호 기간 입력 -->
+	<insert id="insertDurations" parameterType="String">
+	
+		INSERT INTO m_duration (duration_id, member_id) values (#{param2},${param1})
+
+	
+	</insert>
+	<!-- 마이페이지 회원 프로젝트 경험 미입력에서 있/없 입력으로 변경 -->
+	<update id="updateExperience">
+	
+		update m_detail set p_experience=${param2} where member_id=${param1}
+	
+	</update>
+	<!-- 마이페이지 회원 프로젝트 경험 상세 수정 -->
+	<update id="updateExperiences" parameterType="com.cyco.member.vo.M_ExperienceVo">
+	
+		update m_experience set exp_title=#{EXP_TITLE},
+                        ex_position=#{EX_POSITION},
+                        ex_skill=#{EX_SKILL},
+                        ex_duration=#{EX_DURATION},
+                        ex_content=#{EX_CONTENT}
+        where ex_count=${ex_count} and member_id=${MEMBER_ID}
+	
+	</update>
+	
+	<!-- 회원 상세 기본 정보 불러오기 -->
+	<select id="getMemberDetail" resultType="com.cyco.common.vo.MemberVo">
+		
+		select member_email, member_nickname, MEMBER_IMAGE from member where member_id=${memberid}
+		
+	</select>
+	
+	<!-- 마이페이지 회원 정보 다 입력했을 때 보너스 지급 전 이게 최초 입력인지 체크 한 번 하기 -->
+	<select id="checkPoint" resultType="Integer">
+	
+		select member_id from point where member_id=${member_id} and have_point=0 and use_point=0
+	
+	</select>
+	
+	<!-- 마이페이지 정보 최초 입력시 포인트 지급 -->
+	<update id="givePointFirstTime">
+		
+		update point set have_point=50 where member_id=${member_id}
+	
+	</update>
+	<!-- 회원 탈퇴시 우선 팀장인지 확인부터 하기 -->
+	<select id="isTeamManager" resultType="Integer">
+	
+		select member_id from project where member_id=${quit_id}
+	
+	</select>
+	
+	<!-- 회원 탈퇴시 상세 테이블에 탈퇴 날짜 업데이트 -->
+	<update id="updateDeleteDate">
+	
+		update m_detail set delete_count=sysdate where member_id=${quit_id}
+	
+	</update>
+	
+	<!-- 회원상세 (회원에게 작성된 리뷰) 리뷰목록 가져오기 -->
+	<!-- select  r.* , m.member_nickname
+		from review r left join member m
+		on r.writer_id = m.member_id
+		where review_member=${memberid} -->
+	<select id="getReviewList" resultType="com.cyco.member.vo.ReviewVo">
+		select  m.member_nickname, r.review_grade, r.review_content, r.review_date
+		from review r left join member m
+		on r.writer_id = m.member_id
+		where review_member=${memberid}
+	</select>
+	
+	<update id="chargePoint">
+   update point 
+   set
+   have_point = have_point + ${param2} 
+   where member_id = ${param1}
+<!--    update point  -->
+<!--    set have_point = (select have_point from point where member_id= ${param1}) + ${param2}  -->
+<!--    where member_id = ${param1} -->
+   </update>
+   
+   <!-- 회원 상세 초대 보내기 전에 현재 로그인한 사용자가 프로젝트 가지고 있는지 확인하고 있다면 정보 가져오기 -->
+   <select id="checkProjectBeforeInvite" resultType="com.cyco.project.vo.P_DetailVo">
+   		select pd.p_title, pd.project_id from project p left join p_detail pd 
+		    on p.project_id=pd.project_id 
+		    where p.member_id=${memberid} and (pd.p_state='모집중' or pd.p_state='진행중')
+   </select>
+
+   <!-- 북마크/지원목록 페이지 -->
+   <!-- 북마크 목록 불러오기 -->
+   <select id="getBookmarkList" resultType="com.cyco.common.vo.BookMark_Join_P_detailVo">
+	   	select p.project_id, p.p_title, p.p_state, b.member_id
+		from bookmark b
+		join p_detail p
+		on p.project_id = b.project_id
+		where b.member_id = ${member_id}
+   </select>
+   
+   <!-- 북마크 제거 -->
+	<delete id="deletBookMark">
+		delete from bookmark where project_id=${param1} and member_id=${param2}
+	</delete>
+
+	<!-- 지원목록 불러오기 -->
+	<select id="getApplyList" resultType="com.cyco.common.vo.Apply_Join_P_datailVo">
+		select a.apply_date, a.apply_id, p.project_id, p.p_title, p.p_state, a.member_id, a.apply_ok
+		from apply a
+		join p_detail p 
+		on p.project_id = a.project_id
+		where a.member_id = ${member_id}
+		order by a.apply_date
+   </select>
+   
+   <!-- 지원 취소 -->
+   <delete id="deleteApply">
+   		delete from apply where apply_id = ${apply_id}
+   </delete>
+   
+   <!-- 내프로젝트/후기 페이지 -->
+   <!-- 로그인한 회원이 팀장인 프로젝트목록 -->
+   <select id="getTeamLeader" resultType="com.cyco.member.vo.Project_TeamLeaderVo">
+	   	select p.project_id, pd.p_title, pd.p_state, p.member_id, f.field_name
+		from p_detail pd
+		left join project p on p.project_id = pd.project_id
+		left join p_field f on p.field_code = f.field_code
+		where p.member_id = ${member_id}
+   </select>
+   
+   <!-- 로그인한 회원이 팀원인 프로젝트 목록 -->
+   <select id="getTeamMember" resultType="com.cyco.member.vo.V_myProjectVo">
+   		select project_id, p_title, teamleader, teammember, position_name, field_name, p_state
+		from V_myProject 
+		where teammember = ${member_id}
+   </select>
+   
+   <!-- 리뷰 작성용 프로젝트팀장 조회 -->
+   <select id="writeReviewLeader" resultType="com.cyco.member.vo.MyProject_Join_Member">
+		select distinct v.teamleader, m.member_nickname, v.project_id
+		from v_myproject v
+		join member m on v.teamleader = m.member_id
+		where project_id = ${param1} and not v.teamleader = ${param2}
+   </select>
+   
+   <!-- 리뷰 작성용 프로젝트멤버 조회 -->
+   <select id="writeReviewMember" resultType="com.cyco.member.vo.MyProject_Join_Member">
+   		select v.teammember, v.position_name, m.member_nickname, v.project_id
+		from v_myproject v
+		join member m on v.teammember = m.member_id
+		where project_id = ${param1} and not v.teammember = ${param2}
+   </select>
+
+	<!-- 리뷰 작성 -->
+	<insert id="setReview">
+		<foreach collection="list" item="review" open="INSERT ALL" close="SELECT * FROM DUAL">
+			INTO REVIEW (REVIEW_ID,REVIEW_CONTENT,REVIEW_DATE,REVIEW_GRADE,WRITER_ID,REVIEW_MEMBER,PROJECT_ID) 
+			VALUES
+			(
+			review_seq, 
+			#{review.review_content}, 
+			sysdate, 
+			#{review.review_grade}, 
+			#{review.writer_id}, 
+			#{review.review_member},
+			#{review.project_id}
+			)
+		</foreach>
+	</insert>
+	
+	<!-- 로그인한 회원이 작성한 리뷰 가져오기 -->
+	<select id="getMyReview" resultType="com.cyco.member.vo.ReviewVo">
+		select * from review where writer_id = ${member_id}
+	</select>	
+	
+	<!-- 리뷰 작성시 포인트 지급 -->
+	<update id="giveReviewPoint">
+		UPDATE point SET have_point=have_point+10 WHERE member_id = ${member_id}
+	</update>
+	
+	<!-- 로그인한 회원이 해당 프로젝트에 남긴 리뷰 조회 -->
+	<select id="getMyProjectReview" resultType="com.cyco.member.vo.MyReviewVo">
+		select distinct r.review_member,
+                m.member_nickname, 
+                r.review_content, 
+                r.review_grade, 
+                pos.position_name
+		from
+		(select member_id from project p where p.project_id = ${param1} union all
+		select member_id from p_member pm  where pm.project_id = ${param1}) a
+		left join member m
+		on a.member_id = m.member_id
+		left join review r
+		on a.member_id = r.review_member
+		left join p_member pm2
+		on pm2.member_id = a.member_id and pm2.project_id= ${param1}
+		left join position pos
+		on pos.position_id = pm2.position_id
+		where r.writer_id = ${param2}
+	</select>
+	
+	<update id="penalyMember">
+		UPDATE M_DETAIL SET PENALTY = SYSDATE WHERE MEMBER_ID = #{member_id}
+	</update>
+	
+</mapper>

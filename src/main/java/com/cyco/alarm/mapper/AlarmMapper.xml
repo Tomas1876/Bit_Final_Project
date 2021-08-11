@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyco.alarm.dao.AlarmDao">
+
+	<!-- 알림이벤트 발생시 알림테이블에 인서트(트랜잭션 처리) -->
+	<insert id="insertAlarm">
+
+		insert into alarm
+		(ALARM_ID,MEMBER_ID,ALARM_CODE,ALARM_DATE,url,ALARM_CONTENT,ALARM_OK )
+		values(ALM_SEQ.nextval, ${MEMBER_ID}, #{ALARM_CODE},
+		sysdate,${URL},#{ALARM_CONTENT},0)
+	</insert>
+	
+	<!-- DB에 알림 테이블만 인서트하면 되는 알림 이벤트 -->
+	<insert id="makeAlarm">
+		<foreach collection="list" item="item" open="INSERT ALL" close="SELECT * FROM DUAL">
+         into alarm
+		(ALARM_ID,MEMBER_ID,ALARM_CODE,ALARM_DATE,url,ALARM_CONTENT,ALARM_OK ) values 
+        ( 
+           alarm_seq,
+           ${item.MEMBER_ID},
+           #{item.ALARM_CODE}, 
+			sysdate,
+			${item.URL},
+			#{item.ALARM_CONTENT}, 
+			0      
+         ) 
+		</foreach>
+</insert>
+
+	<!-- 알림 이벤트 발생시 헤더 알림 리스트에 알림목록 갱신하기 -->
+	<select id="getNewAlarms" resultType="com.cyco.alarm.vo.AlarmVo">
+
+		select * from (select
+		ALARM_ID, MEMBER_ID, ALARM_CODE, ALARM_DATE, URL,
+		ALARM_CONTENT from
+		ALARM
+		where member_id=${member_id} and Alarm_OK=0 order by ALARM_ID
+		DESC) where
+		rownum between 1 and 5
+
+
+	</select>
+	<!-- 알림 페이지 진입시 알림 전체 불러오기 -->
+<!-- 	<select id="getAllAlarms" resultType="com.cyco.alarm.vo.AlarmVo">
+		select a.ALARM_ID,
+		a.MEMBER_ID, a.ALARM_CODE, a.ALARM_DATE, a.URL,
+		a.ALARM_CONTENT,
+		a.Alarm_OK
+		from ALARM a left join Member m
+		on a.MEMBER_ID=m.MEMBER_ID
+		where m.member_email=#{useremail} order by ALARM_ID DESC
+	</select> -->
+	<!-- 쪽지 빼고 알림 가져오기 -->
+	<select id="getAllAlarms" resultType="com.cyco.alarm.vo.AlarmVo">
+
+ 	select a.ALARM_ID,
+		a.MEMBER_ID, a.ALARM_CODE, ALARM_DATE,0,8, a.URL,
+		a.ALARM_CONTENT,
+		a.Alarm_OK
+		from ALARM a left join Member m
+		on a.MEMBER_ID=m.MEMBER_ID
+		where m.member_email=#{useremail} and alarm_code !='CHAT_O' order by ALARM_ID DESC
+
+	</select>
+
+	<!-- 알림 페이지 진입시 새 쪽지 있는지 체크하기 
+	<select id="hasNewMessages" resultType="String">
+		select substr(note_date,0,8) from to_note t left join member m
+		on t.member_to=m.member_id
+		where m.member_email=#{useremail} and t.note_ok=0 group by substr(note_date,0,8)
+	</select>-->
+
+	<!-- 알림 읽으면(클릭하면) 상태 확인으로 변경 -->
+	<update id="checkAlarm">
+
+		update alarm set alarm_ok=1 where
+		alarm_id=${alarm_id}
+
+	</update>
+
+	<!-- 알림내역 지우기 -->
+	<delete id="deleteAlarm">
+
+		delete alarm where alarm_id=${alarm_id}
+
+	</delete>
+
+	<!-- 쪽지 보냈을 때 발신함 인서트 -->
+	<insert id="insertFromNote"
+		parameterType="com.cyco.alarm.vo.FromNoteVo">
+		insert into from_note (NOTE_ID, MEMBER_FROM,
+		MEMBER_TO,NOTE_CONTENT, NOTE_DATE)
+		values(FRM_SEQ.nextval,${member_FROM}, ${member_TO}, #{note_CONTENT},
+		sysdate)
+	</insert>
+	<!-- 쪽지 받았을 때 수신함 인서트 -->
+	<insert id="insertToNote"
+		parameterType="com.cyco.alarm.vo.ToNoteVo">
+		insert into to_note (NOTE_ID, MEMBER_FROM,
+		MEMBER_TO,NOTE_CONTENT, NOTE_DATE, NOTE_OK)
+		values(TO_SEQ.nextval,${member_FROM}, ${member_TO}, #{note_CONTENT},
+		sysdate, '0')
+	</insert>
+	<!-- 쪽지 페이지 진입시 받은 쪽지 가져오기 -->
+	<select id="getReceivedMessages"
+		resultType="com.cyco.alarm.vo.V_ToNote_Member_Vo">
+		select t.NOTE_ID, t.MEMBER_FROM, t.MEMBER_TO,
+		t.NOTE_CONTENT, t.NOTE_DATE, t.NOTE_OK, t.MEMBER_NICKNAME from
+		v_to_note t left join member m
+		on m.member_id=t.member_to
+		where
+		m.member_email=#{useremail} order by t.NOTE_ID desc
+	</select>
+	<!-- 쪽지 페이지 진입시 보낸 쪽지 가져오기 -->
+	<select id="getSendMessages"
+		resultType="com.cyco.alarm.vo.V_FromNote_Member_Vo">
+		select f.NOTE_ID, f.MEMBER_FROM, f.MEMBER_TO,
+		f.NOTE_CONTENT, f.NOTE_DATE, f.MEMBER_NICKNAME from v_from_note f left
+		join member m
+		on m.member_id=f.member_from
+		where
+		m.member_email=#{useremail} order by f.NOTE_ID desc
+	</select>
+	<!-- 쪽지 상태 읽음으로 바꾸기 -->
+	<update id="updateNoteOk">
+		update to_note set note_ok='1' where
+		note_id=${noteid}
+	</update>
+	
+	<!-- 발신, 수신 쪽지 삭제 -->
+	<delete id="deleteNotes" parameterType="java.util.List">
+		delete ${param1} 
+			<where>
+				<foreach collection="param2" item="item" separator="or">
+				 	(note_id=${item})
+				</foreach>
+			</where>
+	</delete>
+</mapper>

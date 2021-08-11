@@ -1,0 +1,620 @@
+#wrap {
+	width: 1000px;
+	margin: 100px auto;
+	text-align: center;
+	font-size: 16px;
+}
+
+ul {
+	padding: 0;
+}
+
+#profile_img {
+	width: 200px;
+	height: 200px;
+	border-radius: 100px;
+	margin: auto;
+}
+
+#profile_img img {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+}
+#invitation{
+	text-align: center;
+	background-color:white;
+	border: 2px solid #94A7AE;
+	box-sizing: border-box;
+	color: #94A7AE;
+	width: 100px;
+	height: 40px;
+	font-size: 16px;
+	padding: 5px;
+	margin: 10px auto;
+	
+}
+.name{
+	color: #94A7AE;
+	font-size:16px;
+}
+
+
+#send{
+	text-align: center;
+	background-color:white;
+	border: 2px solid #94A7AE;
+	box-sizing: border-box;
+	color: #94A7AE;
+	width: 100px;
+	height: 40px;
+	font-size: 16px;
+	padding: 5px;
+	margin: 10px auto;
+	
+}
+
+#cycoder p {
+	margin-top: 30px;
+	font-size: 30px;
+	font-weight: bold;
+	color: #CA8FAB;
+}
+
+.details {
+	background-color: #F4F2F3;
+	margin: 30px 0;
+	padding: 50px;
+}
+
+.details ul {
+	text-align: left;
+	margin-top: 50px;
+}
+
+.itemlist {
+	margin: 15px auto;
+	width: 700px;
+	display: flex;
+	align-items: center;
+}
+
+.cycoder_title {
+	font-size: 21px;
+	color: #94A7AE;
+	letter-spacing: 10px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.sub_title {
+	color: #94A7AE;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.item {
+	color: #CA8FAB;
+	width: 200px;
+	font-weight: bold;
+}
+
+.info {
+	width: 500px;
+	padding: 10px;
+	background-color: #F4F2F3;
+	width: 300px;
+	margin-right: auto;
+	border: none;
+	outline: none;
+}
+
+.modify_items {
+	border: none;
+	background-color: #CA8FAB;
+	color: #F4F2F3;
+	width: 70px;
+	padding: 5px;
+}
+
+.hid {
+	border: none;
+	background-color: #F4F2F3;
+	color: #F4F2F3;
+	width: 70px;
+	padding: 5px;
+}
+
+.info-mdf {
+	border: none;
+	color: #CA8FAB;
+	padding: 10px;
+	width: 300px;
+	outline: none;
+	background-color: white;
+	margin-right: auto;
+}
+
+.modify_p_info {
+	border: none;
+	background-color: #CA8FAB;
+	color: #F4F2F3;
+	width: 70px;
+	padding: 5px;
+}
+
+.detail_section {
+	margin: 50px auto;
+	width: 700px;
+}
+
+.infolist {
+	margin: 15px auto;
+	width: 700px;
+	align-items: center;
+}
+
+.infolist .item {
+	width: 100%;
+}
+
+.info_tags {
+	border: 2px solid #CA8FAB;
+	color: #CA8FAB;
+	width: 150px;
+	height: 50px;
+	font-size: 16px;
+	padding: 10px;
+	margin: 10px;
+	text-align: center;
+	display: inline-block;
+}
+
+.main_skill {
+	font-weight: bold;
+}
+
+#star {
+	position: relative;
+	top: -10px;
+	left: 22px;
+	color: #CA8FAB;
+	width: 0
+}
+
+.moerdetails {
+	text-align: center;
+}
+
+.moredetails a {
+	width: 100%;
+}
+
+.insert {
+	text-align: center;
+	/*background-color:#F4F2F3;*/
+	border: 2px solid #94A7AE;
+	box-sizing: border-box;
+	color: #94A7AE;
+	width: 150px;
+	height: 50px;
+	font-size: 16px;
+	padding: 10px;
+	margin: 10px auto;
+}
+
+.insert:hover {
+	border: 2px solid #CA8FAB;
+	box-sizing: border-box;
+	color: #CA8FAB;
+	position: relative;
+	top: -5px;
+}
+
+/*프로젝트 경험 모달창*/
+.exarea {
+	background-color: #F4F2F3;
+	padding: 15px;
+	font-size: 14px;
+}
+
+.exarea button {
+	border: none;
+	width: 30px;
+	height: 30px;
+	margin: 10px;
+	align-items: center;
+	font-weight: bold;
+}
+
+.exarea input {
+	border: none;
+	outline: none;
+	background-color: white;
+	padding: 10px;
+	color: #94A7AE;
+	margin: 10px 0;
+	width: 300px;
+}
+
+.ex_button {
+	margin-left: auto;
+	width: 100px;
+}
+
+.add_ex {
+	background-color: #94A7AE;
+	color: #F4F2F3;
+}
+
+.del_ex {
+	background-color: #cdd7db;
+	color: #F4F2F3;
+}
+
+.ex_tags {
+	text-align: center;
+	/*background-color:#F4F2F3;*/
+	border: 2px solid #94A7AE;
+	box-sizing: border-box;
+	color: #94A7AE;
+	width: 150px;
+	height: 50px;
+	font-size: 14px;
+	padding: 10px;
+}
+
+#middle_tag {
+	margin: 10px 0;
+}
+
+.none {
+	text-align: center;
+	/*background-color:#F4F2F3;*/
+	border: 2px solid #94A7AE;
+	box-sizing: border-box;
+	color: #94A7AE;
+	width: 150px;
+	height: 50px;
+	font-size: 16px;
+	padding: 10px;
+	margin: 10px auto;
+}
+
+/* 리뷰영역 */
+.reviewBox {
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 40px;
+	
+	border-top: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	padding-top: 40px;
+    padding-bottom: 40px;
+    
+	/* height: 400px; */
+	
+	text-align: left;
+	background-color: #fff;
+}
+
+/* 리뷰 없을 때 */
+.review_nothing{
+	text-align: center;
+	position: relative;
+    width: 80% !important;
+    margin-bottom: 1.875rem;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    
+    color: #94A7AE;
+    font-size: 14px;
+}
+
+/* 리뷰 평점 */
+.review_avg{
+	text-align: center;
+	position: relative;
+    width: 80% !important;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+    color: #94A7AE;
+    font-size: 14px;
+}
+
+.review_avg > p{
+	margin-bottom: 0px !important;
+}
+
+.gradeAvg {
+	font-size: 35px;
+    font-weight: 600;
+}
+
+.reviewAvgHr{
+	width: 90%;
+    margin: 20px auto;
+}
+
+/* 리뷰 1개 */
+.reviews{
+	position: relative;
+    width: 90% !important;
+    margin-bottom: 1.875rem;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+
+.reviewWriter{
+	display: inline-block;
+    margin: 0 .5rem .5rem 0;
+	font-size: 1rem;
+    /* line-height: 1.5rem; */
+    letter-spacing: -.01875rem;
+}
+
+.star-rate{
+	display: inline-block;
+	padding: 0;
+    margin: 0;
+    line-height: 0;
+    /* width: 120px; */
+}
+
+.review-star{
+	font-size: 12px;
+	color: #ffdb4d;
+}
+
+.review-date{
+	color: #a6a6a6;
+	font-size: 14px;
+	display: inline-block;
+	padding: 0;
+    margin-left: 10px;
+    line-height: 0;
+	width: 100px;
+}
+
+.review-content{
+	color: #737373;
+    margin-bottom: 0;
+	font-size: .875rem;
+    line-height: 1.3125rem;
+    font-weight: 400;
+    letter-spacing: -.0125rem;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+/* 탑버튼 */
+#topBtn {
+	position: fixed;
+	right: 22px;
+	bottom: 22px;
+	display: none;
+	z-index: 100;
+	width: 50px;
+}
+
+/* 더보기 링크 */
+.moreSec{
+	width: 100%;
+	text-align: center;
+	margin-top: 60px;
+}
+
+.moreLink{
+	font-size: 16px;
+	color: #ca8fab;
+	cursor: pointer;
+}
+
+/* 목록 돌아가기 버튼 */
+.returnBtn {
+	width: 20%;
+	
+	border-radius: 7px;
+	color: #c0a9bd;
+	font-size: 16px;
+	padding: 10px 20px 10px 20px;
+	border: solid #c0a9bd 2px;
+	background: white;
+	
+	margin-top: 30px;
+}
+
+.returnBtn:hover {
+	background: #c0a9bd;
+	color: white;
+}
+
+
+.none{
+		text-align:center;
+			/*background-color:#F4F2F3;*/
+		border: 2px solid #94A7AE;
+		box-sizing: border-box;
+		color:#94A7AE;	
+		width:150px;
+		height:50px;
+		font-size:16px;
+		padding:10px;
+		margin:10px auto;
+
+}
+
+.ex input{
+	border:none;
+	outline:none;
+	font-size:16px;
+	background-color: #F4F2F3;
+	width:350px;
+}
+
+.ex_box{
+	margin:10px auto;
+	padding:10px 20px 20px 20px;
+	border:2px solid white;
+	font-size:14px;
+}
+
+.ex_box span{
+	font-weight:bold;
+}
+
+.ex_titlebox{
+	margin:10px auto;
+	text-align:left;
+	padding:0 150px;
+	display:flex;
+
+}
+
+.ex{
+	margin:10px auto;
+	text-align:left;
+	padding:0 150px;
+}
+
+.ex_count{
+	color:#CA8FAB;
+	font-size:21px;
+	margin-right:5px;
+}
+.exp_title_input{
+	font-size:16px;
+	font-weight:bold;
+}
+
+/*제목 위치 때문에 아이콘 있어야 하는데 활성화 안 할 거라서 안 보기에 한다*/
+	#exicons{
+		border:none;
+		outline:none;
+		color:#F4F2F3;
+		background: none;
+		position: relative;
+    	top: -10px;
+    	right: -475px;
+		font-size:16px;
+	}
+
+.return_sec{
+	width: 100%;
+	text-align: center;
+}
+
+
+/* 회원 초대 모달창 */
+#modal-title{
+	font-weight: 800;
+	font-size:21px;
+	color:gray;
+	margin:auto;
+}
+#inv_img{
+	width:200px;
+	height:200px;
+	background-size: cover;
+    background-position: center;
+	background-image: url(../assets/img/member_detail/invite.png);
+    background-repeat: no-repeat;
+    margin:10px auto;
+}
+#contentarea{
+	text-align:center;
+	padding:20px;
+}
+
+#inv_buttonarea{
+	text-align:center;
+	margin-bottom:20px;
+}
+.inv_btn{
+	color:#F4F2F3;
+	background-color: #94A7AE;
+	border:none;
+	padding:10px;
+	margin-bottom:20px;
+}
+#confirm_inv{
+
+	width:70px;
+	padding:5px;
+	
+}
+.modal-content{
+	    margin-top: 40%;
+}
+.modal.show .modal-dialog{
+	height: 800px;
+}
+#modal-dialog modal-login{
+	height:800px;
+}
+
+/*메시지 전송 모달창*/
+#messagearea{
+	width:300px;
+	height:300px;
+	background-size: cover;
+    background-position: center;
+	background-image: url(../assets/img/alarm/message.png);
+/* 	opacity:.5; */
+    background-repeat: no-repeat;
+    background-position:center;
+    margin:30px auto;
+    overflow: auto;
+    border:none;
+    align-items: center;
+    padding:20px;
+}
+
+#messagearea:focus{
+	background-image: url(../assets/img/alarm/read.png);
+	opacity:.5;
+    background-repeat: no-repeat;
+    background-position:center;
+    overflow: auto;
+    outline:none;
+    box-shadow: 1px;
+    border: 0.2rem solid #94A7AE;
+}
+#messagearea span{
+	text-align: center;
+    margin: 0;
+    position: relative;
+	top: 20%;
+    left: 18%;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: white
+}
+#textcount{
+	width:300px;
+	margin:auto;
+	text-align: right;
+	color: #94A7AE;
+}
+
+#msg_buttonarea{
+	text-align:center;
+	margin-bottom:20px;
+}
+
+#msg_btn{
+	color:#F4F2F3;
+	background-color: #94A7AE;
+	border:none;
+	padding:10px;
+	margin:20px auto;
+	width: 70px;
+	
+}

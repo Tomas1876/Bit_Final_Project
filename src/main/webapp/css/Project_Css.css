@@ -1,0 +1,701 @@
+
+.ProjectPage{
+    padding: 1rem 4rem 4rem 4rem;
+    margin: 3rem;
+    background-color: #fdfcfc;
+    /* border: 1px solid #f7e8d7; */
+    /* box-shadow: 5px 5px 5px 5px #efeced; */
+}
+
+.pd_20{
+	padding: 20px 20px 0 20px !important;
+}
+
+.p_bold{
+	font-weight: 400;
+}
+
+.pd_rl_20{
+	padding: 0 20px !important;
+}
+
+.margin_delete{
+	margin: 0 !important;
+}
+
+.border-top{
+    border-top: 0.0625rem solid #D1D5DB;
+}
+
+.project_area {
+    width: 100%;
+    height: 300px;
+}
+.leaderIcon{
+   color: #ffcc00;
+}
+
+.area-img{
+	width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(../assets/img/project/project_main.jpg);
+    background-repeat: no-repeat;
+    
+}
+
+.ma-l{
+    text-align: left;
+    margin-left: 2rem !important;
+}
+
+.area-img > p{
+	color: white;
+	font-size: 3rem;
+	font-weight: 700;
+	padding: 140px 0 0 20px;
+	margin: 0;
+}
+
+.area-img > p:last-child{
+	color: white;
+	font-size: 1rem;
+	font-weight: 600;	
+	padding: 0 0 0 45px;;
+	
+}
+
+.ProjectHeader{
+	text-align: center;	
+}
+
+.ProjectHeader_Left{
+    width: 70%;
+    padding: 2rem 2rem 1rem 2rem;
+    float: left;
+    font-size: 1rem;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.ProjectHeader_Right{
+	text-align: left;
+    width: 25%;
+    float: right;
+    margin: 0 0 20px 20px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 20px;
+}
+
+#target_img{
+  	width: 100%;
+    height: 100%;
+   /* border-top: 0.0625rem solid #D1D5DB;
+    border-bottom: 0.0625rem solid #D1D5DB; */
+    background-color: #F9FAFB;
+    cursor: pointer;
+    object-fit: cover;
+    padding-bottom: 10px;
+}
+
+.Project_Create_img_box{
+	width: 100%;
+	height: 150px;
+}
+
+.Project_title_p{
+	margin: 0;
+    font-size: 1.2rem;
+    text-align: justify;
+    margin-left: 2rem;
+}
+
+.Project_p{
+	margin: 0;
+	font-size: 0.8rem;
+}
+
+.project_boxdiv{
+    width: 330px;
+    display: flex;
+}
+
+
+.BtnWarp{
+	display: inline-flex;
+}
+
+.Up_num{
+	margin: 5px 5px 5px 30px !important;
+}
+
+.BtnWarp >input{
+	background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    margin: 5px;
+    padding: 0;
+    width: 43px;
+    height: 28px;
+}
+
+
+
+.BtnWarp >input:hover{
+	background-color: #bdc8d3;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+}
+
+.number{
+	margin: 5px;
+    color: red;
+    text-align: center;
+    border: none !important;
+    width: 20px !important;
+	pointer-events: none; 
+}
+
+.number:hover{
+	background-color: #F9FAFB !important;
+}
+
+.Project_SelectBox{
+	width: 100%;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    margin: 5px;
+    text-align-last: center;
+}
+
+
+.ProjectTitle{
+    width: 100%;
+    margin: auto;
+    padding: 6px;
+    text-align: center;
+    background: white;
+}
+
+.ProjectMember{
+	width: 70%;
+	float: left;
+	font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 2rem;
+}
+
+.NavBox{
+    width: 25%;
+    height: 1223px;
+    float: right;
+}
+
+
+
+.ProjectNav{
+	position: -webkit-sticky;
+    position: sticky;
+    top: 4px;
+    margin: 0;
+    /* height: 560px; */
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 20px;
+}
+
+.Leader_Detail{
+	width: 100%;
+}
+
+.Leader_DetailBox{
+	width: 100%;
+	margin: 10px 0 0 10px;
+	
+}
+
+.LeaderImg_Box{
+	width: 30px;
+	border-radius: 15px;
+	border: 0.0625rem solid #D1D5DB;
+	display: inline-block;
+	
+}
+.LeaderImg_Box >img{
+	border-radius: 15px;
+	object-fit: cover;
+}
+
+.Leader_DetailBox > p{
+	display: inline-block;
+	margin-left: 5px;
+}
+
+.ProjectContent{
+    width: 70%;
+    height: 600px;
+    float: left;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 2rem;
+    margin-top: 20px;
+}
+
+.ProjectContent >textarea{
+	width: 100%;
+    height: 80%;
+    border: none;
+    background-color: #F9FAFB;
+    outline-style: none;
+    word-break: break-all;
+    resize: none;
+}
+
+.PositionBtn{
+    display: inline-block;
+    width: 100%;
+    text-align: end;
+    position: relative;
+    transform: translateY(-60px);
+
+}
+
+
+.PositionBtn >input{ 
+ 	color: #C0A9BD;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #C0A9BD;
+    padding: 3px;
+    width: 10%;
+}
+
+.PositionBtn >input:hover{ 
+ 	color: #F9FAFB;
+    background-color: #C0A9BD;
+    background-clip: padding-box;
+    border: 0.0625rem solid #C0A9BD;
+    padding: 3px;
+    width: 10%;
+}
+
+
+.ProjectSkill{
+	width: 70%;
+    float: left;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 2rem;
+    margin-top: 20px;
+}
+
+
+#tagarea{
+
+	display:flex;
+	flex-wrap: wrap;
+	text-align:center;
+	/*justify-content:space-between;*/
+}
+
+#selectedarea{
+
+	display:flex;
+	flex-wrap: wrap;
+	text-align:center;
+	margin-top: 30px;
+}
+
+.tags{
+    text-align: center;
+    border: 2px solid #94A7AE;
+    box-sizing: border-box;
+    color: #94A7AE;
+    width: 150px;
+    font-size: 16px;
+    padding: 8px;
+    margin: 10px;
+    border-radius: 25px;
+}
+
+.tags > input{
+	text-align: center;
+    border: none;
+    color: #94A7AE;
+    width: 100%;
+    cursor: pointer;
+    background-color: #F9FAFB;
+    font-weight: 500;
+}
+
+.tags:hover, .clicked:hover{
+position:relative;
+top:-5px;
+
+}
+
+.clicked{
+	border: 2px solid #CA8FAB;
+	color:#CA8FAB;
+	width:150px;
+	font-size:16px;
+	padding:8px;
+	margin:10px;
+	text-align:center;
+    border-radius: 25px;
+}
+.clicked >input{
+	text-align: center;
+    border: none;
+    color: #CA8FAB;
+    width: 100%;
+    cursor: pointer;
+    background-color: #F9FAFB;
+    font-weight: 500;
+}
+
+#buttonarea{
+	position:absolute;
+	bottom:30px;
+	right:50px;
+}
+
+#buttonarea button{
+	border:none;
+	width:70px;
+	padding: 10px;
+	margin:10px;
+}
+
+
+.CreateBtn_box{
+    margin-top: 30px;
+    width: 100%;
+    float: left;
+    text-align: center;
+}
+.CreateBtn{
+    width: 50%;
+    background-color: #f5f5f5;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 8px;
+}
+
+.CreateBtn_box >input:hover {
+	background-color: #c4c4c4;
+}
+
+.projectok_area{
+    width: 100%;
+    padding: 4.5rem 0;
+    background-color: #F9FAFB;
+    text-align: center;
+}
+
+.projectok_area_title{
+	font-size: 28px !important;
+	font-weight: bold !important;
+	
+}
+
+.projectok_area >p{
+    color: #737373;
+    font-size: 14px;
+}
+
+.projectok_area_icon > img{
+	width: 100px;
+}
+.MyProjectPage{
+    width: 30%;
+    color: #F9FAFB;
+    background-color: #C0A9BD;
+    border: 0.0625rem solid #D1D5DB;
+    margin: auto;
+    padding: 0.3rem;
+    cursor: pointer;
+}
+.MyProjectPage >a{
+	color: #F9FAFB;
+}
+
+.member_chois_title{
+	display: inline-block;
+    font-size: 24px !important;
+    font-weight: bold !important;
+}
+
+.member_allList{
+   
+    float: right;
+    cursor: pointer;
+   
+    line-height: 2.1875rem;
+    position: relative;
+    padding-right: .9375rem;
+}
+.member_allList >a{
+ 	color: #C0A9BD;
+ 	 font-weight: 500;
+ 	 font-size: 14px;
+}
+
+.m_container{
+	max-width: 1000px;
+    margin: auto;
+    margin-top: 60px;
+    margin-bottom: 10px;
+}
+
+.m_img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 10 auto;
+    border-bottom: 1px solid #dcdce1;
+    margin: 10px auto;
+}
+
+.m_img >img {
+	height: 100%;
+    width: 100%;
+    /* filter: brightness(70%); */
+    opacity: 0.5;
+    border-radius: 50%;
+}
+
+
+#card_section{
+	
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+@media (max-width: 590px) {
+    #card_section{
+    flex-wrap: wrap;
+    justify-content: center;
+}
+}
+
+
+.cardNum {
+    width: 250px;
+    position: relative;
+    border: .0625rem solid #e1e1e1;
+    border-radius: .25rem;
+    background: #fff;
+    padding: 0;
+}
+
+.card-title{
+	margin: 0 0 10px 0;
+	font-size: 16px;
+}
+
+.card-text{
+	margin: 0;
+	font-size: .875rem;
+    color: #737373;
+}
+
+.card-tags{
+	text-align: center;
+    width: 125px;
+    font-size: 14px;
+    color: #CA8FAB;
+    padding: 4px;
+    margin: 0 auto;
+}
+
+
+.card_link {
+    color: #cccccc;
+    text-align: center;
+    border: 1px solid #cccccc;
+    box-sizing: border-box;
+    width: 150px;
+    font-size: 14px;
+    padding: 5px;
+    margin: 0 auto;
+}
+
+.Project_card-body{
+	flex: 1 1 auto !important;
+    padding: 0.7rem 1rem 1rem 1rem !important;
+    text-align: center;
+}
+
+
+/* 프로젝트 수정 */
+
+.projectEditPageHeaderWrap{
+	width: 100%;
+	text-align: center;
+	padding: 20px 0 20px;
+	
+}
+
+.projectPurposeWrap{
+	font-size: 21px;
+}
+
+.statusTagWrap{
+	text-align: center;
+    /* margin: auto; */
+    padding: 0;
+    width: 100%;
+    margin: 10px;
+	
+}
+
+.statusTagBox{
+	text-align: right;
+}
+
+.statusOpenTag{
+	display: inline-block;
+    border: 1px solid;
+    color: white;
+    background-color: #77b300;
+    border-radius: 50px;
+    padding: 3px 8px;
+    margin-right: 10px;
+    outline: none;
+}
+
+.statusGoingTag{
+    display: inline-block;
+    border: 1px solid;
+    color: white;
+    background-color: #e71837;
+    border-radius: 50px;
+    padding: 3px 8px;
+    margin-right: 10px;
+   	outline: none;
+}
+
+.statusCompletionTag{
+	display: inline-block;
+    border: 1px solid;
+    color: white;
+    background-color: #94A7AE;
+    border-radius: 8px;
+    padding: 3px;
+    margin-right: 10px;
+}
+
+.projectTit{
+	width: 100%;
+    display: inline-block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.projectTit >input{
+  	font-size: 2rem;
+    font-weight: bold;
+}
+
+.userIdWrap{
+	width: 100%;
+	
+}
+
+.ProjectEdit_imgBox{
+	text-align: left;
+    height: 300px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4B5563;
+    margin: 0 0 20px 0;
+    position: relative;
+    background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    padding: 20px;
+}
+
+.project_EditBoxdiv{
+	width: 100%;
+}
+
+#EditPositiondNum{
+	background-color: #F9FAFB;
+	border: none;
+	width: 5%;
+	text-align: center;
+	outline: none;
+	pointer-events: none;
+	
+}
+
+#EditPositiondBtn{
+	background-color: #F9FAFB;
+    background-clip: padding-box;
+    border: 0.0625rem solid #D1D5DB;
+    margin: 5px;
+    padding: 0;
+    width: 43px;
+    height: 28px;
+	
+}
+
+#EditPositiondBtn:hover{
+	background-color: #bdc8d3;
+}
+
+.EditBtnBox{
+	text-align: right;
+	
+}
+.EditBtn{
+	border: none;
+    background-color: #CA8FAB;
+    color: #F4F2F3;
+    width: 70px;
+    padding: 5px;
+}
+
+.EditBtn:hover{
+	background-color: #b46088;
+}

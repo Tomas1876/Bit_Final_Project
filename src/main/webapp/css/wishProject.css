@@ -1,0 +1,538 @@
+@charset "UTF-8";
+
+.wish_container{
+	width: 1000px;
+    margin: 100px auto;
+    text-align: center;
+    font-size: 16px;
+}
+
+.wish_section{
+	background-color: #F4F2F3;
+    margin: 30px 0;
+    padding: 30px 50px 30px 50px;
+}
+
+.wish_title{
+	font-size: 21px;
+    color: #94A7AE;
+    letter-spacing: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.info_text_sec{
+	width:98%;
+	margin: 0 auto;
+}
+
+.info_text{
+	font-size: 12px !important;
+	color: #8e8ea2 !important;
+	 margin-left: 30px;
+}
+
+.info_cut{
+	text-align: right;
+}
+
+.marginBox{
+	width: inherit;
+	height: 50px;
+}
+
+.table_name_text{
+	font-size: 18px !important;
+    color: #94a7ae;
+    font-style: italic;
+    font-weight: 600;
+    opacity: 0.8;
+    margin: 0px;
+}
+
+.wish_project_list{
+	width: 95%;
+    margin: 0 auto;
+    margin-top: 40px;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: left;
+    background-color: #fff;
+}
+
+.table_sec{
+	width: 90%;
+	margin: 0 auto;
+}
+
+/*북마크 표시*/
+.bookmark{
+	margin-left: auto;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: white;
+	cursor: pointer;
+}
+
+.bookmark:hover{
+	color: #ca8fab;	
+}
+
+.marking{
+	color: #ca8fab !important;
+}
+
+.no_marking{
+	color: rgba(202, 143, 171, 0.2) !important;
+	-webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: rgba(202, 143, 171, 0.7);
+}
+
+.no_marking:hover{
+	opacity: 1.0 !important;
+}
+
+/* 지원취소버튼 */
+.applyCancle{
+	margin-left: auto;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: #94a7ae;
+	cursor: pointer;
+}
+
+.apply_end{
+	margin-left: auto;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: #fff;
+}
+
+/* 테이블디자인 */
+.wish_table{
+	border-collapse: collapse;
+	text-align: center;
+	
+	border-top: 1px solid #e6e6e6;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.wish_table a:hover {
+	color: #94a7ae;
+	text-decoration: underline;
+}
+
+.table_head{
+	background-color: #F4F2F3;
+	font-size: 16px;
+	border: none;
+}
+
+.apply_table th {
+	border: none !important;
+	color: #8c8c8c;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+/* 프로젝트 상태 */
+.state_ing {
+	margin-bottom: 0px;
+    color: #fff;
+    border: 1px solid #ca8fab;
+    width: fit-content;
+    padding: 0px 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #ca8fab;
+    font-size: 14px;
+}
+
+.state_end {
+	margin-bottom: 0px;
+    color: #fff;
+    border: 1px solid #94a7ae;
+    width: fit-content;
+    padding: 0px 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #94a7ae;
+    font-size: 14px;
+}
+
+.state_ban {
+	margin-bottom: 0px;
+    color: #fff;
+    border: 1px solid #bfbfbf;
+    width: fit-content;
+    padding: 0px 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #bfbfbf;
+    font-size: 14px;
+}
+
+/* myProject용 css */
+.info_text_point{
+	font-size: 12px !important;
+    color: #8e8ea2 !important;
+    margin-left: 30px;
+    text-align: right;
+}
+
+.leaderIcon{
+	color: #ffcc00;
+}
+
+/* 리뷰영역 */
+.reviewBox {
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 40px;
+	
+	border-top: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	padding-top: 40px;
+    padding-bottom: 40px;
+    
+	/* height: 400px; */
+	
+	text-align: left;
+	background-color: #fff;
+}
+
+/* 리뷰 없을 때 */
+.review_nothing{
+	text-align: center;
+	position: relative;
+    width: 80% !important;
+    margin-bottom: 1.875rem;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    
+    color: #94A7AE;
+    font-size: 14px;
+}
+
+/* 리뷰 1개 */
+.reviews{
+	position: relative;
+    width: 90% !important;
+    margin-bottom: 1.875rem;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+
+.reviewWriter{
+	display: inline-block;
+    margin: 0 .5rem .5rem 0;
+	font-size: 1rem;
+    /* line-height: 1.5rem; */
+    letter-spacing: -.01875rem;
+}
+
+.star-rate{
+	display: inline-block;
+	padding: 0;
+    margin: 0;
+    line-height: 0;
+    /* width: 120px; */
+}
+
+.review-star{
+	font-size: 12px;
+	color: #ffdb4d;
+}
+
+.review-date{
+	color: #a6a6a6;
+	font-size: 14px;
+	display: inline-block;
+	padding: 0;
+    margin-left: 10px;
+    line-height: 0;
+	width: 100px;
+}
+
+.review-content{
+	color: #737373;
+    margin-bottom: 0;
+	font-size: .875rem;
+    line-height: 1.3125rem;
+    font-weight: 400;
+    letter-spacing: -.0125rem;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+/* 탑버튼 */
+#topBtn {
+	position: fixed;
+	right: 22px;
+	bottom: 22px;
+	display: none;
+	z-index: 100;
+	width: 50px;
+}
+
+/* 더보기 링크 */
+.moreSec{
+	width: 100%;
+	text-align: center;
+	margin-top: 60px;
+}
+
+.moreLink{
+	font-size: 16px;
+	color: #ca8fab;
+	cursor: pointer;
+}
+
+/* 모달창 */
+/*모달창*/
+.modal.fade .modal-dialog{
+	margin: auto;
+	height:800px;
+	width:800px;
+	max-width:1000px;
+}
+.modal.show .modal-dialog{
+	margin: auto;
+	height:1000px;
+	width:70%;
+	max-width:1000px;
+}
+
+.modal-header{
+	text-align:center;
+}
+
+#modal-title{
+	color:gray;
+	font-size:21px;
+	text-align:center;
+	font-weight:bold;
+	width:100%;
+	margin:0 !important;
+}
+.modal-login {
+	color: #636363;
+	width: 350px;
+	margin: auto;
+}
+.modal-login .modal-header {
+	border-bottom: none;
+	position: relative;
+	text-align: center;
+}
+.modal-content{
+
+	margin-top:200px;
+}
+
+.modal-login .btn {
+	background: #00ce81;
+	border: none;
+	line-height: normal;
+}
+.modal-login .btn:hover, .modal-login .btn:focus {
+	background: #00bf78;
+}
+
+#modal-body{
+	overflow:auto;
+/* 	overflow-anchor: none; */
+	padding:0 30px 30px 30px;
+}
+.modal-login .modal-footer {
+	background: #ecf0f1;
+	border-color: #dee4e7;
+	text-align: center;
+	margin: 0 -20px -20px;
+	border-radius: 5px;
+	font-size: 13px;
+	justify-content: center;
+}
+
+#buttonarea {
+	text-align: right;
+}
+
+#cancel_quit {
+	background-color: #bfbfbf;
+    color: white;
+    border: 0;
+    padding: 5px 10px;
+}
+
+#write_ok {
+	background-color: #ca8fab;
+    color: white;
+    border: 0;
+    padding: 5px 10px;
+}
+
+/* 후기작성모달 */
+.writeReviewSec {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.writeReviewContent {
+	padding: 0.2rem 0.75rem !important;
+}
+
+.review_info_text{
+	font-size: 14px !important;
+	color: #8e8ea2 !important;
+	margin-left: 30px;
+	text-align: center;
+}
+
+/* 별점용 */
+
+.star-input>.input {
+	text-align: center;
+	/* margin-top: 10px; */
+}
+
+.star-input>.input, .star-input>.input>label:hover, .star-input>.input>input:focus+label,
+	.star-input>.input>input:checked+label {
+	display: inline-block;
+	vertical-align: middle;
+	background: url('../assets/img/ain_test/grade_img.png') no-repeat;
+}
+
+.star-input {
+	width: 100%;
+	text-align: center;
+}
+
+.score {
+	font-size: 18px;
+	line-height: 25px;
+	color: #fc4c4e;
+	font-weight: bold;
+	text-align: center;
+}
+	/* .star-input{display:inline-block; white-space:nowrap;width:225px;height:40px;padding:25px;line-height:30px;} */
+.star-input>.input {
+	display: inline-block;
+	width: 120px;
+	background-size: 120px;
+	height: 25px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.star-input>.input>input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+star-input>.input.focus {
+	outline: 1px dotted #ddd;
+}
+
+.star-input>.input>label {
+	width: 30px;
+	height: 0;
+	padding: 28px 0 0 0;
+	overflow: hidden;
+	float: left;
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.star-input>.input>label:hover, .star-input>.input>input:focus+label,
+	.star-input>.input>input:checked+label {
+	background-size: 120px;
+	background-position: 0 bottom;
+	top: -6px;
+}
+
+.star-input>.input>label:hover ~label {
+	background-image: none;
+}
+
+
+.star-input>.input>label[for="p1"] {
+	width: 24px;
+	z-index: 9;
+}
+
+
+.star-input>.input>label[for="p2"] {
+	width: 48px;
+	z-index: 7;
+}
+
+
+
+.star-input>.input>label[for="p3"] {
+	width: 72px;
+	z-index: 5;
+}
+
+
+
+.star-input>.input>label[for="p4"] {
+	width: 96px;
+	z-index: 3;
+}
+
+
+.star-input>.input>label[for="p5"] {
+	width: 120px;
+	z-index: 1;
+}
+
+.star-input>output {
+	display: inline-block;
+	width: 60px;
+	font-size: 18px;
+	text-align: right;
+	vertical-align: middle;
+}
+
+/* 별 셀렉트박스 */
+.starSelectBox {
+	word-wrap: normal;
+    border: 0.0625rem solid #D1D5DB;
+    height: 27px;
+    width: max-content;
+    font-size: 14px;
+    padding-bottom: 5px;
+    color: #ffcc00;
+}
+
+select:focus {
+  border-color: #c0a9bd;
+  box-shadow: 0 0 1px 3px #c0a9bd;
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #ffcc00;
+  outline: none;
+}
+
+/* 프로젝트 없는 경우 */
+.not_project{
+	margin: 30px;
+    color: #94A7AE;
+    font-weight: 500;
+    font-size: 18px;	
+}

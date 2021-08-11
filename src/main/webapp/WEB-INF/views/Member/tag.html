@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">  
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+
+<style>
+button, button:focus{
+    border: none;
+    outline: none;
+}
+
+.modify_p_info{
+
+background-color:#CA8FAB;
+color:#F4F2F3;
+padding:5px;
+
+}
+
+/*모달창*/
+.modal.fade .modal-dialog{
+	margin: auto;
+	height:1000px;
+	width:800px;
+	max-width:1000px;
+}
+
+.modal.show .modal-dialog{
+	margin: auto;
+	height:1000px;
+	width:800px;
+	max-width:1000px;
+}
+
+.modal-header{
+	text-align:center;
+}
+
+#modal-title{
+	color:gray;
+	font-size:21px;
+	text-align:center;
+	font-weight:bold;
+	width:100%;
+}
+.modal-login {
+	color: #636363;
+	width: 350px;
+	margin: auto;
+}
+.modal-login .modal-header {
+	border-bottom: none;
+	position: relative;
+	text-align: center;
+}
+.modal-content{
+	height:500px;
+	margin-top:200px;
+}
+
+.modal-login .btn {
+	background: #00ce81;
+	border: none;
+	line-height: normal;
+}
+.modal-login .btn:hover, .modal-login .btn:focus {
+	background: #00bf78;
+}
+
+#modal-body{
+	height:400px;
+	overflow:auto;
+	padding:30px;
+}
+.modal-login .modal-footer {
+	background: #ecf0f1;
+	border-color: #dee4e7;
+	text-align: center;
+	margin: 0 -20px -20px;
+	border-radius: 5px;
+	font-size: 13px;
+	justify-content: center;
+}
+
+#tagarea{
+
+	display:flex;
+	flex-wrap: wrap;
+	text-align:center;
+	/*justify-content:space-between;*/
+}
+
+#selectedarea{
+
+	display:flex;
+	flex-wrap: wrap;
+	text-align:center;
+	margin-top: 30px;
+}
+
+.tags{
+text-align:center;
+border: 3px solid #94A7AE;
+box-sizing: border-box;
+color:#94A7AE;	
+width:150px;
+font-size:16px;
+padding:10px;
+margin:10px;
+
+}
+
+.tags:hover, .clicked:hover{
+position:relative;
+top:-5px;
+
+}
+
+.clicked{
+	border: 3px solid #CA8FAB;
+	color:#CA8FAB;
+	width:150px;
+font-size:16px;
+padding:10px;
+margin:10px;
+text-align:center;
+
+}
+
+
+#buttonarea{
+	position:absolute;
+	bottom:30px;
+	right:50px;
+}
+
+#buttonarea button{
+	border:none;
+	width:70px;
+	padding: 10px;
+	margin:10px;
+}
+#edit{
+	background-color:#94A7AE;
+	color:#F4F2F3;
+}
+#cancel{
+
+	background-color:#F4F2F3;
+	color:#94A7AE;
+
+}
+
+
+</style>
+
+
+
+
+</head>
+<body>
+    <!--클릭!-->
+    <a href="#m_skill" class="trigger-btn" data-toggle="modal"><button type="button" class="modify_p_info">모달 열기</button></a>
+
+
+
+    <!-- 기술 스택 모달창 -->
+    <div id="m_skill" class="modal fade">
+        <div class="modal-dialog modal-login">
+            <div class="modal-content">
+                <div class="modal-header">				
+                    <p id="modal-title"></p>
+                </div>
+                <div id="modal-body">
+                
+                    <div id="tagarea">
+
+                        <div class="tags">기술1</div>
+                        <div class="tags">기술2</div>
+                        <div class="tags">기술3</div>
+                        <div class="tags">기술4</div>
+                        <div class="tags">기술5</div>
+                        <div class="tags">기술6</div> 
+                        <div class="tags">기술7</div> 
+                        <div class="tags">기술8</div>   
+
+                    </div>
+                    <div id="selectedarea"></div>
+                    
+                    <div id="buttonarea">
+                        <button id="edit">확인</button>
+                        <a href="#m_skill" class="trigger-btn" data-toggle="modal"><button id="cancel">닫기</button></a>
+                    </div>
+                
+                </div>
+                
+                
+            </div>
+        </div>
+    </div> 
+
+
+
+    
+</body>
+
+<script>
+    //기술스택 모달창 열기
+    $('.trigger').on('click', function() {
+        $('.modal-wrapper').toggleClass('open');
+         return false;
+   });
+
+        //클릭하면 태그 선택
+        $(document).on("click",".tags",function(){
+
+
+            let name = $(this).text();
+            selected= $(".clicked");
+
+            console.log(selected.length);
+            console.log(selected);
+    
+            console.log($(this).text(), " 태그 선택");
+
+            if(selected.length>2){
+
+                swal("세 개까지만 선택 가능합니다");
+
+            } else{
+
+                $(this).addClass("clicked");
+                $(this).removeClass("tags");
+                $("#selectedarea").append($(this));
+            }
+
+
+        });
+
+                //클릭하면 태그 선택 해제
+                $(document).on("click",".clicked",function(){
+
+                    let name = $(this).text();
+             
+                    $(this).removeClass("clicked");
+                    $(this).addClass("tags");
+                    $("#tagarea").append($(this));
+                });
+    
+    //모달창 닫으며 데이터 태그 초기화하기
+$("#cancel").on("click",function(){
+/*
+$("#tagarea").empty();
+$("#selectedarea").empty();
+*/
+});
+
+</script>
+</html>

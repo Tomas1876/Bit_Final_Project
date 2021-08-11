@@ -1,0 +1,368 @@
+@charset "UTF-8";
+
+/* append 발생시 (스크롤 할 영역이 밑으로 더 생길때) 스크롤을 위로 올리는것이 아니라 밑으로 내릴수 있게 함.*/
+body{
+	overflow-anchor: none;
+}
+.top_area {
+	width: 100%;
+	height: 300px;
+}
+
+.area-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(../assets/img/ain_test/projectListHeader.jpeg);
+    background-repeat: no-repeat;
+}
+
+.area-img > p {
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+    padding: 115px 0 0 60px;
+    margin: 0;
+}
+  
+
+
+
+.p_container {
+	max-width: 1200px;
+    margin: auto;
+}
+ 
+ 
+.select_section {
+	height: 100px;
+}
+
+.p_search {
+	width: 200px !important;
+	float: right;
+}
+
+.p_sel {
+	width: 150px !important;
+	float: left;
+	margin-right: 5px;
+}
+
+#ProjectNameSearch{
+	border-radius: 1rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* 카드디자인 */
+
+.m_img {
+	/* width: 300px;
+	height: 300px; */
+	width: 100%;
+    position: relative;
+    margin: 0;
+    text-align: center;
+    height: 218px;
+    border-radius: 8px;
+    overflow: hidden;
+    
+    border-radius: 0 !important;
+}
+
+.m_img_size {
+	/* object-fit: cover;
+	width: 300px; 
+	height: 100%;*/
+	height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    -webkit-transform: translateX(-50%) scale(1.5);
+    -moz-transform: translateX(-50%) scale(1.5);
+    transform: translateX(-50%) scale(1.5);
+    
+    border-radius: 0 !important;
+}
+
+.p_state{
+	float: left;
+}
+
+.p_views{
+	float: right;
+	font-size: 15px;
+	color: #b3b3b3;
+	margin-top: 5px;
+}
+
+.p_skill{
+	float: left;
+    display: block;
+    width: 100%;
+    color: #ca8fab;
+    font-weight: 500;
+}
+
+.p_team_memNum{
+	float: right;
+}
+
+.m_img_top{
+    display: -webkit-inline-flex;
+    display: -moz-inline-box;
+    display: inline-flex;
+    -webkit-flex-direction: row;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    justify-content: space-between;
+    padding: 12px 20px;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 899;
+}
+
+.bookmark{
+	margin-left: auto;
+	
+	font-size: 30px;
+	
+	width: 30px;
+	height: 30px;
+	color: white;
+	cursor: pointer;
+}
+
+.bookmark:hover{
+	color: #ca8fab;	
+}
+
+.marking{
+	color: #ca8fab !important;
+}
+
+.no_marking{
+	color: rgba(202, 143, 171, 0.2) !important;
+	-webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: rgba(202, 143, 171, 0.7);
+}
+
+.no_marking:hover{
+	opacity: 1.0 !important;
+}
+
+/* 탑버튼 */
+#topBtn {
+	position: fixed;
+	right: 22px;
+	bottom: 22px;
+	display: none;
+	z-index: 100;
+	width: 50px;
+}
+
+/* 더보기버튼 */
+.moreBtn {
+	width: 40%;
+	
+	border-radius: 7px;
+	color: #c0a9bd;
+	font-size: 18px;
+	padding: 10px 20px 10px 20px;
+	border: solid #c0a9bd 2px;
+	background: white;
+}
+
+.moreBtn:hover {
+	background: #c0a9bd;
+	color: white;
+}
+
+.more_sec{
+	width: 100%;
+	text-align: center;
+}
+
+/* 추천리스트 */
+/* Swiper Css */
+ 
+ .swiper-button-next, .swiper-container-rtl .swiper-button-prev{
+	        background-image: none !important;
+} 
+
+.swiper-button-prev, .swiper-container-rtl .swiper-button-next{
+	background-image: none !important;
+}
+
+#wouldyoulike{
+	color: #C0A9BD;
+    font-weight: 900;
+    font-size: 21px;
+    margin: 0 !important;
+	
+}
+#slidewrapper{
+	max-width: 1200px;
+    height: 280px;
+    border: solid 2px #C0A9BD;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+	
+}
+
+.swiper-container {
+  max-width: 1100px;
+  height: 240px;
+  /* border-radius: 26px; */
+  margin-top:12px;
+  
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  margin-right:70px;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity:1;
+}
+.test{
+	width:100%;
+	height:100%;
+	background: black;
+}
+.swiper-pagination-bullet-active{
+	background: #C0A9BD !important;
+}
+
+.swiper-pagination{
+    left: 45%;
+    bottom: -13px;
+    align-items: center;
+    height: 30px;
+    width: 10%;
+}
+
+.swiper-pagination> span{
+	margin: 0 3px;
+	width: 11px;
+	height: 11px;
+}
+
+/* Swiper Css */
+#rcmcard {
+	width:100%!important;
+	margin:0!important;
+}
+#rcmcard .shadow{
+	height:100%;
+}
+#backimg{
+	width: 100%;
+    height: 100%;
+    position:relative;
+    background-size: cover;
+    background-repeat:no-repeat;
+}
+#backimg::before{
+		content:"";
+        opacity: 0.5;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        background-color: #000;
+}
+#backimg  h3{
+	color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    position: relative;
+        letter-spacing: 3px;
+}
+#backimg p{
+	color: white;
+	font-family: var(--bs-font-sans-serif);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.6;
+    position: relative;
+
+}
+/* 추천리스트 */
+
+.zerocontainer{
+	display:none;
+}
+.zerowrapper{
+	margin:auto;
+}
+#zerolist{
+	background: white;
+	height: 200px;
+    width: 100%;
+    border: solid #c0a9bd 2px;
+	
+}
+#zerolist > p{
+	font-size:25px;
+	font-family: var(--bs-font-sans-serif);
+    font-style: normal;
+    font-weight: 600;
+    position:relative;
+    top:36%;
+}
+
+
+
+.card-body a{
+	position:relative;
+	top:45%;
+}
+
+
+.recommend_skill{
+	position:relative;
+	top:40%;
+}

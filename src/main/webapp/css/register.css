@@ -1,0 +1,108 @@
+#title{
+
+	color: gray;
+	letter-spacing:5px;
+
+}
+
+#find{
+	color: #C0A9BD;
+	font-size:14px;
+}
+
+.validation{
+	font-size:14px;
+	height:35px;
+	padding-top:10px;
+	color:#CA8FAB;
+}
+
+button{
+
+	background-color: #C0A9BD;
+	color:white;
+	border:none;
+	width:100%;
+	padding:10px;
+
+}
+
+.checkbtn{
+	
+	width:100px;
+	padding:10px;
+	
+}
+
+.form-control{
+	border:none;
+}
+
+.form-control:focus{
+	border-color:#C0A9BD;
+}
+
+.condition{
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    font-size: 14px;
+    color: #98989f;
+    line-height: 1.6em;
+    overflow: auto;
+    resize: none;
+	outline: none;
+}
+
+/*약관 모달창*/
+	.modal.show .modal-dialog{
+		margin: auto;
+		height:1000px;
+	}
+	#modal-title{
+		color:#C0A9BD;
+		font-size:21px;
+		text-align:center;
+		font-weight:bold;
+	}
+	.modal-login {
+		color: #636363;
+		width: 350px;
+		margin: auto;
+	}
+	.modal-login .modal-header {
+		border-bottom: none;
+		position: relative;
+		text-align: center;
+	}
+	.modal-content{
+		height:500px;
+		margin-top:200px;
+	}
+
+	.modal-login .btn {
+		background: #00ce81;
+		border: none;
+		line-height: normal;
+	}
+	.modal-login .btn:hover, .modal-login .btn:focus {
+		background: #00bf78;
+	}
+
+	#modal-body{
+		height:400px;
+		overflow:auto;
+		padding:30px;
+	}
+	.modal-login .modal-footer {
+		background: #ecf0f1;
+		border-color: #dee4e7;
+		text-align: center;
+		margin: 0 -20px -20px;
+		border-radius: 5px;
+		font-size: 13px;
+		justify-content: center;
+	}
+	.trigger-btn {
+		display: inline-block;
+	}

@@ -1,0 +1,48 @@
+@charset "UTF-8";
+.mpcount{
+	display: flex;
+}
+.mcount, .pcount{
+	width:256px;
+}
+.mcount{
+	margin-right:auto;
+	margin-left:50px; 
+	text-align: right;
+}
+.pcount{
+
+		margin-left:auto;
+	margin-right:50px;
+	text-align: right;
+}
+.mcount p{
+	margin-bottom:0;
+	margin-top:16px;
+	text-align: center;
+}
+.pcount p{
+		margin-bottom:0;
+	margin-top:16px;
+	text-align: center;
+}
+.mcountdiv, .pcountdiv{
+	font-size: 90px;
+}
+.mcountdiv{
+	color : #c28aee;
+}
+.pcountdiv{
+	color : #CA8FAB;
+}
+main{
+    background-color: #f4f2f35e;
+}
+.pie{
+	width: 800px;
+    height: 800px;
+    margin:auto;
+}
+.bar, .pie{
+	margin-bottom:50px;
+}

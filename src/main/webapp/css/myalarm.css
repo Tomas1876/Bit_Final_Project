@@ -1,0 +1,184 @@
+@charset "UTF-8";
+
+a{
+	text-decoration:nonoe;
+}
+.wish_container{
+	width: 1000px;
+    margin: 100px auto;
+    text-align: center;
+    font-size: 16px;
+}
+
+.wish_section{
+	background-color: #F4F2F3;
+    margin: 30px 0;
+    padding: 30px 50px 30px 50px;
+}
+
+.wish_title{
+	font-size: 21px;
+    color: #94A7AE;
+    letter-spacing: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.info_text_sec{
+	width:98%;
+	margin: 0 auto;
+}
+
+.info_text{
+	font-size: 12px !important;
+	color: #8e8ea2 !important;
+	 margin-left: 30px;
+}
+
+.info_cut{
+	text-align: right;
+}
+
+.marginBox{
+	width: inherit;
+	height: 50px;
+}
+
+.table_name_text{
+	font-size: 18px !important;
+    color: #94a7ae;
+    font-style: italic;
+    font-weight: 600;
+    opacity: 0.8;
+    margin: 0px;
+}
+
+.wish_project_list{
+	width: 95%;
+    margin: 0 auto;
+    margin-top: 40px;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: left;
+    background-color: #fff;
+}
+tbody{
+	border-bottom:1px solid #F4F2F3 !important;	
+}
+.table_sec{
+	width: 90%;
+	margin: 0 auto;
+
+}
+
+/*북마크 표시*/
+.bookmark{
+	margin-left: auto;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: white;
+	cursor: pointer;
+}
+
+.bookmark:hover{
+	color: #ca8fab;	
+}
+
+.marking{
+	color: #ca8fab !important;
+}
+
+.no_marking{
+	color: rgba(202, 143, 171, 0.2) !important;
+	-webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: rgba(202, 143, 171, 0.7);
+}
+
+.no_marking:hover{
+	opacity: 1.0 !important;
+}
+
+/* 지원취소버튼 */
+.applyCancle{
+	margin-left: auto;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: #94a7ae;
+	cursor: pointer;
+}
+
+.apply_end{
+	margin-left: auto;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: #fff;
+}
+
+/* 테이블디자인 */
+.wish_table{
+	border-collapse: collapse;
+	text-align: center;
+	
+	border-top: 1px solid #e6e6e6;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.wish_table a:hover {
+	color: #94a7ae;
+	text-decoration: underline;
+}
+
+.table_head{
+	background-color: #F4F2F3;
+	font-size: 16px;
+	border: none;
+}
+
+.apply_table th {
+	border: none !important;
+	color: #8c8c8c;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+/* 프로젝트 상태 */
+.state_ing {
+	margin-bottom: 0px;
+    color: #fff;
+    border: 1px solid #ca8fab;
+    width: fit-content;
+    padding: 0px 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #ca8fab;
+    font-size: 14px;
+}
+
+.state_end {
+	margin-bottom: 0px;
+    color: #fff;
+    border: 1px solid #94a7ae;
+    width: fit-content;
+    padding: 0px 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #94a7ae;
+    font-size: 14px;
+}
+
+.state_ban {
+	margin-bottom: 0px;
+    color: #fff;
+    border: 1px solid #bfbfbf;
+    width: fit-content;
+    padding: 0px 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #bfbfbf;
+    font-size: 14px;
+}

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyco.admin.dao.AdminDao">
+
+	<select id="getSkillList" resultType="com.cyco.common.vo.SkillVo">
+		select skill_code, skill_name, skill_enabled 
+		from skill
+	</select>
+	
+	<select id="getFieldList" resultType="com.cyco.common.vo.P_FieldVo">
+		select field_code, field_name,field_enabled 
+		from p_field
+	</select>
+	
+	<select id="getPositionList" resultType="com.cyco.common.vo.PositionVo">
+		SELECT POSITION_ID, POSITION_NAME, POSITION_ENABLED FROM POSITION
+	</select>
+	
+	<select id="getMemberList" parameterType="string" resultType="com.cyco.admin.vo.MemberListVo">
+			select info.member_id, info.member_nickname, nvl(info.position_name,'-') as position_name, nvl(info.skill_name,'-') as skill_name, info.enabled, nvl(count.count,0) as count
+			from V_M_INFO info
+			left join V_FINISH_COUNT count
+			on info.member_id = count.member_id
+			where info.member_id != 0
+				<if test='nickname != null'>
+					and info.member_nickname like '%${nickname}%'
+				</if>
+			order by info.member_id
+			    
+	</select>
+	
+	<!-- ================== Chart ========================= -->
+	<select id="getMemberCount" resultType="int">
+		select count(*) as mcount from member
+		where member_id != 0 and member_email !='null' and enabled =1
+	</select>
+	
+	<select id="getProjectCount" resultType="int">
+		select count(*) as pcount from project
+	</select>
+	
+	<select id="getPSkillCount" resultType="com.cyco.admin.vo.PSkillCountVo">
+		select sk.skill_code as id ,sk.skill_name as name, count(decode(psk.project_id,(null),null,1)) as count  
+		from skill sk
+		left join p_skill psk
+		on sk.skill_code = psk.skill_code
+		group by sk.skill_code,sk.skill_name
+		order by name desc
+	</select>
+	<select id="getPpositionCount" resultType="com.cyco.admin.vo.PpositionCountVo">
+		select pos.position_id as id, pos.position_name as name,  count(decode(pm.project_id,null,null,1)) as count
+		from position pos
+		left join p_member pm
+		on pos.position_id = pm.position_id
+		group by pos.position_id, pos.position_name
+		order by name desc
+	</select>
+	<select id="getPFieldCount" resultType="com.cyco.admin.vo.PFieldCountVo">
+		select pf.field_code as id, pf.field_name as name, count(decode(p.project_id, null, null ,1)) as count
+		from p_field pf
+		left join project p
+		on p.field_code = pf.field_code
+		group by  pf.field_code, pf.field_name
+		order by name desc
+	</select>
+	
+	<select id="getMSkillCount" resultType="com.cyco.admin.vo.MSkillCountVo">
+		select sk.skill_code as id,sk.skill_name as name, count(decode(msk.member_id,(null),null,1)) as count 
+		from skill sk
+		left join m_skill msk
+		on sk.skill_code = msk.skill_code
+		group by sk.skill_code,sk.skill_name
+		order by name desc
+	</select>
+	<select id="getMpositionCount" resultType="com.cyco.admin.vo.MpositionCountVo">
+		select pos.position_id as id, pos.position_name as name,  count(decode(md.member_id,null,null,1)) as count
+		from position pos
+		left join m_detail md
+		on pos.position_id = md.position_id
+		group by pos.position_id, pos.position_name
+		order by name desc
+	</select>
+
+	
+	<select id="getStateCount" resultType="com.cyco.admin.vo.StateCountVo">
+		select p_state,count(*) as count from p_detail
+		group by p_state
+	</select>
+	
+	
+
+	<!-- =================        ajax        =============================     -->
+	
+	<insert id="insertSite">
+	<choose>
+		<when test='code == "skill"'>
+			insert into SKILL (SKILL_CODE,SKILL_NAME, SKILL_ENABLED)
+			select 'SK'||sk_seq.nextval, A.* from(
+			<foreach collection="list" item="list" separator="union all">
+				select 
+				#{list.skill_name} as skill_name,
+				#{list.skill_enabled} as skill_enabled
+				from dual
+			</foreach>) A
+		</when>
+		<when test='code == "field"'>
+			insert into p_field (field_CODE,field_NAME, field_ENABLED)
+			select 'PF'||pf_seq.nextval, A.* from(
+			<foreach collection="list" item="list" separator="union all">
+				select 
+				#{list.field_name} as field_name,
+				#{list.field_enabled} as field_enabled
+				from dual
+			</foreach>) A
+		</when>
+		<when test='code == "position"'>
+			insert into position (position_id,position_NAME, position_ENABLED)
+			select 'POS'||pos_seq.nextval, A.* from(
+			<foreach collection="list" item="list" separator="union all">
+				select 
+				#{list.position_name} as position_name,
+				#{list.position_enabled} as position_enabled
+				from dual
+			</foreach>) A
+		</when>
+	</choose>
+	</insert>
+	
+	<update id="updateSite">
+	<choose>
+		<when test='code == "skill"'>
+			update ${code}
+			set skill_enabled = #{obj.skill_enabled} 
+			where skill_code = #{obj.skill_code}
+		</when>
+		<when test='code == "field"'>
+			update p_field
+			set field_enabled = #{obj.field_enabled} 
+			where field_code = #{obj.field_code}
+		</when>
+		<when test='code == "position"'>
+			update ${code}
+			set position_enabled = #{obj.position_enabled} 
+			where position_id = #{obj.position_code}
+		</when>
+		
+	</choose>
+	</update> 
+	
+	<!--  ================   회원 영구정지  ================ -->
+	
+	<!-- 회원 권한 가져오기 -->
+	<select id="getMemberAuth" parameterType="string" resultType="string">
+		select authority_id
+		from m_auth
+		where member_id=${member_id} 
+	</select>
+	<!-- 일반 회원일때 -->
+	<select id="procedureBanMember" statementType="CALLABLE" parameterType="map">
+	<!-- //1. 진행중 or 모집중이던 p_member에서 null처리
+		 //2. 지원내역 null처리 -->
+		{CALL BANMEMBER(
+			${data.member_id},
+			${data.auth},
+			${data.enabled}
+		)
+		}
+	</select>
+	<!-- 팀장 회원일때 -->
+	<resultMap id="idMap" type="hashmap">
+		<result property="member_id" column="member_id"/>
+	</resultMap>
+	<select id="procedureBanLeader" statementType="CALLABLE" parameterType="map">
+		{CALL BANLEADER(
+			${data.member_id},
+			${data.auth},
+			${data.enabled},
+			#{data.output, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=idMap}
+		)}
+	</select>
+	
+	<select id="getPMemberList" parameterType="int" resultType="string">
+		select member_id from p_member
+		where project_id=${project_id} and member_id is not null
+	</select>
+	
+	<!-- 영구정지 해제 -->
+	<select id="procedureCancelBan" statementType="CALLABLE" parameterType="map">
+		{CALL Auth_Enabled_Update(
+			${data.member_id},
+			${data.auth},
+			${data.enabled}
+		)
+		}
+		
+	</select>
+	
+<!--                        ajax                                  -->
+</mapper>

@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+.check-container{
+	width: 100%;
+	height: 800px;
+	
+	margin-top: 0;	
+	background-color: #f4f2f3;
+	
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.check-box{
+	font-family: var(--bs-font-sans-serif);
+	width: 60%;
+	height: 60%;
+	
+	background-color: #ffffff;
+	
+	box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.25);
+	
+	display: table;
+	position: relative
+}
+
+.check-text{
+	display: table-cell;
+	text-align: center;
+}
+
+.check-form{
+	width: 100%;
+	position: absolute; 
+	top: 50%; 
+	transform: translateY(-50%);
+}
+
+.checkIcon{
+	font-size: 60px;
+	color: #ca8fab;
+	margin-bottom: 50px;
+}
+
+.check-form > p {
+	font-size: 20px;
+}
+
+.check-input {
+	height: 40px !important;
+	width: 200px !important;
+	background-color: #fff !important;
+	border: 0.0625rem solid #D1D5DB;
+	padding: 5px;
+	padding-left: 10px;
+	margin: 0 !important;
+}
+
+.check-input::placeholder {
+	color: gray;
+	font-size: 14px;
+}
+
+.check-input:focus {
+    color: #4B5563;
+    background-color: #F9FAFB;
+    border-color: #C0A9BD;
+    outline: 0;
+    box-shadow: inset 0 1px 2px #C0A9BD, 0 0 0 0.1rem #C0A9BD;
+}
+
+.checkBtn {
+    border: none;
+    background-color: #CA8FAB;
+    color: #F4F2F3;
+    width: 60px;
+    padding: 5px;
+}
+
+/* 북마크페이지용 */

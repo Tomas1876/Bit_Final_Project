@@ -1,0 +1,217 @@
+@charset "UTF-8";
+/* append 발생시 (스크롤 할 영역이 밑으로 더 생길때) 스크롤을 위로 올리는것이 아니라 밑으로 내릴수 있게 함.*/
+body{
+	overflow-anchor: none;
+}
+/* 페이지헤더이미지 */
+.top_area {
+	width: 100%;
+	height: 300px;
+}
+
+.area-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(../assets/img/ain_test/MemberListHeader.jpeg);
+    background-repeat: no-repeat;
+}
+
+.area-img > p {
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+    padding: 115px 0 0 60px;
+    margin: 0;
+}
+ 
+
+#memberListHeader {
+	max-width: 100%;
+	height: auto;
+}
+
+/* 탑버튼 */
+#topBtn {
+	position: fixed;
+	right: 22px;
+	bottom: 22px;
+	display: none;
+	z-index: 100;
+	width: 50px;
+}
+
+/* 바디 컨테이너 */
+.m_container {
+	max-width: 1200px;
+	margin: auto;
+}
+
+/* 필터링, 검색 섹션 */
+.select_section {
+	height: 100px;
+}
+
+/* 셀렉트박스 */
+.form-select{
+	background-color: #ffffff !important;
+}
+
+.m_sel {
+	width: 200px !important;
+	float: left;
+}
+
+/* 검색창 */
+#memberNickname{
+	border-radius: 1rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    
+    background-color: #ffffff !important;
+}
+
+.m_search {
+	width: 200px !important;
+	float: right;
+}
+
+/* 카드 */
+/* 이미지영역 */
+.m_img{
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	
+	margin: 10 auto;
+	
+	border-bottom: 1px solid #dcdce1;
+}
+
+.m_img_size{
+	object-fit: cover;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+}
+
+/* 카드텍스트영역 */
+.card-title{
+	text-align: center;
+}
+
+.tags{
+	margin-bottom: 15px;
+	text-align: center;
+	font-size: 14px;
+	
+	color:#CA8FAB;
+}
+
+.card-body{
+	text-align: center;
+	height: 180px;
+}
+
+.card-text{
+	text-align: center;
+	margin-bottom: 5px !important;
+}
+
+.card_link{
+	color: #cccccc;  
+	text-align:center;
+	border: 1px solid  #cccccc;
+	box-sizing: border-box;
+	width:150px;
+	font-size:14px;
+	padding:5px;
+	margin:0 auto;
+}
+
+.card_link:hover{
+	background-color:#ca8fab;
+	border: 0px;
+	color: #ffffff;
+}
+
+/* 더보기버튼 */
+.moreBtn {
+	width: 40%;
+	
+	border-radius: 7px;
+	color: #c0a9bd;
+	font-size: 18px;
+	padding: 10px 20px 10px 20px;
+	border: solid #c0a9bd 2px;
+	background: white;
+}
+
+.moreBtn:hover {
+	background: #c0a9bd;
+	color: white;
+}
+
+.more_sec{
+	width: 100%;
+	text-align: center;
+}
+
+/* 반응형 */
+#card_section{
+	flex-wrap:wrap;
+	justify-content: space-between;
+    display: -webkit-inline-box;
+}
+
+.cardNum{
+	width: 300px !important;
+	margin-bottom: 20px;
+}
+
+
+@media (max-width: 900px) {
+	
+	.m_container {
+	width: 750px;
+	margin: auto;
+	}
+	
+    .cardNum{
+		width: 350px !important;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	
+	.m_container {
+	max-width: 960px;
+	margin: auto;
+	}
+	
+    .cardNum{
+		width: 300px;
+	}
+}
+.zerocontainer{
+	display:none;
+}
+.zerowrapper{
+	margin:auto;
+}
+#zerolist{
+	background: white;
+	height: 200px;
+    width: 100%;
+    border: solid #c0a9bd 2px;
+	
+}
+#zerolist > p{
+	font-size:25px;
+	font-family: var(--bs-font-sans-serif);
+    font-style: normal;
+    font-weight: 600;
+    position:relative;
+    top:36%;
+}
