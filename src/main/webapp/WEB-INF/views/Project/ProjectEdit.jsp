@@ -66,7 +66,11 @@
 							<p class="Project_p"><b style="color:red;">*</b> 프로젝트 썸네일에 사용될 이미지를 선택해주세요.</p>
 							<hr>
 								<div class="Project_Create_img_box">
+<<<<<<< HEAD
 	                   			<img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${project.p_image}">
+=======
+	                   			<img id ="target_img" src="${pageContext.request.contextPath}/images/${project.p_image}">
+>>>>>>> master
 								    <input type="file" id="file" name="uploadFile" style="display:none;" >
 								    <input type="hidden" name = "target_url">
 								</div>    
@@ -80,7 +84,11 @@
                     				<input type="text" value="${project.project_id}" name="project_id" hidden id="project_id">
                     				<div class="Leader_DetailBox">
                     				<div class="LeaderImg_Box">
+<<<<<<< HEAD
                     				<img src="${pageContext.request.contextPath}/resources/upload/${membervo.MEMBER_IMAGE}">
+=======
+                    				<img src="${pageContext.request.contextPath}/images/${membervo.MEMBER_IMAGE}">
+>>>>>>> master
                     				</div>
                     				<p><b>${membervo.MEMBER_NICKNAME}</b></p>
                     				</div>

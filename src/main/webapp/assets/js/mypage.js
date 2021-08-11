@@ -2,15 +2,12 @@ $(document).ready(function() {
 
 	//About Cycoder 부분의 정보 각각 비동기로 변경하기
 	// 개인정보 담을 변수
-	let before;
+	//바꾸기 전의 input 태그의 값 미리 담아두고
+	let before = $(this).prev().val();
 	let atfer;
 
 	//수정 버튼 누르면 수정창 생성
 	$(document).on("click", ".m-btn", function() {
-
-
-		//바꾸기 전의 input 태그의 값 미리 담아두고
-		before = $(this).prev().val();
 
 		//input 태그의 읽기 전용 비활성화, 기존 값은 placeholder로 바꾼다
 		$(this).prev().prop("readonly", false);
@@ -158,15 +155,10 @@ $(document).ready(function() {
 					swal("비밀번호는 8-20자리 이내로 입력하세요.", "", "error");
 					checking = false;
 
-
-
 				} else if (password.search(/\s/) != -1) {
 
 					swal("비밀번호는 공백을 입력할 수 없습니다.", "", "error");
 					checking = false;
-
-
-
 
 				} else if (num < 0 || eng < 0) {
 
@@ -180,24 +172,18 @@ $(document).ready(function() {
 					swal("비밀번호가 일치하지 않습니다","","error");
 					passwordC.val("");
 					
-					
 				}
-
 				if (checking) {
 					editMyDetail(code, button);
 					//비밀번호 확인창 없애기
 					$("#passwordC_li").remove();
 				}
-
-
 			} else {
 
 				editMyDetail(code, button);
-
 			}
 
-
-		}
+	}
 
 	});
 
@@ -221,18 +207,14 @@ $(document).ready(function() {
 
 					button.prev().empty();
 					button.prev().val(atfer);
-					button.prev().prop("readonly", true);
-					button.prev().removeClass("info-mdf");
-					button.text("수정");
-					button.removeClass("c-btn");
-					button.addClass("m-btn");
-
+					changeinfo(button);
 					swal("수정되었습니다", "", "success");
 
 					//닉네임 수정할 경우 프사 밑의 닉네임도 변경
 					if (code == "닉네임") {
 						$("#cycoder").children().text("");
 						$("#cycoder").children().text($("#nick").val());
+						
 					}
 
 				} else if (data == "success" && code == "비밀번호") {
@@ -240,11 +222,7 @@ $(document).ready(function() {
 					//비밀번호가 변경되었을 때는 인풋 태그의 값을 굳이 바꾸지 않는다
 					//암호화 된 거 엄청 길어서 사용자한테 그대로 보여주지 않을 것
 					button.prev().val("password");
-					button.prev().prop("readonly", true);
-					button.prev().removeClass("info-mdf");
-					button.text("수정");
-					button.removeClass("c-btn");
-					button.addClass("m-btn");
+					changeinfo(button);
 
 					swal("수정되었습니다", "", "success");
 
@@ -271,6 +249,20 @@ $(document).ready(function() {
 		//console.log($(this));
 		return false;
 	});
+	changeClass = (target, add, remove, area)=>{
+		
+		if(area == "#selectedarea"){	
+			add.forEach((v)=>target.addClass(v))			
+			target.removeClass(remove);
+			
+			
+		} else{
+
+			target.addClass(add);
+			remove.forEach((v)=>target.removeClass(v))			
+		}		
+		$(area).append(target);	
+	}
 
 	//기술/기간 클릭하면 태그 선택
 	$(document).on("click", ".tags", function() {
@@ -285,10 +277,7 @@ $(document).ready(function() {
 
 		} else {
 
-			$(this).addClass("clicked");
-			$(this).addClass("chosen");
-			$(this).removeClass("tags");
-			$("#selectedarea").append($(this));
+			changeClass($(this), ["clicked","chosen"], "tags", "#selectedarea")
 		}
 
 	});
@@ -296,45 +285,36 @@ $(document).ready(function() {
 	//기술/기간 클릭하면 태그 선택 해제
 	$(document).on("click", ".clicked", function() {
 
-		// let name = $(this).text();
-
-		$(this).removeClass("clicked");
-		$(this).removeClass("chosen");
-		$(this).addClass("tags");
-		$("#tagarea").append($(this));
+		changeClass($(this), "tags",["clicked","chosen"], "#tagarea")
 
 	});
 
 	//클릭하면 포지션 태그 선택
 	$(document).on("click", ".positions", function() {
 
-		let name = $(this).text();
 		selected = $(".p_clicked");
-
 		if (selected.length > 0) {
-
 			swal("하나만 선택 가능합니다");
-
 		} else {
+			changeClass($(this), ["p_clicked","chosen"], "positions", "#selectedarea")
 
-			$(this).addClass("p_clicked");
-			$(this).addClass("chosen");
-			$(this).removeClass("positions");
-			$("#selectedarea").append($(this));
 		}
 
 	});
 
 	//클릭하면 포지션 태그 선택 해제
 	$(document).on("click", ".p_clicked", function() {
-		let name = $(this).text();
-		$(this).removeClass("p_clicked");
-		$(this).removeClass("chosen");
-		$(this).addClass("positions");
-		$("#tagarea").append($(this));
+		changeClass($(this), "positions",["p_clicked","chosen"], "#tagarea")
 	});
 
 }); //document.ready 끝
+changeinfo = (button)=>{
+	button.prev().prop("readonly", true);
+	button.prev().removeClass("info-mdf");
+	button.text("수정");
+	button.removeClass("c-btn");
+	button.addClass("m-btn");
+}
 
 //모달창에 스탯 리스트 뿌리기
 function edit_modal(code) {
@@ -371,8 +351,6 @@ function edit_modal(code) {
 		getStat('duration');
 
 	}
-
-
 
 	let key = "";
 	let originStat = [];
@@ -1302,7 +1280,3 @@ function payment() {
 		//    console.log("실행완료");
 	});
 }
-
-
-
-

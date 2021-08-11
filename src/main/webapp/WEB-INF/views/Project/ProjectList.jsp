@@ -115,7 +115,11 @@
                        
                         <!-- 프로젝트이름, 주언어 -->
 
+<<<<<<< HEAD
 						<div class="card-body" id="backimg" style="background-image:url(${pageContext.request.contextPath}/resources/upload/${rcm.p_image})">
+=======
+						<div class="card-body" id="backimg" style="background-image:url(${pageContext.request.contextPath}/images/${rcm.p_image})">
+>>>>>>> master
 						
 						<!-- 추가정보 미입력 회원이면 상세 보기 경고 -->
 						<se:authorize access="hasRole('ROLE_PREMEMBER')">
@@ -217,7 +221,11 @@
 							   </c:forEach>
 						   </se:authorize>
 						   </div>
+<<<<<<< HEAD
                            <a href="/project/detail?project_id=${project.project_id}"><img class="m_img_size" src="${pageContext.request.contextPath}/resources/upload/${project.p_image}"></a>
+=======
+                           <a href="/project/detail?project_id=${project.project_id}"><img class="m_img_size" src="${pageContext.request.contextPath}/images/${project.p_image}"></a>
+>>>>>>> master
                         </div>
                         <!-- 프로젝트이름, 주언어 -->
 						<div class="card-body">

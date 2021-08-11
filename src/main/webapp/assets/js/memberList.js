@@ -130,7 +130,11 @@ $(document).ready(function() {
 					 card += '<div class="card shadow">'
 					 card += '<div class="m_img">'
 					 card += '<img class="m_img_size"'
+<<<<<<< HEAD
 					 card += 'src="/resources/upload/' + memberList[current].m_image + '">'
+=======
+					 card += 'src="${pageContext.request.contextPath}/images/' + memberList[current].m_image + '">'
+>>>>>>> master
 					 card += '</div>'
 					 card += '<div class="card-body">'
 					 card += '<h3 class="h5 mt-3 card-title">' + memberList[current].m_nick + '</h3>'

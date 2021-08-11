@@ -276,7 +276,11 @@ $(document).ready(function() {
                      QnaBox += "<div class='QnaBox_'>"
                      QnaBox += "<div class='QnaBoxTitle'>"
                      QnaBox += "<div class='QnaImgBox'>"
+<<<<<<< HEAD
                      QnaBox += "<img src='/resources/upload/" + responsedata[i].member_image + "'>"
+=======
+                     QnaBox += "<img src='/images/" + responsedata[i].member_image + "'>"
+>>>>>>> master
                      QnaBox += "</div>"
                      QnaBox += "<div class='QnaMember_nickname'>" + responsedata[i].member_nickname + "</div>"
                      QnaBox += "</div>"
@@ -499,7 +503,11 @@ $(document).ready(function() {
                                  ReplyBox += "<div class='QnaReplyBox'>"
                                  ReplyBox += "<div class='QnaBoxTitle'>"
                                  ReplyBox += "<div class='QnaImgBox'>"
+<<<<<<< HEAD
                                  ReplyBox += "<img src='/resources/upload/" + responsedata.qna[i].member_image + "'>"
+=======
+                                 ReplyBox += "<img src='/images/" + responsedata.qna[i].member_image + "'>"
+>>>>>>> master
                                  ReplyBox += "</div>"
                                  ReplyBox += "<div class='QnaMember_nickname'>" + responsedata.qna[i].member_nickname + "</div>"
                                  ReplyBox += "</div>"
@@ -902,7 +910,11 @@ $(document).ready(function() {
                              Div +=      "<div class='memberListBox'>"
                              Div +=      "<div class='memberListInfo_data04042'>"
                              Div +=      "<div class='memberListImgBox'>"
+<<<<<<< HEAD
                              Div +=      "<img src='/resources/upload/" + pmlist[i].member_image + "'>"
+=======
+                             Div +=      "<img src='/images/" + pmlist[i].member_image + "'>"
+>>>>>>> master
                              Div +=      "</div>"
                              Div +=      "<div class='memberinfoBox'>"
                              Div +=      "<div class='memberList_nickname'>" + pmlist[i].member_nickname + "</div> <br>"
@@ -1102,7 +1114,11 @@ $(document).ready(function() {
                                                     
                                                  table += "<tr>";
                                                  table += "<td class='td_rigth'><div class='LeaderImg_Box'>"
+<<<<<<< HEAD
                                                  table += "<img src='/resources/upload/" + elt.member_image + "'>"
+=======
+                                                 table += "<img src='/images/" + elt.member_image + "'>"
+>>>>>>> master
                                                  table += "</div></td>";
                                                  table += "</td>";
                                                  table += "<td>";

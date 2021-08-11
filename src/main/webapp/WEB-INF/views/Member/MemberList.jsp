@@ -75,7 +75,11 @@
 							<div class="card shadow">
 								<div class="m_img">
 									<img class="m_img_size"
+<<<<<<< HEAD
 										src="${pageContext.request.contextPath}/resources/upload/${member.m_image}">
+=======
+										src="${pageContext.request.contextPath}/images/${member.m_image}">
+>>>>>>> master
 								</div>
 								<div class="card-body">
 									<h3 class="h5 mt-3 card-title">${member.m_nick}</h3>
