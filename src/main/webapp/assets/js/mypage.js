@@ -1,74 +1,96 @@
 $(document).ready(function() {
 
 	//About Cycoder 부분의 정보 각각 비동기로 변경하기
-	// 개인정보 담을 변수
+	//개인정보 담을 변수
 	//바꾸기 전의 input 태그의 값 미리 담아두고
 	let before = $(this).prev().val();
-	let atfer;
 
-	//수정 버튼 누르면 수정창 생성
 	$(document).on("click", ".m-btn", function() {
-
-		//input 태그의 읽기 전용 비활성화, 기존 값은 placeholder로 바꾼다
-		$(this).prev().prop("readonly", false);
-		$(this).prev().attr("placeholder", before);
-		$(this).prev().addClass("info-mdf");
-
-		//버튼 글씨 바꾸기
-		$(this).text("확인");
-		$(this).removeClass("m-btn");
-		$(this).addClass("c-btn");
-		
-		//이때 비밀번호라면 확인창 추가할것!
-		let code = $(this).prev().prev().text();
-		if(code == "비밀번호"){
-			
-			//확인창 하나 추가하고
-			$(this).parent().after(
-				 '<li class="itemlist" id="passwordC_li"><span class="item">비밀번호 확인</span>'
-				 +'<input type="password" id="passwordC" name="password" class="info info-mdf" value="password"></li>'
-			);
-			
-		}
-
+		make_modify_space($(this),before);
 	});
 
-	//확인 버튼 누르면 수정 내용 확정
 	$(document).on("click", ".c-btn", function() {
+		confirm_change($(this),before)
+	});
+	
+}); //document.ready 끝
+	
+	//수정 버튼 누르면 수정창 생성
+	make_modify_space = (target, before) =>{
+		
+		//input 태그의 읽기 전용 비활성화, 기존 값은 placeholder로 바꾼다
+		target.prev().prop("readonly", false);
+		target.prev().attr("placeholder", before);
+		target.prev().addClass("info-mdf");
 
+		//버튼 글씨 바꾸기
+		target.text("확인");
+		target.removeClass("m-btn");
+		target.addClass("c-btn");
+		
+		//이때 비밀번호라면 확인창 추가할것!
+		let code = target.attr("id");
+		if(code == "m_pwd"){
+			
+			//확인창 하나 추가하고
+			target.parent().after(
+				 '<li class="itemlist" id="passwordC_li"><span class="item">비밀번호 확인</span>'
+				 +'<input type="password" id="passwordC" name="password" class="info info-mdf" value="password"></li>'
+			);			
+		}	
+	}
+	
+	//닉네임, 휴대폰 중복 검사 함수
+	duplicate_check = (type, value, code, button,after) => {
+		
+		console.log(value)
+		$.ajax({
+						url: "ajax/duplicatecheck",
+						data: {
+							"type" : type,
+							"value": value
+						},
+						type: "get",
+						dataType: "text",
+						success: function(data) {
+							if (data == 'able') {
 
-		atfer = $(this).prev().val();
-		//처음 작성할 때 도대체 무슨 생각이었는지 모르겠는데 이렇게 하면 안되는 거 같다
-		//아이디값 주거나 하면 되지 이게 무슨 번거로운 짓이란 말임...
-		let code = $(this).prev().prev().text();
-		console.log(code);
+								editMyDetail(code, button,after);
+
+							} else {
+
+								swal("이미 존재하는 정보입니다.", "", "error");
+							}
+						},
+						error: function(error) {
+							console.log(error);
+						}
+					});
+		
+	}
+	//확인 버튼 누르면 수정 내용 확정
+	confirm_change = (target, before) =>{
+		let after = target.prev().val();
+		let code = target.attr("id");
 		
 		//수정 눌렀는데 값이 변한게 없을 때
-		if (before == $(this).prev().val()) {
+		if (before == target.prev().val()) {
 			swal("수정할 내용이 없습니다", "", "warning");
 
-			$(this).prev().empty();
-			$(this).prev().val(atfer);
-			$(this).prev().prop("readonly", true);
-			$(this).prev().removeClass("info-mdf");
-			$(this).text("수정");
-			$(this).removeClass("c-btn");
-			$(this).addClass("m-btn");
+			target.prev().empty();
+			target.prev().val(atfer);
+			changeinfo(target);
 			
 			//비밀번호라면 확인창 없애기
-			if(code == "비밀번호"){
+			if(code == "m_pwd"){
 				$("#passwordC_li").remove();
 			}
-
-
 			//값이 변했을 때
 		} else {			
 			
-			let button = $(this);
-
-
+			let button = target;
 			//닉네임은 중복체크 먼저
-			if (code == "닉네임") {
+			if (code == "m_nickname") {
 				//닉네임 글자 수 제한
 				if ($("#nick").val().length > 10) {
 
@@ -76,32 +98,11 @@ $(document).ready(function() {
 					$("#nick").val($("#nick").val().substring(0, 10));
 
 				} else {
-
-					$.ajax({
-						url: "ajax/nicknamecheck",
-						data: {
-							nickName: $("#nick").val()
-						},
-						type: "get",
-						dataType: "text",
-						success: function(data) {
-							if (data == 'able') {
-
-								editMyDetail(code, button);
-
-							} else {
-
-								swal("이미 존재하는 닉네임입니다.", "", "error");
-							}
-						},
-						error: function(error) {
-							console.log(error);
-						}
-					});
-
+					
+					duplicate_check("nickname", $("#nick").val(), code, button,after)
 				}
 
-			} else if (code == "휴대폰") {
+			} else if (code == "m_phone") {
 
 				//휴대폰번호 유효성, 글자수 제한
 				var numberReg = /^[0-9]*$/;
@@ -117,38 +118,17 @@ $(document).ready(function() {
 				} else {
 					//위의 검사 통과한 경우
 					//휴대폰 번호도 중복체크
-					$.ajax({
-						url: "ajax/phonecheck",
-						data: {
-							phone: $("#m_phone").val()
-						},
-						type: "get",
-						dataType: "text",
-						success: function(data) {
-							if (data == 'able') {
-
-								editMyDetail(code, button);
-
-							} else {
-
-								swal("사용할 수 없는 번호입니다.", "", "error");
-							}
-						},
-						error: function(error) {
-							console.log(error);
-						}
-					});
+					duplicate_check("phone", $("#m_phone").val(), code, button,after)
 				}
 
-				//비밀번호는 유효성 검사도 해야 한다
-			} else if (code == "비밀번호") {
+			//비밀번호는 유효성 검사도 해야 한다
+			} else if (code == "m_pwd") {
 
 				let checking = true;
 				let password = $("#password").val();
 				let passwordC = $("#passwordC").val();
 				let num = password.search(/[0-9]/g);
 				let eng = password.search(/[a-z]/ig);
-
 
 				if (password.length < 8 || password.length > 13) {
 
@@ -162,7 +142,6 @@ $(document).ready(function() {
 
 				} else if (num < 0 || eng < 0) {
 
-
 					swal("영문, 숫자를 포함하여 입력하세요.", "", "error");
 					checking = false;
 
@@ -174,50 +153,47 @@ $(document).ready(function() {
 					
 				}
 				if (checking) {
-					editMyDetail(code, button);
+					editMyDetail(code, button,after);
 					//비밀번호 확인창 없애기
 					$("#passwordC_li").remove();
 				}
 			} else {
 
-				editMyDetail(code, button);
+				editMyDetail(code, button,after);
 			}
-
+		}
 	}
-
-	});
-
-
+	
 	//수정 버튼 누르면 바뀌는 개인정보 디비에 실반영 하는 함수
-	function editMyDetail(code, button) {
+	function editMyDetail(code, button, after) {
 
 		$.ajax({
 
 			url: "ajax/editmydetail",
 			data: {
 				code: code,
-				info: atfer,
+				info: after,
 				userid: $("#m_id").val()
 			},
 			type: "get",
 			dataType: "text",
 			success: function(data) {
 
-				if (data == "success" && code != "비밀번호") {
+				if (data == "success" && code != "m_pwd") {
 
 					button.prev().empty();
-					button.prev().val(atfer);
+					button.prev().val(after);
 					changeinfo(button);
 					swal("수정되었습니다", "", "success");
 
 					//닉네임 수정할 경우 프사 밑의 닉네임도 변경
-					if (code == "닉네임") {
+					if (code == "m_nickname") {
 						$("#cycoder").children().text("");
 						$("#cycoder").children().text($("#nick").val());
 						
 					}
 
-				} else if (data == "success" && code == "비밀번호") {
+				} else if (data == "success" && code == "m_pwd") {
 
 					//비밀번호가 변경되었을 때는 인풋 태그의 값을 굳이 바꾸지 않는다
 					//암호화 된 거 엄청 길어서 사용자한테 그대로 보여주지 않을 것
@@ -227,6 +203,7 @@ $(document).ready(function() {
 					swal("수정되었습니다", "", "success");
 
 				} else {
+					console.log(`data ${data} code ${code}`)
 					swal("수정에 실패했습니다", "", "error");
 				}
 
@@ -307,7 +284,7 @@ $(document).ready(function() {
 		changeClass($(this), "positions",["p_clicked","chosen"], "#tagarea")
 	});
 
-}); //document.ready 끝
+
 changeinfo = (button)=>{
 	button.prev().prop("readonly", true);
 	button.prev().removeClass("info-mdf");

@@ -32,13 +32,8 @@
 
 		<div id="wrap">
 			<div id="profile_img">
-				<!-- <img src="assets/img/member_detail/cycoding_img.png"> -->
-				<%-- <img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}"> --%>
-<<<<<<< HEAD
-				<img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}">
-=======
-				<img id ="target_img" src="${pageContext.request.contextPath}/images/${member.MEMBER_IMAGE}">
->>>>>>> master
+			<img id ="target_img" src="${pageContext.request.contextPath}/images/${member.MEMBER_IMAGE}">
+
 				<form action="editprofile" method="post" enctype="multipart/form-data" id="img_form">
 				<input type="hidden" id="id" name="id" value="${member.MEMBER_EMAIL}">
 				<input type="file" id="file" name="uploadFile" style="display:none;">
@@ -66,17 +61,17 @@
                   <li class="itemlist"><span class="item">비밀번호</span><input
                      type="password" id="password" name="password" class="info" value="password"
                      readonly>
-                     <button type="button" class="modify_items m-btn">수정</button></li>
+                     <button type="button" class="modify_items m-btn" id="m_pwd">수정</button></li>
                   <li class="itemlist"><span class="item">닉네임</span><input
                      type="text" class="info" id="nick"
                      value="${member.MEMBER_NICKNAME}" readonly>
-                     <button type="button" class="modify_items m-btn">수정</button></li>
+                     <button type="button" class="modify_items m-btn" id="m_nickname">수정</button></li>
                   <li class="itemlist"><span class="item">이름</span><input
                      type="text" class="info" id="m_name" value="${member.MEMBER_NAME}" readonly>
                      <button type="button" class="modify_items m-btn hid" disabled>NONE</button></li>
                   <li class="itemlist"><span class="item">휴대폰</span><input
                      type="text" class="info" id="m_phone" value="${member.MEMBER_PHONE}" readonly>
-                     <button type="button" class="modify_items m-btn">수정</button></li>
+                     <button type="button" class="modify_items m-btn" id="m_phone">수정</button></li>
                   <li class="itemlist"><span class="item">포인트</span><input
                      type="text" class="info" id="point" value="${member.HAVE_POINT}점" readonly>
                      

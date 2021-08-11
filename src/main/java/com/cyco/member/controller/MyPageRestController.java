@@ -77,25 +77,19 @@ public class MyPageRestController {
 
 		String column = "";
 
-		if (code.equals("비밀번호")) {
+		if (code.equals("m_pwd")) {
 
 			column = "MEMBER_PWD";
 
 			row = memberdetailservice.editPwd(column, info, id);
 
 			// 중복검사 해야 함
-		} else if (code.equals("닉네임")) {
+		} else if (code.equals("m_nickname")) {
 
 			column = "MEMBER_NICKNAME";
 			row = memberdetailservice.editInfo(column, info, id);
 
-		} else if (code.equals("이름")) {
-
-			column = "MEMBER_NAME";
-			row = memberdetailservice.editInfo(column, info, id);
-
-			// 중복검사 해야 함
-		} else if (code.equals("휴대폰")) {
+		}  else if (code.equals("m_phone")) {
 
 			column = "MEMBER_PHONE";
 			row = memberdetailservice.editInfo(column, info, id);
@@ -109,41 +103,33 @@ public class MyPageRestController {
 	}
 	
 	//개인정보 수정시 닉네임 중복체크
-	@RequestMapping(value="nicknamecheck",method=RequestMethod.GET)
-	public String checkNickNameMyPage(String nickName) {
+	@RequestMapping(value="duplicatecheck",method=RequestMethod.GET)
+	public String checkNickNameMyPage(String type, String value) {
 		
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
 		
 		String result = "able";
+		Integer answer = null;
 		
-		if(memberdao.checkNickName(nickName) != null) {
+		if(type.equals("nickname")) {
+			System.out.println("현재 닉네임 : "+value);
+			answer = memberdao.checkNickName(value);
+			
+		} else if(type.equals("phone")) {
+			
+			answer = memberdao.checkPhone(value);
+	
+		}
+		
+		if(answer != null) {
 			
 			result = "disable";
 		} else {
 			result = "able";
 		}
-		
 		return result;
 	}
-	
-	//개인정보 수정시 휴대폰번호 중복체크
-	@RequestMapping(value="phonecheck",method=RequestMethod.GET)
-	public String checkPhoneNameMyPage(String phone) {
-		
-		System.out.println("현재 phone" + phone);
-		
-		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		String result = "able";
-		
-		if(memberdao.checkPhone(phone) != null) {
-			result = "disable";
-		} else {
-			result = "able";
-		}
-		
-		return result;
-	}
-	
+
 	// 모달창에 기술 태그 뿌리기
 	@RequestMapping(value = "getskills")
 	public List<SkillVo> getSkills() {
