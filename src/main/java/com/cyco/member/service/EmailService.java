@@ -59,6 +59,8 @@ public class EmailService{
     
             // 이메일 보내기
             mailSender.send(msg);
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

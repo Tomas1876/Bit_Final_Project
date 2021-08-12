@@ -125,7 +125,7 @@
 		group by position_name,position_id
 	</select>
 	
-		<!-- 프로젝트 멤버 검색. project_id를 통한 조건검색 가능 -->
+	<!-- 프로젝트 멤버 검색. project_id를 통한 조건검색 가능 -->
 	<select id="getProjectMemberList" parameterType="string" resultType="com.cyco.project.vo.V_PmPosition">
 		select project_id, member_id, position_name, position_id, member_nickname, member_image
 		from v_pm_position
@@ -166,7 +166,17 @@
 			values (#{skill.project_id}, #{skill.skill_code})
 		</foreach>
 	</insert>
- 
+ 	
+ 	<!-- 프로젝트 있는지 확인 -->
+	<select id="Ismember" resultType="int">
+		SELECT count(*) FROM PROJECT p 
+		LEFT JOIN P_DETAIL pd
+		ON p.PROJECT_ID = pd.PROJECT_ID 
+		LEFT JOIN P_MEMBER pm 
+		ON pm.PROJECT_ID = pd.PROJECT_ID 
+		WHERE pm.MEMBER_ID = #{member_id} AND pd.P_STATE != '완료'
+	</select>
+	
 	
 	<!-- 완료가 아닌 프로젝트가 있는지 확인  -->
 	<select id="CheckProjectState" resultType="int">
@@ -344,11 +354,17 @@
 	</select>
 	
 	<!-- 프로젝트 지원한 멤버 아이디 -->
-	<select id="getApplyMemberList" resultType="com.cyco.project.vo.V_ApplyMemberList">
+	<select id="getApplyMemberList" resultType="com.cyco.project.vo.V_ApplyMemberList">	
 		SELECT MEMBER_NICKNAME,MEMBER_ID,MEMBER_IMAGE, GRADE, POSITION_NAME, PROJECT_ID, APPLYPOSITIONNAME, APPLY_POSITION_ID, APPLY_OK
 		FROM V_APPLYMEMBER_LIST 
 		WHERE DELETE_COUNT IS NULL AND PROJECT_ID = #{project_id} AND APPLY_POSITION_ID = #{apply_position_id}
 	</select>
+	
+	<!-- 상세보기에서 지원 반영 안한 데이터 확인 -->
+	<select id="ApplyCheckMember" resultType="int">
+		SELECT COUNT(*) FROM V_APPLYMEMBER_LIST WHERE PROJECT_ID = #{param1} AND APPLY_POSITION_ID = #{param2} AND APPLY_OK = 0
+	</select>
+	
 	
 	<!-- 지원 멤버 승인 -->
 	<update id="ApplyMember_Ok" >
@@ -496,7 +512,7 @@
 
 	<update id="projectComplete">
 		UPDATE P_DETAIL SET P_STATE = '완료' WHERE PROJECT_ID = #{project_id} AND P_STATE = '진행중'
-  </update>
+  	</update>
 
 	<!-- 프로젝트 수정에서 상태 변경시 알림 보낼 프로젝트 멤버들 목록 -->
 	<select id="getTeamMembers" resultType="String">
@@ -508,6 +524,32 @@
 	<!-- 프로젝트 진입시 조회수 증가 addViews -->
 	<update id="addViews">
 		UPDATE p_detail SET p_views = p_views+1 WHERE project_id = ${project_id}
+	</update>
+	
+	<!-- 프로젝트 피드 가져오기 -->
+	<select id="getFeedList" resultType="com.cyco.project.vo.P_FeedVo">
+		SELECT FEED_ID, PROJECT_ID, MEMBER_ID, MEMBER_NICKNAME, FEED_TITLE, FEED_CONTENT FROM V_P_FEED WHERE PROJECT_ID = #{project_id} ORDER BY FEED_ID desc
+	</select>
+	
+	<!-- 프로젝트 피드 작성 -->
+	<insert id="WriteProjectFeed">
+		INSERT INTO P_FEED (FEED_ID, PROJECT_ID, MEMBER_ID, FEED_TITLE, FEED_CONTENT)
+		values (PFEED_SEQ.nextval, #{project_id}, #{member_id}, #{feed_title}, #{feed_content})
+	</insert>
+	
+	<!-- 프로젝트 피드 수정 -->
+	<update id="EditProjectFeed">
+		UPDATE P_FEED SET FEED_TITLE = #{feed_title}, FEED_CONTENT = #{feed_content} WHERE PROJECT_ID = #{project_id} AND FEED_ID = #{feed_id}
+	</update>
+	
+	<!-- 프로젝트 피드 삭제 -->
+	<delete id="DeleteProjectFeed">
+		DELETE FROM P_FEED WHERE PROJECT_ID = #{project_id} AND FEED_ID = #{feed_id}
+	</delete>
+	
+	<!-- 지원 했던 내역 전부 추방으로 전환 -->
+	<update id="ProjectApplyWithdrawal">
+		UPDATE APPLY SET APPLY_OK = 3 WHERE MEMBER_ID = #{member_id} AND APPLY_OK = 0
 	</update>
 	
 </mapper>

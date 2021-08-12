@@ -41,10 +41,8 @@ $(function() {
 				var DownBtn = $(this)[0].children[2];
 				var Count = $(this)[0].children[1];
 
-				
-				
 				// + 이벤트
-				$(UpBtn).off("click").click(function() {
+				$(UpBtn).off("click").on("click", function() {
 
 					if (memberNum < 10) {
 
@@ -61,7 +59,8 @@ $(function() {
 				})
 
 				// - 이벤트
-				$(DownBtn).off("click").click(function() {
+				$(DownBtn).off("click").on("click", function() {
+				
 
 					if (parseInt($(Count).val()) > 1) {
 						

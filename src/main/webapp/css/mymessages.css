@@ -158,11 +158,10 @@ tbody{
 
 /*선택된 쪽지*/
 .selected_note{
-	background-color: #cdd7db;
-	color:white;
+	color:lightgray;
 }
 .selected_note a{
-	color:white;
+	color:lightgray;
 }
 
 /*모달창*/

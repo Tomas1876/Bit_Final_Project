@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 .check-container{
@@ -218,4 +219,226 @@
 /* 비밀번호 변경 후 로그인페이지 이동 링크 보여주기 */
 .modalLinkSecPwd{
 	display: none;
+=======
+@charset "UTF-8";
+
+.check-container{
+	width: 100%;
+	height: 800px;
+	
+	margin-top: 0;	
+	background-color: #f4f2f3;
+	
+	display: flex;
+	flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.check-box{
+	font-family: var(--bs-font-sans-serif);
+	width: 30%;
+	height: 60%;
+	
+	background-color: #ffffff;
+	
+	box-shadow: 3px 3px 3px rgb(0 0 0 / 25%);
+	
+	display: table;
+	position: relative;
+	margin: 0 10px;
+}
+
+.check-text{
+	display: table-cell;
+	text-align: center;
+}
+
+.check-form{
+	width: 100%;
+	position: absolute; 
+	top: 50%; 
+	transform: translateY(-50%);
+}
+
+.checkIcon{
+	font-size: 60px;
+	color: #ca8fab;
+	margin-bottom: 15px;
+}
+
+.check-form p {
+	font-size: 20px;
+	font-weight: 500;
+	color: #c0a9bd;
+}
+
+.check-input {
+	height: 40px !important;
+	width: 200px !important;
+	background-color: #fff !important;
+	border: 0.0625rem solid #D1D5DB;
+	padding: 5px;
+	padding-left: 10px;
+	margin: 0 !important;
+}
+
+.check-input::placeholder {
+	color: gray;
+	font-size: 14px;
+}
+
+.check-input:focus {
+    color: #4B5563;
+    background-color: #F9FAFB;
+    border-color: #C0A9BD;
+    outline: 0;
+    box-shadow: inset 0 1px 2px #C0A9BD, 0 0 0 0.1rem #C0A9BD;
+}
+
+.checkBtn {
+    border: none;
+    background-color: #CA8FAB;
+    color: #F4F2F3;
+    width: 60px;
+    padding: 5px;
+}
+
+
+.findEmailBox{
+	width: 100%;
+	/* height: 60px; */
+	
+	display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    justify-content: center;
+}
+
+.findEmailBox > input {
+	margin: 5px 0 !important;
+}
+
+#findEmailBtn, #findPwdBtn, #userConfirmBtn{
+	margin-top: 20px;
+}   
+
+
+/* 이메일 모달 */
+.findEmailModal{
+	display: none;
+	
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+}
+
+.modal_XBtn{
+	text-align: right;
+    font-size: 25px;
+    color: #d9d9d9;
+}
+
+.emailBox{
+    width: 860px;
+}
+
+.emailModalDiv {
+    width: 100%;
+    max-width: 424px;
+    border: 1px solid #f2f2f2;
+    border-radius: 8px;
+    padding: 2.5rem;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+    background-color: white;
+}
+
+.emailIcon{
+	width: 100%;
+	height: 120px;
+	text-align: center;
+	font-size: 50px;
+}
+
+.modalLinkSec{
+	margin-top: 30px;
+	height: 30px;
+	text-align: center;
+}
+
+.modalLinkSec > a {
+	color: #c0a9bd;
+	font-size: 16px;
+}
+
+/* 비밀번호 체크 */
+#userConfirm, #userConfirmBtn{
+	display: none;
+}
+
+#confirmEnd{
+	display: none;
+}
+
+/* 비밀번호 변경 모달 */
+#editPwdModal {
+	display: none;
+	
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+}
+
+.modalPwdIcon{
+	width: 100%;
+	height: 80px;
+	text-align: center;
+	font-size: 50px;
+	color: #ca8fab;
+}
+
+.pwdModalInfo > input {
+	margin-bottom: 10px !important;
+}
+
+.pwdModalInfo > p {
+	margin-bottom: 28px !important;
+    color: #c08fab;
+    font-size: 18px;
+}
+
+.pwdModalInfo{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px !important;
+}
+
+#newPwdBtn {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* 비밀번호 변경 후 로그인페이지 이동 링크 보여주기 */
+.modalLinkSecPwd{
+	display: none;
+>>>>>>> master
 }

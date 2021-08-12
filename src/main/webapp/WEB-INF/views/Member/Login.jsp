@@ -223,7 +223,7 @@ $(document).ready(function(){
 	console.log(msg);
 
 	if(msg == "success"){
-		swal("🎉WELCOME🎉","마이페이지에서 추가 정보를 입력하시면 프로젝트 참여가 가능합니다","success");
+		swal("🎉WELCOME🎉","회원가입이 완료되었습니다","success");
 	} else if(msg == "fail"){
 		swal("회원가입에 실패했습니다","","error");
 	}

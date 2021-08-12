@@ -36,7 +36,7 @@ public class MemberController {
 		//기본회원목록넘기기
 		List<V_MlistVo> memberList = memberservice.memberList();
 		JSONArray json_memberList = JSONArray.fromObject(memberList);
-		
+		//System.out.println("멤버리스트제이슨 " + json_memberList);
 		/*
 		 * // 모든 프로젝트 리스트 바로 뿌려주기.
 		List<V_PjAdrField_Join_V_PDetail> project_list = service.getProjectList("");

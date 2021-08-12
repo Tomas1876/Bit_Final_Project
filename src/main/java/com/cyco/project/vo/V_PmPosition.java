@@ -10,6 +10,5 @@ public class V_PmPosition {
 	private String position_id;
 	private String member_nickname;
 	private String member_image;
-	
 
 }

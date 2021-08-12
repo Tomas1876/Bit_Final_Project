@@ -4,6 +4,28 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
    
    
+    <!-- 에러페이지 -->
+    <error-page>
+	    <exception-type>java.lang.Throwable</exception-type>
+	    <location>/WEB-INF/views/Main/ErrorPage.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>400</error-code>
+	    <location>/WEB-INF/views/Main/ErrorPage.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>404</error-code>
+	    <location>/WEB-INF/views/Main/ErrorPage.jsp</location>
+	</error-page>
+	<!--  
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/WEB-INF/views/Main/ErrorPage.jsp</location>
+	</error-page>
+   -->
+   
       <!-- UTF-8 관련 파라미터 설정 -->
 <filter>
         <filter-name>encodingFilterUTF8</filter-name>
@@ -81,11 +103,7 @@
    <listener>
 	
 	<!-- 동시 접속한 세션들 관리하기 위한 설정 -->
-  	<listener-class>
-
-  		org.springframework.security.web.session.HttpSessionEventPublisher
-
-  	</listener-class>
+  	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 
  </listener>
 

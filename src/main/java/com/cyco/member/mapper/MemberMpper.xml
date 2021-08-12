@@ -84,5 +84,7 @@
 	<update id="findPwdEdit">
 		update member set MEMBER_PWD=#{param2} where MEMBER_EMAIL=#{param1}
 	</update>
+	
+	
 
 </mapper>

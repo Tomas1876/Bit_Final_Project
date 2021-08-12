@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="se" uri="http://www.springframework.org/security/tags" %>
-
+<!-- 스프링 시큐리티 설정 -->
+<%@ taglib prefix="se"
+	uri="http://www.springframework.org/security/tags"%>
 <head>
 <!-- member CSS -->
 <link type="text/css"
@@ -113,9 +115,15 @@
                        
                         <!-- 프로젝트이름, 주언어 -->
 
-						<div class="card-body" id="backimg" style="background-image:url(${pageContext.request.contextPath}/assets/img/projectimg/${rcm.p_image})">
-							<a href="/project/detail?project_id=${rcm.project_id}"><h3 class="h5 card-title">${rcm.p_title}</h3></a>
 
+						<div class="card-body" id="backimg" style="background-image:url(${pageContext.request.contextPath}/images/${rcm.p_image})">		
+						<!-- 추가정보 미입력 회원이면 상세 보기 경고 -->
+						<se:authorize access="hasRole('ROLE_PREMEMBER')">
+							<a href="#"><h3 class="h5 card-title deny_premember">${rcm.p_title}</h3></a>
+						</se:authorize>
+						<se:authorize access="!hasRole('ROLE_PREMEMBER')">
+							<a href="/project/detail?project_id=${rcm.project_id}"><h3 class="h5 card-title">${rcm.p_title}</h3></a>
+						</se:authorize>
 							<p class="card-text recommend_skill" >
 								<c:forEach var = "pjsk" items="${pjsk_list}" varStatus="status" > 
 									<c:if test="${pjsk.project_id eq rcm.project_id}">
@@ -209,19 +217,46 @@
 							   </c:forEach>
 						   </se:authorize>
 						   </div>
+<<<<<<< HEAD
                            <a href="/project/detail?project_id=${project.project_id}"><img class="m_img_size" src="${pageContext.request.contextPath}/resources/upload/${project.p_image}"></a>
+=======
+                           <a href="/project/detail?project_id=${project.project_id}"><img class="m_img_size" src="${pageContext.request.contextPath}/images/${project.p_image}"></a>
+>>>>>>> master
                         </div>
-                       
                         <!-- 프로젝트이름, 주언어 -->
 						<div class="card-body">
-							<a href="/project/detail?project_id=${project.project_id}"><h3 class="h5 card-title mt-3">${project.p_title}</h3></a>
+						<se:authorize access="hasRole('ROLE_PREMEMBER')">
+							<h3 class="h5 card-title mt-3 deny_premember">${project.p_title}</h3>
+							</se:authorize>
+							<se:authorize access="!hasRole('ROLE_PREMEMBER')">
+							<a href="/project/detail?project_id=${project.project_id}"><h3 class="h5 card-title mt-3">
+							<c:choose>
+								<c:when test="${fn:length(project.p_title) >18 }">
+									${fn:substring(project.p_title,0,15)} ...
+								</c:when>
+								<c:when test="${fn:length(project.p_title) <=18 }">
+									${project.p_title }
+								</c:when>
+							</c:choose>
+							</h3></a>
+						</se:authorize>
 							<div class="p_footer">
 							<p class="card-text p_skill">
+							<c:set var="sk" value=""/>
 								<c:forEach var = "pjsk" items="${pjsk_list}" varStatus="status" > 
 									<c:if test="${pjsk.project_id eq project.project_id}">
-									 #${pjsk.skill_name}
+									 <c:set var="sk" value="${sk} #${pjsk.skill_name}"/>
 									</c:if>
 								</c:forEach>
+								<c:choose>
+									<c:when test="${fn:length(sk)>25}">
+										${fn:substring(sk,0,23)} ...
+									</c:when>
+									<c:when test="${fn:length(sk)<=25}">
+										${sk }
+									</c:when>
+									
+								</c:choose>
 								</p>
 								<p class="card-text p_team_memNum">모집인원: 
 								<c:forEach var = "membercount" items="${membercount_list}" varStatus="status" > 

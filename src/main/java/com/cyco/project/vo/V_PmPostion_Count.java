@@ -8,4 +8,5 @@ public class V_PmPostion_Count {
 	private String max;
 	private String position_id;
 	private String position_name;
+	private int count;
 }

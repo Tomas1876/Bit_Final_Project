@@ -14,5 +14,5 @@ public class V_ApplyMemberList {
 	String applypositionname;
 	String apply_position_id;
 	String apply_ok;
-	
+	String count;
 }

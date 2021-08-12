@@ -7,7 +7,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CYCO HOME</title>
 <link rel="stylesheet" type="text/css" href = "../css/main.css">
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
@@ -69,9 +68,6 @@
 			}
 			
 		}
-
-		
-		
 	});
 	
 

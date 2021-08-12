@@ -85,9 +85,6 @@ public class AdminController {
 		//프로젝트 상태 카운트 - 도넛예정
 		List<StateCountVo> stateList = service.getStateCount();
 		
-		System.out.println(PscountList);
-		System.out.println(MscountList);
-		
 		m.addAttribute("mcount",mcount);
 		m.addAttribute("pcount",pcount);
 		m.addAttribute("PscountList",PscountList);

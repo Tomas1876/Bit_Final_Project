@@ -27,6 +27,8 @@ d.addEventListener("DOMContentLoaded", function(event) {
         xl: 1140
     };
     
+    
+    
     var preloader = d.querySelector('.preloader');
     if(preloader) {
 
@@ -123,3 +125,11 @@ d.addEventListener("DOMContentLoaded", function(event) {
     }
 
 });
+
+$('.navbar-toggler').click(function(){
+	$('#navbar_global').show();
+})
+
+$('#HeaderCancle').click(function(){
+	$('#navbar_global').hide();
+})

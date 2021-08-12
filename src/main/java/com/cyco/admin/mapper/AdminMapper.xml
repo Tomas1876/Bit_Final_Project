@@ -45,7 +45,7 @@
 		left join p_skill psk
 		on sk.skill_code = psk.skill_code
 		group by sk.skill_code,sk.skill_name
-		order by count desc
+		order by name desc
 	</select>
 	<select id="getPpositionCount" resultType="com.cyco.admin.vo.PpositionCountVo">
 		select pos.position_id as id, pos.position_name as name,  count(decode(pm.project_id,null,null,1)) as count
@@ -53,7 +53,7 @@
 		left join p_member pm
 		on pos.position_id = pm.position_id
 		group by pos.position_id, pos.position_name
-		order by count desc
+		order by name desc
 	</select>
 	<select id="getPFieldCount" resultType="com.cyco.admin.vo.PFieldCountVo">
 		select pf.field_code as id, pf.field_name as name, count(decode(p.project_id, null, null ,1)) as count
@@ -61,7 +61,7 @@
 		left join project p
 		on p.field_code = pf.field_code
 		group by  pf.field_code, pf.field_name
-		order by count desc
+		order by name desc
 	</select>
 	
 	<select id="getMSkillCount" resultType="com.cyco.admin.vo.MSkillCountVo">
@@ -70,7 +70,7 @@
 		left join m_skill msk
 		on sk.skill_code = msk.skill_code
 		group by sk.skill_code,sk.skill_name
-		order by count desc
+		order by name desc
 	</select>
 	<select id="getMpositionCount" resultType="com.cyco.admin.vo.MpositionCountVo">
 		select pos.position_id as id, pos.position_name as name,  count(decode(md.member_id,null,null,1)) as count
@@ -78,7 +78,7 @@
 		left join m_detail md
 		on pos.position_id = md.position_id
 		group by pos.position_id, pos.position_name
-		order by count desc
+		order by name desc
 	</select>
 
 	
@@ -167,13 +167,15 @@
 		}
 	</select>
 	<!-- 팀장 회원일때 -->
-	<resultMap id="idMap" type="hashmap" />
+	<resultMap id="idMap" type="hashmap">
+		<result property="member_id" column="member_id"/>
+	</resultMap>
 	<select id="procedureBanLeader" statementType="CALLABLE" parameterType="map">
 		{CALL BANLEADER(
 			${data.member_id},
 			${data.auth},
 			${data.enabled},
-			#{data.output, mode=OUT, jdbcType=INTEGER, javaType=int}
+			#{data.output, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=idMap}
 		)}
 	</select>
 	

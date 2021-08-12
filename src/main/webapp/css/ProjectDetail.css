@@ -27,7 +27,16 @@ p{
 	margin-left: 10px !important;
 }
 
-
+.Badge{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #CA8FAB;
+    display: inline-block;
+    position: absolute;
+    transform: translate(-10px, 4px);
+    cursor: pointer;
+}
 
 .ProjectDetail_p{
 	width: 100%;
@@ -484,7 +493,20 @@ p{
     padding: 0;
     width: 130px;
 }
-
+.ApplyComple{
+	color: #C0A9BD;
+    background-color: white;
+    border: 0.0625rem solid #C0A9BD;
+    padding: 0;
+    width: 130px;
+    cursor: not-allowed !important;
+}
+.ApplyComple:hover{
+	color: #C0A9BD !important;
+    background-color: white !important;
+    border: 0.0625rem solid #C0A9BD !important;
+    cursor: not-allowed !important;
+}
 
 
 .BtnWarp >input:hover{
@@ -855,7 +877,7 @@ p{
 }
 
 .ApplyMemberListBtn_Ok{
-    width: 34%;
+    width: 42px;
     color: white;
     background-color: #C0A9BD;
     border: 0.0625rem solid #C0A9BD;
@@ -864,7 +886,7 @@ p{
 }
 
 .ApplyMemberListBtn_No {
-    width: 34%;
+    width: 42px;
     color: #C0A9BD;
     background-color: white;
     border: 0.0625rem solid #C0A9BD;
@@ -1239,6 +1261,11 @@ memberListBox{
     padding: 0;
 }
 
+.QnaBtnRightBox >input:hover{
+	font-weight: 600;
+}
+
+
 .QnaBtnRightBox >p{
 	display: inline-block;
     font-size: .75rem;
@@ -1268,29 +1295,23 @@ memberListBox{
 	display: inline-block;
     width: 100%;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 7px !important;
     text-align: right;
     background: white;
 }
 
 
 .ReplyWriteBtn{
-	border: 0.0625rem solid #CA8FAB;
-    background-color: #CA8FAB;
-    border-radius: 8px;
-    color: white;
-    width: 40px;
-    font-size: 16px;
-    height: 27px;
-    padding: 2px;
-    text-align: center;
-    display: inline-block;
-    margin: 5px;
+	border: none;
+    background-color: white;
+    outline: none;
+    font-size: .75rem;
+    color: #c9c9d9;
+    padding: 0;
 }
 
 .ReplyWriteBtn:hover{
-	color: #F4F2F3;
-	background-color: #b46088;
+	font-weight: 500;
 }
 
 .colorBox{
@@ -1308,8 +1329,8 @@ memberListBox{
 }
 
 .disabled{
-	border: none;
-    pointer-events: none;
+	border: none !important;
+    pointer-events: none !important;
 	
 }
 
@@ -1395,24 +1416,6 @@ memberListBox{
     text-align: right;
 }
 
-.FeedBtn{
-	    border: 0.0625rem solid #CA8FAB;
-    background-color: white;
-    border-radius: 8px;
-    color: #CA8FAB;
-    width: 10%;
-    font-size: 16px;
-    height: 27px;
-    padding: 2px;
-    text-align: center;
-    display: inline-block;
-    margin-top: -1px;
-}
-
-.FeedBtn:hover {
-	color: #F4F2F3;
-	background-color: #b46088;
-}
 
 .feedTitle{
 	width: 91%;
@@ -1425,6 +1428,23 @@ memberListBox{
     margin-bottom: 5px;
     padding: 4px 8px;
     font-size: 0.8rem;
+}
+
+.FeedTitle >p{
+	display: inline-block;
+	margin: 0 6px 0 0!important;
+	padding: 0 !important;
+}
+
+.FeedTitle >input{
+   word-break: break-all;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -.3px;
+    resize: none;
+    display: inline-block;
+    width: 70%;
+    border: 0.0625rem solid #D1D5DB;
 }
 
 .feedcontent{
@@ -1463,4 +1483,57 @@ memberListBox{
     border: 0.0625rem solid #C0A9BD;
     padding: 5px;
     margin: 3px;
+}
+
+.FeedTitle{
+	font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -.3px;
+    color: #323232;
+    margin-bottom: 4px;
+}
+
+.FeedContent{
+   width:  100%;
+}
+
+.FeedContent > textarea{
+	color: #737373;
+	word-break: break-all;
+	font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -.3px;
+    resize: none;
+    margin-left: 20px;
+    min-height: 150px;
+    width: 100%;
+    border: 0.0625rem solid #D1D5DB;
+}
+
+.FeedBtnBox{
+	width: 100%;
+	display: inline-block;
+}
+
+.FeedBtnBox > input{
+	display: inline-block;
+	border: none;
+    background-color: white;
+    outline: none;
+    font-size: .75rem;
+    color: #c9c9d9;
+    padding: 0;
+}
+
+.FeedBtnBox > input:hover{
+	font-weight: 600;
+}
+
+.FeedBtnBox> p{
+	display: inline-block;
+    font-size: .75rem;
+    color: #c6c6d7;
+    cursor: default;
+    margin: 0 .3rem 0 0.3rem !important;
 }

@@ -19,6 +19,7 @@ public class ChangeAuth {
 		//권한을 담는 객체
 		List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
 		
+		updatedAuthorities.clear();
 		//새로 추가할 권한을 입력한다
 		updatedAuthorities.add(new SimpleGrantedAuthority(role));
 		

@@ -88,7 +88,7 @@
 									</a>
 								</div>
 								<div class="col-6 collapse-close">
-									<a href="#navbar_global" class="fas fa-times"
+									<a href="#navbar_global" class="fas fa-times" id="HeaderCancle"
 										data-bs-toggle="collapse" data-bs-target="#navbar_global"
 										aria-controls="navbar_global" aria-expanded="false"
 										title="close" aria-label="Toggle navigation"></a>
@@ -121,7 +121,7 @@
 						<!-- Header Right -->
 						<div class="right_nav">
 							<ul
-								class="navbar-nav navbar-nav-hover align-items-lg-center plex_right">
+								class="navbar-nav navbar-nav-hover align-items-lg-center plex_right" id="MenuToggle">
 
 								<!-- 로그인 안하면 -->
 								<se:authorize
@@ -136,8 +136,8 @@
 								<se:authorize access="hasRole('ROLE_ADMIN')">
 
 									<li class="nav-item dropdown mydropdow 
-										panel-group" id="accordion" role="tablist"
-										aria-multiselectable="true">
+										panel-group"
+										id="accordion" role="tablist" aria-multiselectable="true">
 										<div class="panel panel-default">
 											<div class="panel-heading" role="tab">
 												<a role="button" data-toggle="collapse"
@@ -148,7 +148,7 @@
 											<!-- 1차 메뉴 -->
 											<div class="sub panel-collapse collapse" role="tabpanel"
 												id="my_sub_admin">
-												<ul class="panel-body">
+												<ul class="panel-body" id="headerMenu">
 													<li><a
 														href="${pageContext.request.contextPath}/admin/chart">통계</a></li>
 													<li><a
@@ -171,25 +171,29 @@
 
 									<!-- 로그인 id에 스타일 줬는데 id가 안 잡혀서 인라인으로 스타일 줌-->
 									<li class="nav-item dropdown panel-group" id="accordion"
-										role="tablist" aria-multiselectable="true" id="alarmbell_li" style="margin-right:30px;">
+										role="tablist" aria-multiselectable="true" id="alarmbell_li"
+										style="margin-right: 30px;">
 										<div class="panel panel-default" id="alarm_panel">
 											<div class="panel-heading" role="tab">
 												<a role="button" data-toggle="collapse"
 													data-parent="#accordion" href="#a_sub"
 													aria-expanded="false"><img class="alarmbell"
 													src="${pageContext.request.contextPath}/assets/img/brand/ALARM.svg"></a>
+													<!-- <div id="alarmdiv">새 알림이 도착했습니다</div> -->
+													
 											</div>
 											<!-- 1차 메뉴 알림 -->
 											<div class="sub panel-collapse collapse" role="tabpanel"
 												id="a_sub">
-												<ul class="panel-body">
+												<ul class="panel-body" id="headerMenu">
 													<li><a
 														href="${pageContext.request.contextPath}/messages/">내
 															쪽지</a></li>
 
 													<li class="subdrop"><a role="button"
 														data-toggle="collapse" data-parent="#accordion"
-														href="#a_sub_down" aria-expanded="false">알림</a>
+														href="#a_sub_down" aria-expanded="false">알림
+														</a>
 														<div id="a_sub_down" class="panel-collapse collapse"
 															role="tabpanel">
 															<ul class="susub panel-body" id="alarmsub">
@@ -214,9 +218,8 @@
 													class="fas fa-caret-down"></i>
 												</a>
 											</div>
-											<div class="panel-collapse collapse sub" id="my_sub_member"
-												role="tabpanel">
-												<ul class="panel-body">
+											<div class="panel-collapse collapse sub" id="my_sub_member" role="tabpanel">
+												<ul class="panel-body" id="headerMenu">
 													<li><a
 														href="${pageContext.request.contextPath}/mypage/mypageCheck">마이페이지</a></li>
 													<li><a
@@ -225,10 +228,9 @@
 													<li class="subdrop"><a role="button"
 														data-toggle="collapse" data-parent="#accordion"
 														href="#p_coll_sub" aria-expanded="false">프로젝트</a> <se:authorize
-															access="hasAnyRole('ROLE_MEMBER', 'ROLE_TEAMMANGER')">
+															access="hasAnyRole('ROLE_MEMBER', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')">
 															<input type="hidden" id="ismember" value="1" />
-														</se:authorize> <se:authorize
-															access="!hasAnyRole('ROLE_MEMBER', 'ROLE_TEAMMANGER')">
+														</se:authorize> <se:authorize access="hasRole('ROLE_PREMEMBER')">
 															<input type="hidden" id="ismember" value="0" />
 														</se:authorize>
 														<div id="p_coll_sub" class="panel-collapse collapse"
@@ -305,8 +307,9 @@
 					</div>
 				</div>
 			</div>
+		
 	</main>
-
+<div id="alarmdiv">새 알림이 도착했습니다</div>
 	<!-- 반응형 토글 -->
 	<script
 		src="${pageContext.request.contextPath}/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -342,6 +345,38 @@ $(function() {
 /* ==============================================
 Loader -->
 =============================================== */
+
+var hideMenu;
+var thisShow;
+var checkLi;
+
+$('#MenuToggle > li > div').click(function(){
+
+	if($(this).attr("id") == "alarm_panel"){
+		if(hideMenu < 0 && checkLi != "alarm_panel"){
+			$(thisShow).removeClass('show');
+		}
+		
+		var attr = $(this).children()[1];
+		hideMenu = $(attr).attr("class").indexOf('show');
+		thisShow = $(attr);
+		checkLi = $(this).attr("id");
+		
+	}else if($(this).attr("id") == "member_panel"){
+		if(hideMenu < 0 && checkLi != "member_panel"){
+			$(thisShow).removeClass('show');
+		}
+		
+		var attr = $(this).children()[1];
+		hideMenu = $(attr).attr("class").indexOf('show');
+		thisShow = $(attr);
+		checkLi = $(this).attr("id");
+		
+	}
+	
+})
+
+
 // 회원 정보
 $('#info').click(function() {
 	var toggle = $('.user_info').attr('style');
@@ -357,6 +392,8 @@ $('#info').click(function() {
 		
 	}
 })
+
+
 $('#alram').click(function() {
 	var toggle = $('.Alram_box').attr('style');
 	var infotoggle = $('.user_info').attr('style');
@@ -374,11 +411,11 @@ $('#alram').click(function() {
 	var ws;
 	var logineduser = "${sessionScope.member_id}";
 	var loginednickname = "${sessionScope.nickname}"
-	var wsurl = "ws://localhost:8090/websocket/${sessionScope.member_id}"	
+	var wsurl = "ws://localhost:8070/websocket/${sessionScope.member_id}"	
 	
 	
 	function openSocket() {
-	/*var ws = new WebSocket("wss://localhost:8090/alarm/{code, sender, receiver}");   */
+	//var ws = new WebSocket("wss://localhost:8090/alarm/{code, sender, receiver}");
 	ws = new WebSocket(wsurl);
 	console.log("웹소켓 파라미터로 넘기는 회원번호 ",${sessionScope.member_id});
 	let logineduser = "${sessionScope.member_id}";
@@ -396,11 +433,22 @@ $('#alram').click(function() {
 		let data = event.data;
 		console.log("서버에서 받은 메시지 ",JSON.parse(data));
 		updatealarmlist(logineduser).then(function(){
+			
+			//종 바꾸기
+			changeBell_New();
+
+			//알림 왔다고 띄워주기
+			 $( '#alarmdiv' ).fadeIn( 2000, function() {
+				$( '#alarmdiv' ).fadeOut(2000, function() {});
+          		
+        	});
+
+			
 			//알림페이지에 알림 하나 추가하는 함수
 			addNewAlarm(JSON.parse(data));
 			
 		});	
-		changeBell_New();
+		
 	
 	}		
 	 	ws.onclose = function(event){
@@ -463,6 +511,7 @@ $('#alram').click(function() {
 //////////////////////////////////////////
 	$(document).ready(function(){
 		
+		
 		if(logineduser != ""){
 			
 			openSocket();
@@ -470,7 +519,7 @@ $('#alram').click(function() {
 			updatealarmlist(logineduser);
 			
 		}
-		
+
 		
 /* 		//드롭다운 메뉴
 		$("#my_sub").hide();
@@ -537,7 +586,6 @@ $('#alram').click(function() {
 		
 	//ROLE_MEMBER이거나 TEAMMANAGER일 경우 프로젝트 참여 여부 페이지 이동시마다 반영되게 처리
 	if($("#ismember").val() == '1'){
-		console.log("들어오나?")
 		
 		$.ajax({
 			
@@ -545,8 +593,7 @@ $('#alram').click(function() {
 			data:{id : logineduser},
 			dataType:"text",
 			success:function(res){
-				console.log(res)
-				
+
 				$("#project_sub").empty();
 				
 				if(res == "none"){
@@ -568,8 +615,28 @@ $('#alram').click(function() {
 		});
 	}	
 	
+	//추가 정보 미입력 회원이 프로젝트 상세나 회원상세 누르면 경고창 띄우고 마이페이지로 보내기
+	$(".deny_premember").on("click", function() {
 
-			
+		swal({
+			title: "PLEASE FILL YOUR PROFILE",
+			text: "추가정보를 입력하셔야 상세보기가 가능합니다",
+			icon: "info",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+
+					location.href="/mypage/mypageCheck";
+					
+				} else {
+					return false;
+				}
+			});
+
+	})
+		
 	});
 ///////////////////////////////////////////
 </script>

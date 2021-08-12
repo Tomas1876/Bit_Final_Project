@@ -36,7 +36,8 @@
 			<div id="profile_img">
 				<!-- <img src="assets/img/member_detail/cycoding_img.png"> -->
 				<img
-					src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}">
+
+					src="${pageContext.request.contextPath}/images/${member.MEMBER_IMAGE}">
 			</div>
 			<div id="cycoder">
 				<p>${member.MEMBER_NICKNAME}</p>

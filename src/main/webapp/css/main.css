@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+body{ -ms-overflow-style: none; }
+body::-webkit-scrollbar { display: none; }
 
 .main_{
 	position: absolute;
@@ -144,22 +146,24 @@
 
 /*아래와 동일한 회원메뉴*/
 #my_sub_member{
-	position: absolute;
-    top: 50px;
-	left:1300px;
+    position: absolute;
+    transform: translate(-85px, 10px);
+    /* top: 50px; */
+    /* left: 1300px; */
     width: 220px;
     z-index: 997;
     background-color: white;
-    padding:0;
+    padding: 0;
 }
 #a_sub{
 	position: absolute;
-    top: 32px;
-	right: -132px;
+    /* top: 32px; */
+    transform: translate(-100px, 10px);
+    /* right: -132px; */
     width: 220px;
     z-index: 997;
     background-color: white;
-    padding:0;
+    padding: 0;
 }
 /*.sub와 동일한 관리자 메뉴*/
 #my_sub_admin{
@@ -221,6 +225,11 @@
 	font-size:12px;
 	z-index: 999;	
 }
+
+.none_alarm_content{
+	font-size:12px;
+	z-index: 999;	
+}
 /* .susub li:last-child{
 	background-color:#94A7AE;
 }
@@ -234,6 +243,21 @@
 	color:#F4F2F3;
 	border:none;
 	
+}
+/*알림 오면 보여줄 div*/
+#alarmdiv{
+	background-color: #dfccde;
+	width:220px;
+	height:80px;
+	padding:5px;
+	color:white;
+	z-index:999;	
+  	display:none;
+	position:fixed;
+	bottom:2vh;
+	right:1vw;
+	font-size:14px;
+	line-height: 1rem;
 }
 
 /*메시지 수신 모달창*/
@@ -340,3 +364,13 @@ cursor: pointer;
 background-color:#FFFFFF;
 }
 
+#headerMenu{
+	border: 0.0625rem solid #D1D5DB;
+}
+
+
+
+#headerMenu > li > a {
+	width: 100%;
+	display: inline-block;
+}

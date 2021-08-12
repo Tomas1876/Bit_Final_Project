@@ -32,7 +32,7 @@ public class MemberRestController {
 	// 포지션 select
 	@RequestMapping(value = "memberPosition/{position}", method = RequestMethod.GET)
 	public List<V_MlistVo> getMemberPosition(@PathVariable("position") String position) {
-		System.out.println("RESTController, position: " + position);
+		//System.out.println("RESTController, position: " + position);
 
 		if(position.equals("전체")) {
 			position = "";

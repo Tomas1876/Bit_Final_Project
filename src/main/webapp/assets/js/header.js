@@ -124,19 +124,44 @@ function updatealarmlist(id) {
 								//"<li class='header_alarm'><p id='" + data.alarm_ID + "' class='alarm_content'>새로운 쪽지가 도착했습니다</p></li>"
 							);
 
+						} else if (data.alarm_CODE == "PM_BAN") {
+
+							$("#alarmsub").append(
+
+								"<li class='header_alarm'><a href='/mypage/myProject'><p id='" + data.alarm_ID + "' class='alarm_content'>프로젝트의 팀장이 변경되었습니다</p></a></li>"
+
+							);
+
+						} else if (data.alarm_CODE == "PR_EX") {
+
+							$("#alarmsub").append(
+
+								"<li class='header_alarm'><a href='/project/detail?project_id=" + data.url + "' class='alarm_content'>프로젝트에서 추방당했습니다</p></a></li>"
+
+							);
+
+						} else if (data.alarm_CODE == "TM_CH") {
+
+							$("#alarmsub").append(
+
+								"<li class='header_alarm'><a href='/project/detail?project_id=" + data.url + "' class='alarm_content'>프로젝트의 팀장이 되셨습니다</p></a></li>"
+
+							);
+
 						}
+						
 					});
 
 				} else {
 
 					$("#alarmsub").append(
-						"<li><p class='alarm_content'>새 알림이 없습니다</p></li>"
+						"<li><p class='none_alarm_content'>새 알림이 없습니다</p></li>"
 					);
 				}
 
 				$("#alarmsub").append(
 
-					"<li class='last'><a href='/mypage/myalarm'><p>알림 더보기</p></a></li>"
+					"<li class='last'><a href='/mypage/myalarm'><p class='none_alarm_content'>알림 더보기</p></a></li>"
 
 				);
 
@@ -150,6 +175,5 @@ function updatealarmlist(id) {
 	})
 
 }
-
 
 

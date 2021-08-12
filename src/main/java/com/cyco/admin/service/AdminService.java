@@ -203,17 +203,12 @@ public class AdminService {
 			
 			Map <String, Object> map = new HashMap<String, Object>();
 			map.putAll(data);
-			map.put("output", 0);
-			
 			dao.procedureBanLeader(map);
-			List<String> list = dao.getPMemberList((int) map.get("output"));
 			
-			result.put("list", list);
-			
-			
-			
+			System.out.println(map);
 			
 			result.put("result", "true");
+			result.put("list", map.get("output"));
 		}
 		//이미 밴당한 회원 해제
 		else if(auth.equals("5")){

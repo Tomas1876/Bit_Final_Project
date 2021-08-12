@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -152,13 +153,10 @@ public class AlarmRestController {
 	
 	//비동기로 쪽지 리스트 불러오기
 	@RequestMapping(value="getnotelist", method=RequestMethod.POST)
-	public List<NoteVo> getNoteList(@RequestBody HashMap<String, Object> data) {
-		
-		String useremail = (String)data.get("useremail");
-		String table = (String)data.get("table");
+	public List<NoteVo> getNoteList(@RequestBody String table, Authentication auth) {
 		
 		System.out.println(table);
-		List<NoteVo> notelist = alarmservice.getNoteList(useremail, table);
+		List<NoteVo> notelist = alarmservice.getNoteList(table.replace("table=",""), auth);
 		
 		System.out.println(notelist.toString());
 		

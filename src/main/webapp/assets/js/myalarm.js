@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	let date = [];
 	//날짜별로 묶기
 	$.each($("#newalarms").find("th"), function(index, item) {
@@ -119,95 +120,96 @@ $(document).ready(function() {
 
 function addNewAlarm(message) {
 	console.log(message);
-	swal("새 알림이 도착했습니다","","info");
+	
+	//알림 페이지일 때 실행
+	if ($("#isalarmpage").val() == "1"){
 	
 	let newalarm = $("#alarmsub").children(":first").children().children();
 
 	//날짜 얻기
 	var now = new Date();
-	var year = now.getFullYear();    
-	
-	if(now.getMonth() < 9){
+	var year = now.getFullYear();
+
+	if (now.getMonth() < 9) {
 		var month = now.getMonth() + 1; //1월이 0으로 되기때문에 +1을 함.
 		month = '0' + month;
-	} else{
+	} else {
 		var month = now.getMonth() + 1;
 	}
-	
+
 	var date = now.getDate()
 
 	var today = year + "-" + month + "-" + date
 	console.log(today)
 	let count = 0;
 	$.each($("#newalarms").find("thead"), function() {
-	
+
 		//오늘 수신된 알림이 있으면 한 줄만 추가
-		if($(this).find("tr").text().trim() == today){
+		if ($(this).find("tr").text().trim() == today) {
 			count = 1;
-			
-			if(message.alarm_CODE == "PR_IN" || message.alarm_CODE == "PR_S" || message.alarm_CODE == "PR_F" || message.alarm_CODE == "PR_UP"){
-					
-				//프로젝트에 초대됨, 참여 승인됨, 거절됨, 프로젝트 상태 바뀜
+
+			if (message.alarm_CODE == "PR_IN" || message.alarm_CODE == "PR_S" || message.alarm_CODE == "PR_F" || message.alarm_CODE == "PR_UP"
+				|| message.alarm_CODE == "PR_EX" || message.alarm_CODE == "TM_CH") {
+
+				//프로젝트에 초대됨, 참여 승인됨, 거절됨, 프로젝트 상태 바뀜, 추방 당함, 내가 새 팀장이 됨
 				$(this).after(
-					'<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/project/detail?project_id='+message.url+'">'+message.alarm_CONTENT+'</a></td></tr></tbody>'
-					);
-				
-			} else if(message.alarm_CODE == "PR_A"){
-				
+					'<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+					+ '<a href="/project/detail?project_id=' + message.url + '">' + message.alarm_CONTENT + '</a></td></tr></tbody>'
+				);
+
+			} else if (message.alarm_CODE == "PR_A") {
+
 				//내 프로젝트에 누가 지원함
-				$(this).after('<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/member/memberdetailpage?memberid='+message.url+'">'+message.alarm_CONTENT+'</a></td></tr></tbody>');
-				
-			} else if(message.alarm_CODE == "MY_RV"){
+				$(this).after('<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+					+ '<a href="/member/memberdetailpage?memberid=' + message.url + '">' + message.alarm_CONTENT + '</a></td></tr></tbody>');
+
+			} else if (message.alarm_CODE == "MY_RV") {
 				//누가 내게 리뷰를 남김
-				$(this).after('<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/project/detail?project_id='+message.url+'">'+message.alarm_CONTENT+'</a></td></tr></tbody>');
-				
-			} else if(message.alarm_CODE == "CHAT_O"){
+				$(this).after('<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+					+ '<a href="/project/detail?project_id=' + message.url + '">' + message.alarm_CONTENT + '</a></td></tr></tbody>');
+
+			} else if (message.alarm_CODE == "CHAT_O") {
 				//쪽지가 옴
-				$(this).after('<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/messages/">'+message.alarm_CONTENT+'</a></td></tr></tbody>');
+				$(this).after('<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+					+ '<a href="/messages/">' + message.alarm_CONTENT + '</a></td></tr></tbody>');
 			}
-		} 	
 		
+		}
+
 	});
 	console.log(count)
-	if(count == 0){
-			
-			$("#newalarms").prepend(
-				
-				'<thead id="newday"><tr class="table_head"><th>'+today+'</th></tr></thead>'
-				
+	if (count == 0) {
+
+		$("#newalarms").prepend(
+
+			'<thead id="newday"><tr class="table_head"><th>' + today + '</th></tr></thead>'
+
+		);
+
+		if (message.alarm_CODE == "PR_IN" || message.alarm_CODE == "PR_S" || message.alarm_CODE == "PR_F" || message.alarm_CODE == "PR_UP") {
+
+			//프로젝트에 초대됨, 참여 승인됨, 거절됨, 프로젝트 상태 바뀜
+			$("#newday").after(
+				'<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+				+ '<a href="/project/detail?project_id=' + message.url + '">' + message.alarm_CONTENT + '</a></td></tr></tbody>'
 			);
-			
-			if(message.alarm_CODE == "PR_IN" || message.alarm_CODE == "PR_S" || message.alarm_CODE == "PR_F" || message.alarm_CODE == "PR_UP"){
-					
-				//프로젝트에 초대됨, 참여 승인됨, 거절됨, 프로젝트 상태 바뀜
-				$("#newday").after(
-					'<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/project/detail?project_id='+message.url+'">'+message.alarm_CONTENT+'</a></td></tr></tbody>'
-					);
-				
-			} else if(message.alarm_CODE == "PR_A"){
-				
-				//내 프로젝트에 누가 지원함
-				$("#newday").after('<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/member/memberdetailpage?memberid='+message.url+'">'+message.alarm_CONTENT+'</a></td></tr></tbody>');
-				
-			} else if(message.alarm_CODE == "MY_RV"){
-				//누가 내게 리뷰를 남김
-				$("#newday").after('<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/project/detail?project_id='+message.url+'">'+message.alarm_CONTENT+'</a></td></tr></tbody>');
-				
-			} else if(message.alarm_CODE == "CHAT_O"){
-				//쪽지가 옴
-				$("#newday").after('<tbody class="apply_table_sec"><tr id="'+newalarm.attr("id")+'"><td>'
-					+'<a href="/messages/">'+message.alarm_CONTENT+'</a></td></tr></tbody>');
-			}
+
+		} else if (message.alarm_CODE == "PR_A") {
+
+			//내 프로젝트에 누가 지원함
+			$("#newday").after('<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+				+ '<a href="/member/memberdetailpage?memberid=' + message.url + '">' + message.alarm_CONTENT + '</a></td></tr></tbody>');
+
+		} else if (message.alarm_CODE == "MY_RV") {
+			//누가 내게 리뷰를 남김
+			$("#newday").after('<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+				+ '<a href="/project/detail?project_id=' + message.url + '">' + message.alarm_CONTENT + '</a></td></tr></tbody>');
+
+		} else if (message.alarm_CODE == "CHAT_O") {
+			//쪽지가 옴
+			$("#newday").after('<tbody class="apply_table_sec"><tr id="' + newalarm.attr("id") + '"><td>'
+				+ '<a href="/messages/">' + message.alarm_CONTENT + '</a></td></tr></tbody>');
+		}
 	}
-	
 }
-
-
-
+}

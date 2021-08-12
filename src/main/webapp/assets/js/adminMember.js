@@ -83,12 +83,19 @@ $(".m_status").on("click", function() {
 								console.log(result.list);
 								//응답이 정상적으로 왔고
 								//밴 당한 회웡이 팀장이라 응답으로 리스트가 넘어왔을 경우
-								if (result.list != null && result.list.length > 0) {
+
+								if (result.list != null ) {
+									var list=[];
+									result.list.forEach(function(item, index){
+										console.log(item);
+										console.log(item.member_id);
+										list.push(item.member_id);
+									})
 									console.log("팀원이 있는 팀장이 밴 되었다.")
 									var alarm = {
 										"alarm_CODE": "PM_BAN",
 										"url": "0",
-										"members": result.list,
+										"members": list,
 										"alarm_CONTENT": "지원하신 프로젝트의 팀장이 변경되었습니다"
 									}
 

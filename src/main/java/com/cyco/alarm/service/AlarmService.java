@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -168,14 +169,16 @@ public class AlarmService {
 	}
 	
 	//비동기 쪽지 리스트 불러오기
-	  public List<NoteVo> getNoteList(String useremail, String table) {
+	  public List<NoteVo> getNoteList(String table, Authentication auth) {
 	  
+	  String useremail = auth.getName();
+		  
 	  AlarmDao alarmdao = sqlsession.getMapper(AlarmDao.class);
 	  List<NoteVo> notelist = new ArrayList<NoteVo>();
 	  List<V_ToNote_Member_Vo> to_notelist = new ArrayList<V_ToNote_Member_Vo>();
 	  List<V_FromNote_Member_Vo> from_notelist = new ArrayList<V_FromNote_Member_Vo>();
 	  
-
+	  System.out.println("여기서 table" + table);
 	  if(table.equals("TO_NOTE")) { 
 		  
 		  to_notelist = alarmdao.getReceivedMessages(useremail);
@@ -196,6 +199,8 @@ public class AlarmService {
 		  }	  
 		  
 	  }
+	  
+	  System.out.println(notelist.toString());
 	  
 	  	return notelist; 
 	  }

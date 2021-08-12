@@ -154,18 +154,45 @@ $(document).on("click", "#msg_btn", function() {
 		
 	console.log("쪽지 보내기")
 	console.log($("#text").val());
-	var data = {
-		code: "CHAT_O",
+	var alarm = {
+		alarm_CODE: "CHAT_O",
 		url: logineduser,
-		message: $("#text").val(),
-		member_id: $("#reply_to").val(),
-		sender: logineduser,
-		content: loginednickname + "님이 회원님에게 쪽지를 보냈습니다"
+		member_ID: $("#reply_to").val(),
+		alarm_CONTENT: loginednickname + "님이 회원님에게 쪽지를 보냈습니다"
 	};
+	
+	var data = {
+			alarm,
+			note:{
+				member_FROM:logineduser,
+				member_TO:$("#reply_to").val(),
+				note_CONTENT:$("#text").val()
+			}
+		};
 
-	console.log(data);
+		console.log(data);
+		//쪽지 테이블에 반영
+		console.log("쪽지 테이블에 반영")
+		$.ajax({
+			url:"/alarm/insertnote",
+			data:JSON.stringify(data),
+			type:"post",
+			dataType:"text",
+			contentType: "application/json",
+			success:function(res){
+				if(res == "true"){
+					swal("쪽지를 발송했습니다","","success")
+					$("#messagearea").empty();
+				} else{
+					swal("쪽지 발송하지 못했습니다","잠시 후 시도해주세요","error")
+				}
+			}
+			
+		});
+
+	console.log(alarm);
 	// 알림 테이블에 반영, 알림 보내기
-	insertAlarm(JSON.stringify(data));
+	insertAlarm(JSON.stringify(alarm));
 	swal("쪽지가 발송되었습니다", "", "success");
 	$("#messagearea").empty();
 		
@@ -326,4 +353,95 @@ $(".trash").on("click",function(){
 		});		
 })
 
+//쪽지 목록 불러오기(추가나 삭제 후 비동기)
+function getnotelist(table){
 
+	$.ajax({
+		
+		url:"/alarm/getnotelist",
+		data:{table : table},
+		dataType:"json",
+		contentType: "application/json",
+		type:"post",
+		success:function(res){
+			console.log(res)
+			
+			$.each(res, function(index, item){
+				console.log("table")
+				
+				if(table == "TO_NOTE"){
+					
+					var isread;
+					var icon;
+			
+					$("#to").find("tbody").remove();
+					
+					$.each(res, function(index, res){
+						
+						if(res.note_OK == "0"){
+							isread = 'new';
+							icon = 'far fa-envelope';
+							
+						} else{
+							isread = 'read';
+							icon = 'fas fa-envelope-open-text';
+						}
+						
+						if(res.note_CONTENT.length > 10){
+							res.note_CONTENT = res.note_CONTENT.substring(0,10) + '...';
+						}
+						res.note_DATE = res.note_DATE.substring(0,10);
+						
+						$("#to").append(
+								'<tbody class="apply_table_sec '+isread+'">'
+								+'<tr id="to'+res.note_ID+'">'
+								+'<td class="isread"><i class="'+icon+'"></i></td>'
+								+'<td class="sender" id="from'+res.member_FROM+'">'
+								+'<a href="/member/memberdetailpage?memberid='+res.member_FROM+'">'+res.member_NICKNAME+'</a></td>'
+								+'<td class="content"><a href="#to_note_modal" class="trigger-btn msg-trigger" data-toggle="modal">'+res.note_CONTENT+'</a>'
+								+'<input type="hidden" value="'+res.note_CONTENT+'">'
+								+'</td>'
+								+'<td class="date">'+res.note_DATE+'</td>'
+								+'<td class="del_check"><input type="checkbox" class="del_received" name="NOTE_ID" value="'+res.note_ID+'"></td>'
+								+'</tr></tbody>'
+								
+						);
+					});
+	
+				} else if(table == "FROM_NOTE"){
+					
+					$("#from").find("tbody").remove();
+					
+					$.each(res, function(index, res){
+						
+						if(res.note_CONTENT.length > 10){
+							res.note_CONTENT = res.note_CONTENT.substring(0,10) + '...';
+						}
+						res.note_DATE = res.note_DATE.substring(0,10);
+						
+						$("#from").append(
+								'<tbody class="apply_table_sec">'
+								+'<tr id="from'+res.note_ID+'">'
+								+'<td class="isread"><i class="fas fa-paper-plane"></i></td>'
+								+'<td class="receiver" id="to'+res.member_TO+'">'
+								+'<a href="/member/memberdetailpage?memberid='+res.member_TO+'">'+res.member_NICKNAME+'</a></td>'
+								+'<td class="content"><a href="#from_note_modal" class="trigger-btn msg-trigger" data-toggle="modal">'+res.note_CONTENT+'</a>'
+								+'<input type="hidden" value="'+res.note_CONTENT+'">'
+								+'</td>'
+								+'<td class="date">'+res.note_DATE+'</td>'
+								+'<td class="del_check"><input type="checkbox" class="del_send" name="NOTE_ID" value="'+res.note_ID+'"></td>'
+								+'</tr></tbody>'
+								
+						);
+					});
+					
+				}
+			})
+		},
+		error:function(xhr){
+			console.log(xhr)
+		}
+	
+	});
+	
+}

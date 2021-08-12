@@ -34,7 +34,8 @@ function fnChkByte(obj, maxByte)
      if(rbyte > maxByte)
      {
   // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
-  alert("댓글은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  swal("댓글은 최대 " + maxByte + "byte를 초과할 수 없습니다.", "", "warning");
+  
   str2 = str.substr(0,rlen);                                  //문자열 자르기
   obj.value = str2;
   fnChkByte(obj, maxByte);
@@ -81,7 +82,7 @@ function fnChkByte1(obj, maxByte)
      if(rbyte > maxByte)
      {
   // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
-  alert("댓글은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  swal("댓글은 최대 " + maxByte + "byte를 초과할 수 없습니다.", "", "warning");
   str2 = str.substr(0,rlen);                                  //문자열 자르기
   obj.value = str2;
   fnChkByte(obj, maxByte);
@@ -127,7 +128,7 @@ function fnChkByte2(obj, maxByte)
      if(rbyte > maxByte)
      {
   // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
-  alert("댓글은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  swal("댓글은 최대 " + maxByte + "byte를 초과할 수 없습니다.", "", "warning");
   str2 = str.substr(0,rlen);                                  //문자열 자르기
   obj.value = str2;
   fnChkByte(obj, maxByte);
@@ -144,12 +145,12 @@ function fn_formSubmit(){
 	var form1 = document.form1;
 	
 // 	if (validateMEMBER_ID == "") {
-// 		alert("작성자를 입력해주세요.");
+// 		swal("작성자를 입력해주세요.", "", "warning");
 // 		form1.MEMBER_ID.focus();
 // 		return;
 // 	}
 	if (validateREPLY_CONTENT == "") {
-		alert("글 내용을 입력해주세요.");
+		swal("글 내용을 입력해주세요." , "", "warning");
 		form1.REPLY_CONTENT.focus();
 		return;
 	}
@@ -164,7 +165,7 @@ function fn_replyDelete(REPLY_ID){
 
 	form.action="replydelete";
 	form.REPLY_ID.value=REPLY_ID;
-	form.submit();	
+	form.submit();
 } 
 // 댓글 수정 + 취소
 var updateReno = updateRememo = null;
@@ -196,7 +197,7 @@ function fn_replyUpdateSave(){
 	var validateREPLY_CONTENT = document.form2.REPLY_CONTENT.value.replace(/\s|　/gi, '');
 	var form = document.form2;
 	if (validateREPLY_CONTENT == "") {
-		alert("글 내용을 입력해주세요.");
+		swal("글 내용을 입력해주세요.", "", "warning");
 		form.REPLY_CONTENT.focus();
 		return;
 	}
@@ -251,7 +252,7 @@ function fn_replyReplySave(){
 // 		return;
 // 	}
 	if (validateREPLY_CONTENT =="") {
-		alert("글 내용을 입력해주세요.");
+		swal("글 내용을 입력해주세요.", "", "warning");
 		form.REPLY_CONTENT.focus();
 		return;
 	}

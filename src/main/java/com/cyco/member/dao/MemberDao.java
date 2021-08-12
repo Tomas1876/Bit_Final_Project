@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cyco.common.vo.Apply_Join_P_datailVo;
 import com.cyco.common.vo.BookMark_Join_P_detailVo;
 import com.cyco.common.vo.M_AuthVo;
+import com.cyco.common.vo.M_DurationVo;
+import com.cyco.common.vo.M_SkillVo;
 import com.cyco.common.vo.MemberVo;
 import com.cyco.common.vo.PointVo;
 import com.cyco.common.vo.PositionVo;
@@ -105,16 +108,16 @@ public interface MemberDao {
 	
 	//마이페이지+회원상세 기술, 기간, 포지션 수정 시 삭제 및 재등록
 	public Integer deleteSkills(String memberid);	
-	public Integer insertSkills(String memberid, String stat);	
-	public Integer updatePosition(String memberid, String stats);	
+	public Integer insertSkills(List<M_SkillVo> skills);	
+	public Integer updatePosition(@Param("position_id")String position_id, @Param("member_id")String member_id);	
 	public Integer deleteDurations(String memberid);
-	public Integer insertDurations(String memberid, String stat);
+	public Integer insertDurations(List<M_DurationVo> stat);
 	
 	//마이페이지 프로젝트 경험 있/없 업데이트
 	public Integer updateExperience(String memberid, int answer);
 	
 	//마이페이지 프로젝트 경험 있는 사람은 기입하기^^
-	public Integer insertExperiences(M_ExperienceVo mex);
+	public Integer insertExperiences(List<M_ExperienceVo> newEx);
 	
 	//마이페이지 프로젝트 경험 삭제
 	public Integer deleteExperience(String ex_id, String memberid);
@@ -128,6 +131,8 @@ public interface MemberDao {
 	//위의 함수로 체크했을 때, 보너스 포인트 받은 적 없으면포인트 지급(최초 1회)
 	public Integer givePointFirstTime(String member_id);
 	
+	//마이페이지 회원 탈퇴시 팀장인지 확인
+	public Integer isTeamManager(String quit_id);
 	//마이페이지 회원 탈퇴시 탈퇴날짜 업데이트
 	public Integer updateDeleteDate(String quit_id);
 	
@@ -199,5 +204,8 @@ public interface MemberDao {
 	
 	//비밀번호찾기 인증 완료 후 비밀번호 변경
 	public void findPwdEdit(String userEmail, String userPwd);
-
+	
+	//패널티 먹으면 패널티 업뎃
+	public int penalyMember(String member_id);
+	
 }

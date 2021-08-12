@@ -39,29 +39,30 @@
 .errorCode{
 	font-family: Roboto;
 	font-weight: bold;
-	font-size: 80px;
-	color: #CA8FAB;
+	font-size: 40px;
+    margin-top: 15px;
+    margin-bottom: 20px !important;
+    color: #CA8FAB;
 	text-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.25);
 	
 	margin-bottom: 0px;
 }
 
 .errorInfo{
-	font-size: 20px;
-	color: #CA8FAB;
+	font-size: 19px;
+    color: #CA8FAB;
+    margin-bottom: 0;
 }
 
 .homeBtn{
 	width: 40%;
-	
-	border-radius: 7px;
-	color: #CA8FAB;
-	font-size: 20px;
-	padding: 10px 20px 10px 20px;
-	border: solid #CA8FAB 1px;
-	background: white;
-	
-	margin-top:30px;
+    border-radius: 7px;
+    color: #CA8FAB;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    border: solid #CA8FAB 1px;
+    background: white;
+    margin-top: 40px;
 }
 
 .homeBtn:hover {

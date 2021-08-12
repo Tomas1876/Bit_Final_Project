@@ -26,7 +26,7 @@
 		<input type="hidden" name="FREE_ID" value="<c:out value="${boardInfo.FREE_ID}"/>">
 		<div class="form-group">
 			<label for="FREE_TITLE">제목</label>
-			<input type="text" id="FREE_TITLE" name="FREE_TITLE" class="form-control" placeholder="제목을 입력해 주세요." pattern=".{1,250}" maxlength="250" onKeyUp="javascript:fnChkByte(this,'80')" value="<c:out value="${boardInfo.FREE_TITLE}"/>">
+			<input type="text" id="FREE_TITLE" name="FREE_TITLE" class="form-control" placeholder="제목을 입력해 주세요." pattern=".{1,150}" maxlength="150" onKeyUp="javascript:fnChkByte(this,'80')" value="<c:out value="${boardInfo.FREE_TITLE}"/>">
 			<span id="byteInfo">0</span>/ 80byte
 		</div>
 		<br/>

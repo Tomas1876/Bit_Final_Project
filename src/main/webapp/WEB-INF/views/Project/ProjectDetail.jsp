@@ -18,6 +18,17 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 
+<se:authorize access="hasAnyRole('ROLE_PENALTY')">
+	<script type="text/javascript">
+		swal("","프로젝트를 중도 포기하여 프로젝트 확인이 불가능 합니다.","error")
+		.then((value) => {
+		  location.href = "${pageContext.request.contextPath}/main";
+		});
+	</script>
+</se:authorize>
+
+
+
 <c:set var="project" value="${project}" />
 <c:set var="pmcountlist" value="${pmcountlist}" />
 <c:set var="pmlist" value="${pmlist}" />
@@ -164,6 +175,7 @@
 				<ul class="Project_menuBar">
 					<li class="menuliClick" id="project_info"><p>정보</p></li>
 					<li class="menuli" id="Qna"><p>질문</p></li>
+					
 					<c:forEach items="${pmlist}" var="pmlist">
 							<c:if test="${pmlist.member_id eq sessionScope.member_id}">
 								<c:set var="member" value="1" />
@@ -175,6 +187,7 @@
 					<c:if test="${sessionScope.member_id eq project.member_id}">
 					<li class="menuli" id="memberEdit"><p>멤버관리</p></li>
 					</c:if>
+					
 				</ul>
 		</div>
 	<!-- -->
@@ -218,6 +231,7 @@
 </body>
 	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/include/footer.jsp"></jsp:include>
 <script type="text/javascript">
+
 var _0x31fc=['${project.project_id}','178855RGavXW','${project.p_state}','37VnHasv','39916fOFiFp','1893147VnsHwf','${Check}','${sessionScope.member_id}','497148RJynbO','237957ozyIkE','663078oVifUy','1229106SqRSJF','2ujhgEn'];var _0x45b67c=_0x1e6a;(function(_0x430c4d,_0x13e42b){var _0x9fd092=_0x1e6a;while(!![]){try{var _0x1616a3=parseInt(_0x9fd092(0x11d))*-parseInt(_0x9fd092(0x129))+parseInt(_0x9fd092(0x122))+-parseInt(_0x9fd092(0x124))+parseInt(_0x9fd092(0x123))+-parseInt(_0x9fd092(0x127))+-parseInt(_0x9fd092(0x121))*-parseInt(_0x9fd092(0x125))+parseInt(_0x9fd092(0x11e));if(_0x1616a3===_0x13e42b)break;else _0x430c4d['push'](_0x430c4d['shift']());}catch(_0x4b19d4){_0x430c4d['push'](_0x430c4d['shift']());}}}(_0x31fc,0xdc9c9));function _0x1e6a(_0xf46c44,_0x2bbba1){return _0x1e6a=function(_0x31fcf9,_0x1e6ae1){_0x31fcf9=_0x31fcf9-0x11d;var _0xa0abe0=_0x31fc[_0x31fcf9];return _0xa0abe0;},_0x1e6a(_0xf46c44,_0x2bbba1);}var project_id=_0x45b67c(0x126),login_memberid=_0x45b67c(0x120),project_state=_0x45b67c(0x128),check=_0x45b67c(0x11f);
 	
 	
