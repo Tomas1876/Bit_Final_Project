@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.cyco.common.vo.Apply_Join_P_datailVo;
 import com.cyco.common.vo.BookMark_Join_P_detailVo;
+import com.cyco.common.vo.M_DurationVo;
+import com.cyco.common.vo.M_SkillVo;
 import com.cyco.common.vo.MemberVo;
 import com.cyco.common.vo.PositionVo;
 import com.cyco.common.vo.SkillVo;
+import com.cyco.common.vo.StatVo;
 import com.cyco.member.dao.MemberDao;
 import com.cyco.member.vo.M_ExperienceVo;
 import com.cyco.member.vo.MemberDetailPageVo;
@@ -44,8 +47,18 @@ public class MemberDetailService {
 	@Autowired
 	PasswordEncoder pwdEncoder;
 	
-	//마이페이지 진입시 비밀번호 체크
+	//반영 결과 있으면 리턴하기
+	public String getResult(Integer row) {
+		
+		if(row > 0) {
+			return "success";
+		}
+		
+		return "fail";
+	}
 	
+	
+	//마이페이지 진입시 비밀번호 체크
 	public boolean checkPwd(Map<String, String> data) {
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
 		MemberVo member = memberdao.getMyDetail(data.get("useremail"));
@@ -154,43 +167,36 @@ public class MemberDetailService {
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
 		
 		String result = memberdao.haveExperience(userid);
-		
-		
+	
 		return result;
 	}
 	
-	//모달 안에 기술 스택 리스트 뽑기
-	public List<SkillVo> getSkills(){
+	//모달 안에 스택 태그 뽑기
+	public List<StatVo> getTags(String type){
 		
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		List<SkillVo> list = new ArrayList<SkillVo>();
+		List<StatVo> list = new ArrayList<StatVo>();
 		
-		list = memberdao.getSkills();
-		
-		return list;
-		
-	}
+		if(type.equals("type=skill")) {
+			List<SkillVo> slist = new ArrayList<SkillVo>();
+			slist = memberdao.getSkills();
+			for(int i = 0; i < slist.size(); i++) {
+				list.add(slist.get(i));
+			}
+		} else if(type.equals("type=position")) {
+			List<PositionVo> plist = new ArrayList<PositionVo>();
+			plist = memberdao.getPositions();
+			for(int i = 0; i < plist.size(); i++) {
+				list.add(plist.get(i));
+			}
+		} else if(type.equals("type=duration")) {
+			List<P_DurationVO> dlist = new ArrayList<P_DurationVO>();
+			dlist = memberdao.getDurations();
+			for(int i = 0; i < dlist.size(); i++) {
+				list.add(dlist.get(i));
+			}
+		}
 
-	//모달 안에 포지션 리스트 뽑기
-	public List<PositionVo> getPositions(){
-		
-		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		List<PositionVo> list = new ArrayList<PositionVo>();
-		
-		list = memberdao.getPositions();
-		
-		return list;
-		
-	}
-	
-	//모달 안에 기간 리스트 뽑기
-	public List<P_DurationVO> getDurations(){
-		
-		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		List<P_DurationVO> list = new ArrayList<P_DurationVO>();
-		
-		list = memberdao.getDurations();
-		
 		return list;
 		
 	}
@@ -198,152 +204,75 @@ public class MemberDetailService {
 	//기존에 선택했던 기술 삭제
 	public String deleteSkills(String memberid) {
 		
-		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		
+		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);		
 		int row = memberdao.deleteSkills(memberid);
-		String result = "fail";
-		if(row > 0) {
-			result = "success";
-		}
-		return result;
-	}
-	
+		return getResult(row);
+	}	
 	
 	//뷰단에서 변경한 기술 스탯 디비에 반영하기
-	public String editSkills(String memberid, String stat) {
-		
-		System.out.println("스탯 비동기 변경하기 editSkills");
-		System.out.println(memberid);
-		System.out.println(stat);
-		
-		String result = "fail";
-
+	public String editSkills(List<M_SkillVo> stat) {
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		int row =  memberdao.insertSkills(memberid, stat);
-			
-		System.out.println("기술 변경하기 왜 세 번 찍히지 editSkills");	
-		
-		if(row > 0 ) {
-			result = "success";
-		}
-		
-		System.out.println("반영 결과 : " + result);
-		
-		return result;
+		System.out.println("전달된거" + stat);
+		int row =  memberdao.insertSkills(stat);
+		return getResult(row);
 		
 	}
 	
 	//프로젝트 경험 있/없 디비에 반영하기
 	public String updateExperience(String memberid, int answer) {
-		
-		String result = "fail";
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		
-		int row = memberdao.updateExperience(memberid, answer);
-		
-		if(row > 0 ) {
-			result = "success";
-		}
-		return result;
+		int row = memberdao.updateExperience(memberid, answer);	
+		return getResult(row);
 	}
 	
 	//프로젝트 경험 삭제하기
 	public String  deleteExperience(String ex_id, String memberid) {
-		
-		String result = "fail";
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		
 		int row = memberdao.deleteExperience(ex_id, memberid);
-		
-		if(row > 0 ) {
-			result = "success";
-		}
-		return result;
-		
+		return getResult(row);
 	}
 	
 	//프로젝트 경험 업데이트 하기
 	public String updateExperiences(M_ExperienceVo mex) {
-		
-		String result = "fail";
-		
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
 		int row = memberdao.updateExperiences(mex);
-		
-		if(row > 0) {
-			result = "success";
-		}
-		
-		return result;
+		return getResult(row);
 	}
 	
 	//뷰단에서 변경한 포지션 업데이트
-	public String updatePosition(String memberid, String stat) {
+	public String updatePosition(String position_id, String member_id) {
 		
-		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		
-		int row = memberdao.updatePosition(memberid, stat);
-		
-		String result = "fail";
-		if(row > 0) {
-			result = "success";
-		}
-		return result;
+		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);		
+		int row = memberdao.updatePosition(position_id,member_id);
+		return getResult(row);
 	}
 	
 	
 	//기존에 선택했던 선호기간 삭제
 	public String deleteDurations(String memberid) {
 		
-		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		
+		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);	
 		int row = memberdao.deleteDurations(memberid);
-		
-		String result = "fail";
-		if(row > 0) {
-			result = "success";
-		}
-		return result;
+		return getResult(row);
 	}
 	
 	
 	//뷰단에서 변경한 스탯 디비에 반영하기
-	public String editDurations(String memberid, String stat) {
+	public String editDurations(List<M_DurationVo> stat) {
 		
 		System.out.println("스탯 비동기 변경하기 editDurations");
-		System.out.println(memberid);
 		System.out.println(stat);
-		
-		String result = "fail";
-
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		int row =  memberdao.insertDurations(memberid, stat);
-			
-		System.out.println("선호 기간 데이터 변경하기");	
-		
-		if(row > 0 ) {
-			result = "success";
-		}
-		
-		System.out.println("반영 결과 : " + result);
-		
-		return result;
+		int row =  memberdao.insertDurations(stat);
+		return getResult(row);
 		
 	}
 	
 	// 마이페이지에서 기입한 프로젝트 경험들 디비에 insert
 	public String insertExperiences(M_ExperienceVo mex) {
-		
-		String result = "fail";
-		
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
 		int row = memberdao.insertExperiences(mex);
-		
-		if(row > 0){
-			result = "success";
-		}
-		
-		return result;
+		return getResult(row);
 	}
 	
 	//회원 추가정보 모두 기입시 최초 입력인지 체크해서 맞으면 포인트 지급
@@ -357,11 +286,7 @@ public class MemberDetailService {
 			
 			//포인트 컬럼에서 회원 아이디로 사용포인트, 보유포인트가 모두 0인지 확인했을 때 결과가 있으면 포인트 지급
 			int row = memberdao.givePointFirstTime(member_id);
-			
-			if(row > 0) {
-				result = "success";
-			}
-					
+			result = getResult(row);					
 		}
 		
 		return result;

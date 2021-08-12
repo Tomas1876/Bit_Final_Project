@@ -21,12 +21,12 @@ $(document).ready(function() {
 		//input 태그의 읽기 전용 비활성화, 기존 값은 placeholder로 바꾼다
 		target.prev().prop("readonly", false);
 		target.prev().attr("placeholder", before);
-		target.prev().addClass("info-mdf");
+		target.prev().toggleClass("info-mdf");
 
 		//버튼 글씨 바꾸기
 		target.text("확인");
-		target.removeClass("m-btn");
-		target.addClass("c-btn");
+		target.toggleClass("m-btn");
+		target.toggleClass("c-btn");
 		
 		//이때 비밀번호라면 확인창 추가할것!
 		let code = target.attr("id");
@@ -223,9 +223,11 @@ $(document).ready(function() {
 	//detail영역 스탯 모달창
 	$('.trigger').on('click', function() {
 		$('.modal-wrapper').toggleClass('open');
-		//console.log($(this));
+		
 		return false;
 	});
+	
+	//사용자가 클릭할 때마다 태그의 클래스와 위치 바꾸기 함수
 	changeClass = (target, add, remove, area)=>{
 		
 		if(area == "#selectedarea"){	
@@ -250,7 +252,7 @@ $(document).ready(function() {
 
 		if (selected.length > 2) {
 
-			swal("세 개까지만 선택 가능합니다");
+			swal("세 개까지만 선택 가능합니다","","warning");
 
 		} else {
 
@@ -271,7 +273,7 @@ $(document).ready(function() {
 
 		selected = $(".p_clicked");
 		if (selected.length > 0) {
-			swal("하나만 선택 가능합니다");
+			swal("하나만 선택 가능합니다","","warning");
 		} else {
 			changeClass($(this), ["p_clicked","chosen"], "positions", "#selectedarea")
 
@@ -289,8 +291,8 @@ changeinfo = (button)=>{
 	button.prev().prop("readonly", true);
 	button.prev().removeClass("info-mdf");
 	button.text("수정");
-	button.removeClass("c-btn");
-	button.addClass("m-btn");
+	button.toggleClass("c-btn");
+	button.toggleClass("m-btn");
 }
 
 //모달창에 스탯 리스트 뿌리기
@@ -334,68 +336,41 @@ function edit_modal(code) {
 	function getStat(key) {
 
 		key = key;
-		let link;
-
-		if (key == "skill") {
-
-			link = "ajax/getskills";
-
-		} else if (key == "experience") {
-
+		
+		if (key == "experience") {
 			$("#m_experience").addClass("show");
 			$(".exarea").remove();
 			addEx();
-
 			if ($("#have").length == 0) {
-
 				$(".exarea").remove();
 			}
-
 			return;
-
-		} else if (key == "position") {
-
-			link = "ajax/getposition";
-
-		} else if (key == "duration") {
-
-			link = "ajax/getdurations";
-
-		}
+		} 
 
 		$.ajax({
-
-			url: link,
+			url: "ajax/gettags",
 			data: {
-
-				userid: $("#m_id").val()
-
+				"type":key,
 			},
-			type: "get",
+			type: "post",
 			dataType: "json",
 			success: function(response) {
 				console.log(response);
 				$("#tagarea").empty();
 
 				if (key == "skill") {
-
 					$.each(response, function(index, obj) {
-
-
 						$("#tagarea").append(
-
-							"<div class='tags' id='" + obj.skill_code + "'>" + obj.skill_name + "</div>"
+							`<div class='tags' id="${obj.skill_code}">${obj.skill_name}</div>`
 						);
-
 					});
 
 				} else if (key == "position") {
-
 					$.each(response, function(index, obj) {
 
 						$("#tagarea").append(
 
-							"<div class='positions' id='" + obj.position_id + "'>" + obj.position_name + "</div>"
+							`<div class='positions' id='${obj.position_id}'>${obj.position_name}</div>`
 						);
 
 					});
@@ -406,13 +381,11 @@ function edit_modal(code) {
 
 						$("#tagarea").append(
 
-							"<div class='tags' id='" + obj.duration_id + "'>" + obj.duration_date + "</div>"
+							`<div class='tags' id='${obj.duration_id}'>${obj.duration_date}</div>`
 						);
 
 					});
 				}
-
-
 			},
 			error: function(xhr) {
 				console.log(xhr);
@@ -435,6 +408,89 @@ $("#cancel").on("click", function() {
 //모달에서 선택한 태그 DB와 뷰단에 반영하기(기술, 포지션, 기간)
 //스탯 비동기 반영
 //동적 쿼리 쓰는 거로 바꾸자
+$("#edit-btn").on("click", function() {
+
+	let selected = $("#selectedarea").children().attr("id");
+	let arr = [];
+
+	if (third == undefined && second == undefined && first == undefined) {
+		swal("수정할 내용이 없습니다", "", "error");
+
+	} else {
+
+		if ($("#stat").val() != "position") {
+
+			del($("#stat").val());
+			let tags = document.getElementsByClassName("chosen")
+			console.log(tags)
+			Array.from(tags).forEach((v)=>{
+				arr.push(v.getAttribute("id"))
+			})
+			edit(arr)
+			
+		} else {
+			edit(selected);
+		}
+		modifyStatView($("#stat").val());
+
+		//수정 버튼 눌렀을 때 아직 미입력 스탯 있는지 체크해서 문구 보여주기
+		let insert_btn = $(".detail_section").children().children().children(".insert");
+
+		//모든 정보를 채워 입력 버튼이 하나도 없을 경우
+		if (insert_btn.length == 0) {
+			$(".sub_title").empty();
+			//권한 업데이트
+			givePoint();
+		} else {
+			$(".sub_title").text("모든 항목을 입력해야 프로젝트에 지원할 수 있어요!");
+		}
+
+	}
+
+});
+//새로 선택된 스탯들 인서트 하는 함수
+function edit(stat) {
+
+	let url = "";
+	let stats = [];
+	let keyword = $("#stat").val();
+
+	if (keyword == 'skill') {
+
+		url = "ajax/editskills";
+		stat.forEach((v,i)=> stats.push({ms_count:i+1,skill_code:v, member_id: $("#m_id").val()}))
+		console.log("그래서 기술?" + stats)
+
+	} else if (keyword == 'position') {
+
+		url = "ajax/updateposition";
+		stats.push({position_id:stat, member_id: $("#m_id").val()});
+
+	} else if (keyword == 'duration') {
+		stat.forEach((v)=> stats.push({duration_id:v, member_id: $("#m_id").val()}))
+		url = "ajax/editdurations";
+
+	}
+
+	$.ajax({
+		url: url,
+		data:JSON.stringify(stats),
+		contentType:"application/json",
+		traditional:true,
+		type:"post",
+		dataType:"text",
+		async:false,
+		success:function(data) {
+
+		},
+		error: function(xhr) {
+			console.log(xhr);
+		}
+
+	});
+}
+
+/*
 $("#edit-btn").on("click", function() {
 
 	let first = $("#selectedarea :nth-child(1)").attr("id");
@@ -503,7 +559,7 @@ $("#edit-btn").on("click", function() {
 	}
 
 });
-
+*/
 //기존 스탯들 삭제하는 함수
 function del(type) {
 
@@ -530,45 +586,6 @@ function del(type) {
 }
 
 
-//새로 선택된 스탯들 인서트 하는 함수
-function edit(stats) {
-
-	let url = "";
-	let keyword = $("#stat").val();
-
-	if (keyword == 'skill') {
-
-		url = "ajax/editskills";
-
-	} else if (keyword == 'position') {
-
-		url = "ajax/updateposition";
-
-	} else if (keyword == 'duration') {
-
-		url = "ajax/editdurations";
-
-	}
-
-	$.ajax({
-
-		url: url,
-		data: {
-			memberid: $("#m_id").val(),
-			stat: stats
-		},
-		type: "post",
-		dataType: "text",
-		async: false,
-		success: function(data) {
-
-		},
-		error: function(xhr) {
-			console.log(xhr);
-		}
-
-	});
-}
 
 //스탯 변경사항 뷰단에 반영하는 함수
 function modifyStatView(type) {

@@ -411,7 +411,7 @@ $('#alram').click(function() {
 	var ws;
 	var logineduser = "${sessionScope.member_id}";
 	var loginednickname = "${sessionScope.nickname}"
-	var wsurl = "ws://localhost:8090/websocket/${sessionScope.member_id}"	
+	var wsurl = "ws://localhost:8070/websocket/${sessionScope.member_id}"	
 	
 	
 	function openSocket() {

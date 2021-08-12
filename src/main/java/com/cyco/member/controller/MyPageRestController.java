@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cyco.common.vo.Apply_Join_P_datailVo;
 import com.cyco.common.vo.BookMark_Join_P_detailVo;
 import com.cyco.common.vo.M_AuthVo;
+import com.cyco.common.vo.M_DurationVo;
+import com.cyco.common.vo.M_SkillVo;
 import com.cyco.common.vo.PositionVo;
 import com.cyco.common.vo.SkillVo;
+import com.cyco.common.vo.StatVo;
 import com.cyco.member.dao.MemberDao;
 import com.cyco.member.security.ChangeAuth;
 import com.cyco.member.service.MemberDetailService;
@@ -112,11 +117,8 @@ public class MyPageRestController {
 		Integer answer = null;
 		
 		if(type.equals("nickname")) {
-			System.out.println("현재 닉네임 : "+value);
 			answer = memberdao.checkNickName(value);
-			
 		} else if(type.equals("phone")) {
-			
 			answer = memberdao.checkPhone(value);
 	
 		}
@@ -129,49 +131,17 @@ public class MyPageRestController {
 		}
 		return result;
 	}
-
-	// 모달창에 기술 태그 뿌리기
-	@RequestMapping(value = "getskills")
-	public List<SkillVo> getSkills() {
-
-		List<SkillVo> list = new ArrayList<SkillVo>();
-
-		System.out.println(memberdetailservice.getSkills().toString());
-
-		list = memberdetailservice.getSkills();
-
-		return list;
-
-	}
-
-	// 모달창에 포지션 태그 뿌리기
-	@RequestMapping(value = "getposition")
-	public List<PositionVo> getSPositions() {
-
-		List<PositionVo> list = new ArrayList<PositionVo>();
-
-		System.out.println(memberdetailservice.getPositions().toString());
-
-		list = memberdetailservice.getPositions();
-
-		return list;
-
-	}
-
-	// 모달창에 선호 기간 태그 뿌리기
-	@RequestMapping(value = "getdurations")
-	public List<P_DurationVO> getDurations() {
-
-		List<P_DurationVO> list = new ArrayList<P_DurationVO>();
-
-		System.out.println(memberdetailservice.getDurations().toString());
-
-		list = memberdetailservice.getDurations();
-
-		return list;
-
-	}
 	
+	//모달에 기술, 포지션, 기간 태그 뿌리기
+	@RequestMapping(value = "gettags")
+	public List<StatVo> getTags(@RequestBody String type) {
+		System.out.println("현재 태그 종류 : " + type);		
+		List<StatVo> list = new ArrayList<StatVo>();
+			list = memberdetailservice.getTags(type);
+		return list;
+
+	}
+
 	//스탯 삭제하기(기술, 기간)
 	@RequestMapping(value = "deletestat")
 	public String deleteStat(String memberid, String type) {
@@ -195,41 +165,28 @@ public class MyPageRestController {
 	}
 
 	// 변경한 기술 스탯 디비에 반영하기
-	@RequestMapping(value = "editskills")
-	public String editSkills(String memberid, String stat) {
+	@RequestMapping(value = "editskills",produces = "application/json; charset=UTF-8")
+	public String editSkills(@RequestBody List<M_SkillVo> stat) {
 
 		System.out.println("기술 비동기 변경");
-		System.out.println(memberid);
-		System.out.println(stat);
-
-		String result = memberdetailservice.editSkills(memberid, stat);
+		//System.out.println(stat);
+		String result = memberdetailservice.editSkills(stat);
 
 		return result;
 	}
 
 	// 변경할 포지션 디비 반영
-	@RequestMapping(value = "updateposition")
-	public String updatePosition(String memberid, String stat) {
-
-		System.out.println("포지션 비동기 변경");
-		System.out.println(memberid);
-		System.out.println(stat);
-
-		String result = memberdetailservice.updatePosition(memberid, stat);
+	@RequestMapping(value = "updateposition",produces = "application/json; charset=UTF-8")
+	public String updatePosition(@RequestBody List<MemberDetailPageVo> stat) {
+		String result = memberdetailservice.updatePosition(stat.get(0).getPosition_id(),Integer.toString(stat.get(0).getMember_id()));
 
 		return result;
 	}
 
 	// 변경한 선호기간 스탯 디비에 반영하기
-	@RequestMapping(value = "editdurations")
-	public String editDurations(String memberid, String stat) {
-
-		System.out.println("기간 비동기 변경");
-		System.out.println(memberid);
-		System.out.println(stat);
-
-		String result = memberdetailservice.editDurations(memberid, stat);
-
+	@RequestMapping(value = "editdurations",produces = "application/json; charset=UTF-8")
+	public String editDurations(@RequestBody List<M_DurationVo> stat) {
+		String result = memberdetailservice.editDurations(stat);
 		return result;
 	}
 
@@ -295,7 +252,6 @@ public class MyPageRestController {
 	public String updateExperiences(@RequestParam String member_id_input, @RequestParam String ex_count_input ,@RequestParam String exp_title_input,
 			@RequestParam String ex_position_input, @RequestParam String ex_skill_input, @RequestParam String ex_content_input,@RequestParam String ex_duration_input) {
 
-		 System.out.println("프로젝트 경험 수정하기");
 		 M_ExperienceVo mex = new M_ExperienceVo();
 
 		 mex.setMEMBER_ID(member_id_input);
@@ -307,7 +263,6 @@ public class MyPageRestController {
 		 mex.setEX_CONTENT(ex_skill_input);
 		 mex.setEX_DURATION(ex_duration_input); 
 
-
 		System.out.println(mex.toString());
 		String result =	memberdetailservice.updateExperiences(mex);
 		return result;
@@ -317,37 +272,24 @@ public class MyPageRestController {
 	@RequestMapping(value = "modifystatview")
 	public List<MemberDetailPageVo> modifyStatView(String userid, String type) {
 
-		System.out.println("변경한 기술 비동기로 상세페이지에 반영");
-
 		List<MemberDetailPageVo> list = new ArrayList<MemberDetailPageVo>();
 
 		if (type.equals("skill")) {
-
-			System.out.println("modifyStatView skill");
-
 			list = memberdetailservice.getPreferSkills(userid);
 
 		} else if (type.equals("position")) {
-
-			System.out.println("modifyStatView position");
-
 			list = memberdetailservice.getPreferPosition(userid);
 
 		} else if (type.equals("duration")) {
-
-			System.out.println("modifyStatView duration");
-
 			list = memberdetailservice.getPreferDurations(userid);
-
 		}
-
 		return list;
 	}
 	
 	//모든 정보 입력시 포인트 최초 지급
 	@RequestMapping(value="givepoint",method=RequestMethod.POST)
 	public String givePointFirstTime(String member_id) {	
-		System.out.println("포인트 지급");
+
 		String result = memberdetailservice.givePointFirstTime(member_id);
 		 
 		return result;

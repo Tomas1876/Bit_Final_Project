@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cyco.common.vo.Apply_Join_P_datailVo;
 import com.cyco.common.vo.BookMark_Join_P_detailVo;
 import com.cyco.common.vo.M_AuthVo;
+import com.cyco.common.vo.M_DurationVo;
+import com.cyco.common.vo.M_SkillVo;
 import com.cyco.common.vo.MemberVo;
 import com.cyco.common.vo.PointVo;
 import com.cyco.common.vo.PositionVo;
@@ -105,10 +108,10 @@ public interface MemberDao {
 	
 	//마이페이지+회원상세 기술, 기간, 포지션 수정 시 삭제 및 재등록
 	public Integer deleteSkills(String memberid);	
-	public Integer insertSkills(String memberid, String stat);	
-	public Integer updatePosition(String memberid, String stats);	
+	public Integer insertSkills(List<M_SkillVo> skills);	
+	public Integer updatePosition(@Param("position_id")String position_id, @Param("member_id")String member_id);	
 	public Integer deleteDurations(String memberid);
-	public Integer insertDurations(String memberid, String stat);
+	public Integer insertDurations(List<M_DurationVo> stat);
 	
 	//마이페이지 프로젝트 경험 있/없 업데이트
 	public Integer updateExperience(String memberid, int answer);

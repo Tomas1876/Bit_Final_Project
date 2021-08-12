@@ -110,14 +110,10 @@
 	
 	</delete>
 	
-	<insert id="insertSkills" parameterType="String">
-	
-		INSERT INTO m_skill (ms_count, member_id, skill_code)
-	VALUES(
-		(SELECT nvl(MAX(ms_count),0)+1 FROM m_skill where member_id=${param1}),
-    	${param1},#{param2}	)
-
-	
+	<insert id="insertSkills" parameterType="com.cyco.common.vo.M_SkillVo">
+		<foreach collection="list" item="skills" open="INSERT ALL" close="SELECT * FROM DUAL">
+			INTO m_skill(ms_count, member_id, skill_code) VALUES(${skills.ms_count},${skills.member_id},'${skills.skill_code}')
+		</foreach>
 	</insert>
 	
 	<insert id="insertExperiences" parameterType="com.cyco.member.vo.M_ExperienceVo">
@@ -137,7 +133,7 @@
 	<!-- 마이페이지 회원 선호 포지션 변경 -->
 	<update id="updatePosition">
 	
-		update m_detail set position_id=#{param2} where member_id=${param1}
+		update m_detail set position_id=#{position_id} where member_id=${member_id}
 	
 	</update>
 	
@@ -149,12 +145,12 @@
 	</delete>
 	
 	<!-- 마이페이지 새로 선택한 선호 기간 입력 -->
-	<insert id="insertDurations" parameterType="String">
-	
-		INSERT INTO m_duration (duration_id, member_id) values (#{param2},${param1})
-
-	
+	<insert id="insertDurations" parameterType="com.cyco.common.vo.M_DurationVo">
+		<foreach collection="list" item="duration" open="INSERT ALL" close="SELECT * FROM DUAL">
+			INTO m_duration (duration_id, member_id) values ('${duration.duration_id}',${duration.member_id})
+		</foreach>
 	</insert>
+
 	<!-- 마이페이지 회원 프로젝트 경험 미입력에서 있/없 입력으로 변경 -->
 	<update id="updateExperience">
 	
