@@ -117,10 +117,11 @@
 	</insert>
 	
 	<insert id="insertExperiences" parameterType="com.cyco.member.vo.M_ExperienceVo">
-	
-		insert into m_experience (MEMBER_ID,EXP_TITLE,EX_POSITION,EX_SKILL,EX_DURATION,EX_CONTENT,EX_COUNT) 
-			values(${MEMBER_ID},#{EXP_TITLE},#{EX_POSITION},#{EX_SKILL},#{EX_DURATION},#{EX_CONTENT},(SELECT nvl(MAX(EX_COUNT),0)+1 FROM m_experience where MEMBER_ID=${MEMBER_ID}))
-	
+		<foreach collection="list" item="ex" open="INSERT ALL" close="SELECT * FROM DUAL">
+		into m_experience (member_id,exp_title,ex_position,ex_skill,ex_duration,ex_content,ex_count) 
+			values(${ex.member_id},'${ex.exp_title}','${ex.ex_position}','${ex.ex_skill}','${ex.ex_duration}','${ex.ex_content}',
+			(SELECT nvl(MAX(EX_COUNT),0)+1 FROM m_experience where MEMBER_ID=${ex.member_id}))
+		</foreach>
 	</insert>
 	
 	<!-- 마이페이지 회원 프로젝트 경험 삭제 -->
@@ -160,12 +161,12 @@
 	<!-- 마이페이지 회원 프로젝트 경험 상세 수정 -->
 	<update id="updateExperiences" parameterType="com.cyco.member.vo.M_ExperienceVo">
 	
-		update m_experience set exp_title=#{EXP_TITLE},
-                        ex_position=#{EX_POSITION},
-                        ex_skill=#{EX_SKILL},
-                        ex_duration=#{EX_DURATION},
-                        ex_content=#{EX_CONTENT}
-        where ex_count=${ex_count} and member_id=${MEMBER_ID}
+		update m_experience set exp_title=#{exp_title},
+                        ex_position=#{ex_position},
+                        ex_skill=#{ex_skill},
+                        ex_duration=#{ex_duration},
+                        ex_content=#{ex_content}
+        where ex_count=${ex_count} and member_id=${member_id}
 	
 	</update>
 	

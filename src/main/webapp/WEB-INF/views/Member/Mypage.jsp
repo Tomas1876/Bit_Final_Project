@@ -264,16 +264,16 @@
 												<i class="fas fa-eraser del_exbox"></i>
 											</div>
 										
-											<span class="ex_count">#${status.count}</span><input type="text" class="exp_title exp_title_input" name="exp_title_input" value="${experiences.EXP_TITLE}" readonly/>
+											<span class="ex_count">#${status.count}</span><input type="text" class="exp_title exp_title_input" name="exp_title_input" value="${experiences.exp_title}" readonly/>
 										</div>
 										<div class="ex"><span class="name"> 담당 업무</span>
-											<input type="text"  name="ex_position_input" class="ex_position_input" value="${experiences.EX_POSITION}" readonly/></div>
+											<input type="text"  name="ex_position_input" class="ex_position_input" value="${experiences.ex_position}" readonly/></div>
 										<div class="ex"><span class="name">사용 기술</span>
-											<input type="text"  name="ex_skill_input" class="ex_skill_input" value="${experiences.EX_SKILL}" readonly/></div>
+											<input type="text"  name="ex_skill_input" class="ex_skill_input" value="${experiences.ex_skill}" readonly/></div>
 										<div class="ex"><span class="name">소요 기간</span>
-											<input type="text"  name="ex_duration_input" class="ex_duration_input" value="${experiences.EX_DURATION}" readonly/></div>
+											<input type="text"  name="ex_duration_input" class="ex_duration_input" value="${experiences.ex_duration}" readonly/></div>
 										<div class="ex"><span class="name">설명</span>
-											<input type="text"  name="ex_content_input"  class="ex_content_input"value="${experiences.EX_CONTENT}" readonly/></div>
+											<input type="text"  name="ex_content_input"  class="ex_content_input"value="${experiences.ex_content}" readonly/></div>
 										
 										</div>
 										</form>

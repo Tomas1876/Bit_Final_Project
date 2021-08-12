@@ -211,20 +211,11 @@ public class MyPageRestController {
 	// 프로젝트 경험 기입한 내용 폼 태그로 날린 거 받아서 인서트하기
 	//post 방식으로 보내는데 자꾸 get을 허용할 수 없다는 에러 발생해서 method 추가함
 	@RequestMapping(value = "insertexperiences", method = {RequestMethod.GET, RequestMethod.POST})
-	public String insertExperiences(@RequestParam String ID ,@RequestParam String EXP_TITLE,@RequestParam String EX_POSITION,
-	@RequestParam String EX_SKILL, @RequestParam String EX_CONTENT,@RequestParam String EX_DURATION) {
-		 
-		 M_ExperienceVo mex = new M_ExperienceVo();
- 
-		 mex.setMEMBER_ID(ID); 
-		 mex.setEXP_TITLE(EXP_TITLE);
-		 mex.setEX_POSITION(EX_POSITION);
-		 mex.setEX_SKILL(EX_SKILL);
-		 mex.setEX_CONTENT(EX_CONTENT);
-		 mex.setEX_DURATION(EX_DURATION);
-
-		System.out.println(mex.toString());
-		String result =	memberdetailservice.insertExperiences(mex);
+	//public String insertExperiences(@RequestParam String ID ,@RequestParam String EXP_TITLE,@RequestParam String EX_POSITION,
+	//@RequestParam String EX_SKILL, @RequestParam String EX_CONTENT,@RequestParam String EX_DURATION) {
+	public String insertExperiences(@RequestBody List<M_ExperienceVo> newEx ) {	 
+		System.out.println(newEx.toString());
+		String result =	memberdetailservice.insertExperiences(newEx);
 
 		return result;
 	}
@@ -248,23 +239,10 @@ public class MyPageRestController {
 	
 	//프로젝트 경험 업데이트 디비 반영
 	//post 방식으로 보내는데 자꾸 get을 허용할 수 없다는 에러 발생해서 method 추가함
-	@RequestMapping(value="updateexperiences", method= {RequestMethod.GET, RequestMethod.POST})
-	public String updateExperiences(@RequestParam String member_id_input, @RequestParam String ex_count_input ,@RequestParam String exp_title_input,
-			@RequestParam String ex_position_input, @RequestParam String ex_skill_input, @RequestParam String ex_content_input,@RequestParam String ex_duration_input) {
-
-		 M_ExperienceVo mex = new M_ExperienceVo();
-
-		 mex.setMEMBER_ID(member_id_input);
-		 mex.setEx_count(ex_count_input);
-		 mex.setEXP_TITLE(exp_title_input);
-
-		 mex.setEX_POSITION(ex_position_input);
-		 mex.setEX_SKILL(ex_skill_input); 
-		 mex.setEX_CONTENT(ex_skill_input);
-		 mex.setEX_DURATION(ex_duration_input); 
-
-		System.out.println(mex.toString());
-		String result =	memberdetailservice.updateExperiences(mex);
+	@RequestMapping(value="updateexperiences", method= {RequestMethod.GET, RequestMethod.POST},produces = "application/json; charset=UTF-8")
+	public String updateExperiences(@RequestBody M_ExperienceVo updateEx) {
+		System.out.println(updateEx.toString());
+		String result =	memberdetailservice.updateExperiences(updateEx);
 		return result;
 	}
 

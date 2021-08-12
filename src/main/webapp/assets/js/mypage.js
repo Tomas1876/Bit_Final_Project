@@ -289,7 +289,7 @@ $(document).ready(function() {
 
 changeinfo = (button)=>{
 	button.prev().prop("readonly", true);
-	button.prev().removeClass("info-mdf");
+	button.prev().toggleClass("info-mdf");
 	button.text("수정");
 	button.toggleClass("c-btn");
 	button.toggleClass("m-btn");
@@ -383,7 +383,6 @@ function edit_modal(code) {
 
 							`<div class='tags' id='${obj.duration_id}'>${obj.duration_date}</div>`
 						);
-
 					});
 				}
 			},
@@ -394,7 +393,6 @@ function edit_modal(code) {
 		});
 	}
 }
-
 
 //모달창 닫으며 데이터 태그 초기화하기
 $("#cancel").on("click", function() {
@@ -471,7 +469,6 @@ function edit(stat) {
 		url = "ajax/editdurations";
 
 	}
-
 	$.ajax({
 		url: url,
 		data:JSON.stringify(stats),
@@ -486,87 +483,13 @@ function edit(stat) {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
 }
-
-/*
-$("#edit-btn").on("click", function() {
-
-	let first = $("#selectedarea :nth-child(1)").attr("id");
-	let second = $("#selectedarea :nth-child(2)").attr("id");
-	let third = $("#selectedarea :nth-child(3)").attr("id");
-
-	console.log(first, second, third);
-
-	let arr = [];
-
-	if (third == undefined && second == undefined && first == undefined) {
-		swal("수정할 내용이 없습니다", "", "error");
-
-	} else {
-
-		if ($("#stat").val() != "position") {
-
-			del($("#stat").val());
-
-			if (third == undefined && second == undefined && first != undefined) {
-				edit(first);
-
-
-			} else if (third == undefined && second != undefined) {
-
-				arr.push(first);
-				arr.push(second);
-
-				$.each(arr, function(index, item) {
-					edit(item);
-				});
-
-			} else if (third != undefined) {
-
-				arr.push(first);
-				arr.push(second);
-				arr.push(third);
-
-				$.each(arr, function(index, item) {
-					edit(item);
-				});
-
-			}
-
-		} else if ($("#stat").val() == "position") {
-
-			edit(first);
-
-		}
-
-		modifyStatView($("#stat").val());
-
-		//수정 버튼 눌렀을 때 아직 미입력 스탯 있는지 체크해서 문구 보여주기
-		let insert_btn = $(".detail_section").children().children().children(".insert");
-
-		console.log(insert_btn);
-		if (insert_btn.length == 0) {
-			$(".sub_title").empty();
-
-			//권한 업데이트
-			givePoint();
-		} else {
-			$(".sub_title").text("모든 항목을 입력해야 프로젝트에 지원할 수 있어요!");
-		}
-
-	}
-
-});
-*/
 //기존 스탯들 삭제하는 함수
 function del(type) {
 
 	let url = "";
 	$.ajax({
-
-		//url:url,
 		url: "ajax/deletestat",
 		data: {
 			memberid: $("#m_id").val(),
@@ -581,11 +504,8 @@ function del(type) {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
 }
-
-
 
 //스탯 변경사항 뷰단에 반영하는 함수
 function modifyStatView(type) {
@@ -605,67 +525,43 @@ function modifyStatView(type) {
 		success: function(data) {
 
 			if (type == "skill") {
-
 				$(".skillarea").empty();
-
 				$.each(data, function(index, obj) {
-
 					if (index == 0) {
-
 						$(".skillarea").append(
-
 							'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 							+ '<i class="fa fa-star" id=star></i>'
 							+ '<div class="info_tags main_skill skill">'
 							+ obj.skill_name + '</div></a>'
-
 						);
-
 					} else {
-
 						$(".skillarea").append(
-
 							'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 							+ '<div class="info_tags skill">'
 							+ obj.skill_name + '</div></a>'
-
 						);
-
 					}
-
 				});
 
 			} else if (type == "position") {
-
 				$(".positionarea").empty();
-
 				$.each(data, function(index, obj) {
-
 					$(".positionarea").append(
 						'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 						+ '<div class="info_tags position">' + obj.position_name + '</div></a>'
 					);
-
 				});
-
 			} else if (type == "duration") {
-
 				$(".durationarea").empty();
-
 				$.each(data, function(index, obj) {
-
 					$(".durationarea").append(
 
 						'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 						+ '<div class="info_tags duration">'
 						+ obj.du_date + '</div></a>'
-
 					);
-
 				});
-
 			}
-
 			swal("수정되었습니다", "", "success");
 
 			$("#tagarea").empty();
@@ -675,62 +571,44 @@ function modifyStatView(type) {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 }
 // 여기까지가 보유 기술, 선호 포지션, 기간 수정 및 화면 반영
 ///////////////////////////////////////////////////////////////////////////////////////
 //프로젝트 경험 여부 관련 함수
 // '없음' 선택하면 입력 완료로 바꾸기
 $("#never").on("click", function() {
-
 	$(this).toggleClass("insert");
 	$(this).toggleClass("info_tags");
 	$(this).css("margin", "10px auto");
-
 	console.log($("#have").length);
-
 	if ($("#have").length != 0) {
-
 		$(this).parent().attr("id", "ex_toggle");
-
 		$("#have").remove();
 		$("#ex_btn").find("a").remove();
-
 		// 회원 상세 테이블에 프로젝트 경험컬럼 null에서 0으로 업데이트
 		haveExperience("never");
-
 		//모달창, 모달이 아닌 페이지에서 정보 입력했을 때 매번 이게 마지막 정보인지 확인해야 한다
 		//프로젝트 경험 없음으로 선택했으니(모달이 아니니) 여기서도 한 번 체크
 		let insert_btn = $(".detail_section").children().children().children(".insert");
-
 		console.log(insert_btn.length);
-
 		console.log(insert_btn);
 		if (insert_btn.length == 0) {
 			$(".sub_title").empty();
-
 			givePoint();
-
 		} else {
 			$(".sub_title").text("모든 항목을 입력해야 프로젝트에 지원할 수 있어요!");
 		}
-
 	} else {
-
 		$("#ex_toggle").append(
 
-			`<a href="#m_experience" class="trigger-btn" data-toggle="modal">
-												<div class="insert experience" id="have">있음</div></a>`
-
+			`<a href="#m_experience" class="trigger-btn" data-toggle="modal"><div class="insert experience" id="have">있음</div></a>`
 		);
 	}
 });
 
 //회원 상세 테이블에 프로젝트 경험여부 업데이트 하기
 function haveExperience(answer) {
-
 	$.ajax({
 
 		url: "ajax/updateexperience",
@@ -741,30 +619,23 @@ function haveExperience(answer) {
 		type: "post",
 		dataType: "text",
 		success: function(res) {
-
 		},
 		erroe: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 }
 
 // 프로젝트 경험 추가 기입
 $(document).on("click", ".add_ex", function() {
-
 	// + 버튼 눌러서 폼 추가
 	addEx();
-
 });
 
 // 프로젝트 경험 추가폼 삭제
 $(document).on("click", ".del_ex", function() {
-
 	// - 버튼 눌러서 폼 삭제
 	$(this).parent().parent().remove();
-
 });
 
 //추가 버튼 클릭시 폼 생성
@@ -794,58 +665,51 @@ $(document).on("input", ".exinput", function() {
 	$.each($(".exinput"), function(index, obj) {
 
 		if ($(this).val() == "") {
-
 			check = false;
 			$("#insert_ex").text("대기");
 			$("#insert_ex").attr("disabled", true);
 
-
 		} else {
 			check = true;
 		}
-
 	});
 
 	if (check) {
-
 		$("#insert_ex").text("추가");
 		$("#insert_ex").attr("disabled", false);
-
 	}
 
 })
 
 //수정 버튼 누르면 폼에 입력한 프로젝트 경험들 인서트
 $("#insert_ex").on("click", function() {
-
-	let mex = [];
+	let newEx = [];
 	$.each($("div[class=exarea]"), function(index, item) {
-
 		console.log($(this));
-
-		var ex_data = {
-			ID: $(this).children(".MEMBER_ID").val(),
-			EXP_TITLE: $(this).children(".EXP_TITLE").val(),
-			EX_POSITION: $(this).children(".EX_POSITION").val(),
-			EX_SKILL: $(this).children(".EX_SKILL").val(),
-			EX_CONTENT: $(this).children(".EX_CONTENT").val(),
-			EX_DURATION: $(this).children(".EX_DURATION").val()
+		var  ex = {
+			member_id: $(this).children(".MEMBER_ID").val(),
+			exp_title: $(this).children(".EXP_TITLE").val(),
+			ex_position: $(this).children(".EX_POSITION").val(),
+			ex_skill: $(this).children(".EX_SKILL").val(),
+			ex_content: $(this).children(".EX_CONTENT").val(),
+			ex_duration: $(this).children(".EX_DURATION").val()
 		}
-
-		insertExperiences(ex_data);
+		newEx.push(ex)
+		
 	});
+	insertExperiences(newEx);
 
 })
-
-//폼에 입력한 프로젝트 경험들 서버에 보내기
-function insertExperiences(ex_data) {
+function insertExperiences(newEx) {
 
 	$.ajax({
 
 		url: $(".ex_form").attr("action"),
 		type: "post",
 		dataType: "text",
-		data: ex_data,
+		data: JSON.stringify(newEx),
+		contentType:"application/json",
+		traditional:true,
 		success: function(res) {
 			console.log(res);
 
@@ -856,36 +720,26 @@ function insertExperiences(ex_data) {
 				// + 프로젝트 경험의 경우, 추가할 때 입력하기 버튼이 생성되므로 이번이 최초 입력인지 확인하기 위해
 				//입력해야 프로젝트 지원할 수 있다는 문구도 표시되어있는지 확인
 				let insert_btn = $(".detail_section").children().children().children(".insert");
-
 				console.log(insert_btn.length);
 
 				if (insert_btn.length == 1 && $(".sub_title").text() != "") {
 					$(".sub_title").empty();
-
 					givePoint();
-
 				} else {
 					$(".sub_title").text("모든 항목을 입력해야 프로젝트에 지원할 수 있어요!");
 				}
 			})
-
-
-
 		},
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 }
-
 //서버에서 비동기로 새로 추가된 경험 불러오기
 function getNewExperiences() {
 	return new Promise(function(resolve, reject) {
 
 		$.ajax({
-
 			url: "ajax/getnewexperiences",
 			type: "post",
 			dataType: "json",
@@ -900,27 +754,26 @@ function getNewExperiences() {
 					$("#exlistarea").append(
 
 						`<form action="ajax/updateexperiences" class="ex_edit_form">
-                    <div class="ex_box" id="`+ obj.ex_count + `">										
+                    <div class="ex_box" id="${obj.ex_count}">										
                         <div class="ex ex_titlebox">
                             <div id="exicons">
                                 <i class="fas fa-edit edit_exbox"></i>
                                 <i class="fas fa-eraser del_exbox"></i>
                             </div>
-                            <span class="ex_count">#`+ obj.ex_count + `</span>
-                            <input type="text" class="ex_title exp_title_input" name="exp_title_input" value="`+ obj.exp_TITLE + `" readonly/>
+                            <span class="ex_count">#${obj.ex_count}</span>
+                            <input type="text" class="ex_title exp_title_input" name="exp_title_input" value="${obj.exp_title}" readonly/>
                             </div>
                             <div class="ex"><span class="name">담당 업무</span>
-                            <input type="text"  name="ex_position" class="ex_position_input" name="ex_position_input" value="`+ obj.ex_POSITION + `" readonly/></div>
+                            <input type="text"  name="ex_position" class="ex_position_input" name="ex_position_input" value="${obj.ex_position}" readonly/></div>
                             <div class="ex"><span class="name">사용 기술</span>
-                            <input type="text"  name="ex_skill" class="ex_skill_input" name="ex_skill_input" value="`+ obj.ex_SKILL + `" readonly/></div>
+                            <input type="text"  name="ex_skill" class="ex_skill_input" name="ex_skill_input" value="${obj.ex_skill}" readonly/></div>
                             <div class="ex"><span class="name">소요 기간</span>
-                            <input type="text"  name="ex_duration" class="ex_duration_input" name="ex_duration_input" value="`+ obj.ex_DURATION + `" readonly/></div>
+                            <input type="text"  name="ex_duration" class="ex_duration_input" name="ex_duration_input" value="${obj.ex_duration}" readonly/></div>
                             <div class="ex"><span class="name">설명</span>
-                            <input type="text"  name="ex_content"  class="ex_content_input" name="ex_content_input" value="`+ obj.ex_CONTENT + `" readonly/></div>               
+                            <input type="text"  name="ex_content"  class="ex_content_input" name="ex_content_input" value="${obj.ex_content}" readonly/></div>               
                     </div></form>`
 
 					);
-
 				});
 
 				$("#exlistarea").append(
@@ -928,7 +781,6 @@ function getNewExperiences() {
                 <div class="add experience" id="have">추가</div></a>`
 				);
 
-				console.log("어펜드 끝")
 			},
 			error: function(xhr) {
 				console.log(xhr);
@@ -941,26 +793,34 @@ function getNewExperiences() {
 
 //클릭하면 경험 수 체크하고 삭제 모든 경험 삭제는 안되게 막기(뷰단처리)
 $(document).on("click", ".del_exbox", function() {
-
-	console.log("삭제");
-	if ($(".ex_box").length == 1) {
-
-		swal("경험을 모두 삭제하실 수는 없습니다");
-
-	} else {
-
-		$(this).parent().parent().parent().remove();
-
-		$.each($(".ex_count"), function(index, item) {
-
-			$(this).empty();
-			$(this).text("#" + (index + 1));
-
-		});
-
-		deleteExperience($(this));
-	}
-
+	
+	swal({
+	  title: "정말 삭제하시겠습니까?",
+	  text: "삭제 후 복구가 불가능합니다",
+	  icon: "warning",
+	  buttons: true,
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
+	  if (willDelete) {
+		
+		if ($(".ex_box").length == 1) {
+			swal("경험을 모두 삭제하실 수는 없습니다");
+		} else {
+	
+			$(this).parent().parent().parent().remove();	
+			$.each($(".ex_count"), function(index, item) {
+	
+				$(this).empty();
+				$(this).text("#" + (index + 1));	
+			});
+			deleteExperience($(this));
+		}
+   
+	  } else {
+	    swal("삭제가 취소되었습니다");
+	  }
+	});	
 });
 
 //프로젝트 경험 삭제 디비 반영
@@ -986,7 +846,7 @@ function deleteExperience(del_btn) {
 	});
 }
 
-//프로젝트 경험 수정!!!!!!!!!!!!
+//프로젝트 경험 수정
 $(document).on("click", ".edit_exbox", function() {
 
 	let exbox = $(this).parent().parent().parent().children();
@@ -1007,25 +867,25 @@ $(document).on("click", ".confirm_edit", function() {
 	let exbox = $(this).parent().parent().parent().children();
 	console.log(m_id);
 
-	var newEx = {
-		member_id_input: m_id,
-		ex_count_input: id,
-		exp_title_input: exbox.children(".exp_title_input").val(),
-		ex_position_input: exbox.children(".ex_position_input").val(),
-		ex_skill_input: exbox.children(".ex_skill_input").val(),
-		ex_duration_input: exbox.children(".ex_duration_input").val(),
-		ex_content_input: exbox.children(".ex_content_input").val()
+	let updateEx = {
+		member_id: m_id,
+		ex_count: id,
+		exp_title: exbox.children(".exp_title_input").val(),
+		ex_position: exbox.children(".ex_position_input").val(),
+		ex_skill: exbox.children(".ex_skill_input").val(),
+		ex_duration: exbox.children(".ex_duration_input").val(),
+		ex_content: exbox.children(".ex_content_input").val()
 	}
+	console.log(updateEx)
 
 	$.ajax({
 
 		//url:"ajax/updateexperiences",
 		url: exbox.parent().parent().attr("action"),
-		//data:JSON.stringify(newEx),
-		data: newEx,
+		data:JSON.stringify(updateEx),
+		dataType:"text",
 		type: "post",
-		//contentType: "application/json",
-		//contentType:'application/json; charset=utf-8',
+		contentType:'application/json; charset=utf-8',
 		success: function(res) {
 			console.log(res);
 			if (res == "success") {
@@ -1035,17 +895,21 @@ $(document).on("click", ".confirm_edit", function() {
 			}
 		},
 		error: function(xhr) {
+			swal("프로젝트 경험을 수정하지 못했습니다", "", "error");
 			console.log(xhr);
-			console.log("newEx : ", newEx);
 		}
 
 	});
-
+/*
 	$(this).removeClass("confirm_edit");
 	$(this).addClass("edit_exbox");
 	$(this).css("color", "#CA8FAB");
 	$(this).parent().parent().parent().children().children("input").removeClass("ex_mdf");
-
+*/
+	$(this).toggleClass("confirm_edit");
+	$(this).toggleClass("edit_exbox");
+	$(this).css("color", "#CA8FAB");
+	$(this).parent().parent().parent().children().children("input").removeClass("ex_mdf");
 
 })
 
@@ -1067,7 +931,6 @@ $('#file').change(function(event) {
 	//swal("프로필 이미지가 변경되었습니다!");
 
 	$("#img_form").submit();
-
 });
 
 //회원 탈퇴
@@ -1098,38 +961,31 @@ $("#quit").on("click", function() {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 });
 
 //추가 정보 모두 기입시 포인트 지급
 function givePoint() {
-
 	//우선 premember인지부터 확인
 	if ($("#ismember").val() == "0") {
 
 		//최초 1회 지급이므로 사용 포인트, 보유 포인트가 있는지 서버에서 확인
 		$.ajax({
-
 			url: "ajax/givepoint",
 			type: "post",
 			data: {
 				member_id: $("#m_id").val()
 			},
 			success: function(res) {
-
 				if (res == "success") {
 
 					$("#point").val("50점");
 					makeMemberAuth();
 				}
-
 			},
 			error: function(xhr) {
 				console.log(xhr);
 			}
-
 		});
 
 	} else {
@@ -1140,8 +996,6 @@ function givePoint() {
 
 //추가 정보 모두 입력시 권한 업데이트
 function makeMemberAuth() {
-	console.log("makeMemberAuth 실행")
-
 	$.ajax({
 
 		url: "ajax/makememberauth",
@@ -1171,13 +1025,10 @@ function makeMemberAuth() {
 		error: function(xhr) {
 			console.log(xhr)
 		}
-
 	});
 }
-
 //권한 1인 경우 포인트 충전 막기
 $("#cannot_cahrge").on("click", function() {
-	console.log("충전 막기");
 	swal("PLEASE FILL YOUR PROFILE", "추가 정보를 먼저 채워주세요", "error");
 });
 
@@ -1185,12 +1036,10 @@ $("#charge-btn").on("click", function() {
 	payment();
 });
 
-
 //포인트 충전	
 function payment() {
 	var IMP = window.IMP; // 생략가능
 	IMP.init('imp80764682');
-
 	var money = $('input[name="cp_item"]:checked').val();
 	var email = $('input[id="m_email"]').val();
 	var name = $('input[id="m_name"]').val();
@@ -1205,13 +1054,6 @@ function payment() {
 	if (money == 450) {
 		money = '15000';
 	}
-
-
-	console.log('value값 : ' + money);
-	console.log('회원메일 : ' + email);
-	console.log('회원이름 : ' + name);
-	console.log('회원폰 : ' + phone);
-
 	let originalpoint = $("#point").val().replace("점", "");
 	let plus = $("input[name=cp_item]:checked").val();
 	IMP.request_pay({
@@ -1258,7 +1100,6 @@ function payment() {
 						alert("실패")
 						console.log(msg);
 					}
-
 				},
 				error: function(param) {
 					alert("에러");
@@ -1271,6 +1112,5 @@ function payment() {
 			console.log(msg);
 			swal("실패", "결제에 실패하였습니다.", "error")
 		}
-		//    console.log("실행완료");
 	});
 }

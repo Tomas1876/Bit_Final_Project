@@ -269,9 +269,9 @@ public class MemberDetailService {
 	}
 	
 	// 마이페이지에서 기입한 프로젝트 경험들 디비에 insert
-	public String insertExperiences(M_ExperienceVo mex) {
+	public String insertExperiences(List<M_ExperienceVo> newEx) {
 		MemberDao memberdao = sqlsession.getMapper(MemberDao.class);
-		int row = memberdao.insertExperiences(mex);
+		int row = memberdao.insertExperiences(newEx);
 		return getResult(row);
 	}
 	

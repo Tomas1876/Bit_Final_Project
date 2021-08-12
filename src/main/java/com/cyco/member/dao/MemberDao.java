@@ -117,7 +117,7 @@ public interface MemberDao {
 	public Integer updateExperience(String memberid, int answer);
 	
 	//마이페이지 프로젝트 경험 있는 사람은 기입하기^^
-	public Integer insertExperiences(M_ExperienceVo mex);
+	public Integer insertExperiences(List<M_ExperienceVo> newEx);
 	
 	//마이페이지 프로젝트 경험 삭제
 	public Integer deleteExperience(String ex_id, String memberid);
