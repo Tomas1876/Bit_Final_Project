@@ -316,11 +316,8 @@ public class ProjectService {
 	// ----------------------------------------------------------
 	// 프로젝트 생성
 	@Transactional
-	public String CreateProject(ProjectVo project,P_DetailVo p_detail, 
-					List<P_SkillVo> skill, List<P_MemberVo> member) {
+	public String CreateProject(ProjectVo project,P_DetailVo p_detail, List<P_SkillVo> skill, List<P_MemberVo> member) {
 		ProjectDao dao = sqlsession.getMapper(ProjectDao.class);
-		
-		// 프로젝트 insert
 		dao.setProjectInsert(project);
 		
 		// 프로젝트 테이블 먼저 insert 후 project_id 값 리턴이 된다.
@@ -339,7 +336,6 @@ public class ProjectService {
 		
 		// 프로젝트스킬 insert
 		dao.setProjectSkillList(skill);
-		
 		// 프로젝트멤버 insert
 		dao.setProjectMemberList(member);
 				
