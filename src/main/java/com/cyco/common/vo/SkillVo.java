@@ -3,7 +3,7 @@ package com.cyco.common.vo;
 import lombok.Data;
 
 @Data
-public class SkillVo {
+public class SkillVo extends StatVo{
 	//select * from skill;
 	private String project_id;
 	private String skill_code;

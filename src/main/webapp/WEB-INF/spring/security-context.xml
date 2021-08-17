@@ -16,8 +16,6 @@
 	<http auto-config="true" use-expressions="true" create-session="never">
 	
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
-		<!-- <intercept-url pattern="/프로젝트 관리" access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEAMMANGER')" />-->		
-	
 		<intercept-url pattern="/project/detail" access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
 		<intercept-url pattern="/member/memberdetailpage" access="hasAnyRole('ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />
 		<intercept-url pattern="/board/**" access="hasAnyRole('ROLE_PREMEMBER','ROLE_MEMBER','ROLE_ADMIN', 'ROLE_TEAMMANGER', 'ROLE_PENALTY')" />

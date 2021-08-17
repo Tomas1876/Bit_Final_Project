@@ -16,8 +16,9 @@
 		<div class="error-box">
 			<div class="error-text">
 				<i class="fas fa-exclamation-triangle errorIcon"></i>
-				<p class="errorCode"><b>404</b></p>
+				<p class="errorCode"><b>문제가 발생했습니다.</b></p>
 				<p class="errorInfo"> 서비스 이용에 불편을 드려 죄송합니다. </p>
+				<p class="errorInfo"> 빠른 시일내에 해결하겠습니다. 감사합니다. </p>
 				<button class="homeBtn" type="button">Home</button>
 			</div>
 		</div>

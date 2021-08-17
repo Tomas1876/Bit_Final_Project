@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+body{ -ms-overflow-style: none; }
+body::-webkit-scrollbar { display: none; }
 
 .main_{
 	position: absolute;
@@ -145,7 +147,7 @@
 /*아래와 동일한 회원메뉴*/
 #my_sub_member{
     position: absolute;
-    transform: translate(-50px, 10px);
+    transform: translate(-85px, 10px);
     /* top: 50px; */
     /* left: 1300px; */
     width: 220px;

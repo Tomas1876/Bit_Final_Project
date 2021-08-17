@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.cyco.member.dao.MemberDao">
 	
-	<!-- 맴버 정보 가져오기 -->
+	<!-- 멤버 정보 가져오기 -->
 	<select id="getMember" resultType="com.cyco.common.vo.MemberVo">
 		SELECT MEMBER_ID, MEMBER_EMAIL, MEMBER_IMAGE, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_PWD, HAVE_POINT, USE_POINT FROM v_m_p WHERE MEMBER_EMAIL = #{email}
 	</select>
