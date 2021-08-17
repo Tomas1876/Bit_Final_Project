@@ -32,9 +32,8 @@
 
 		<div id="wrap">
 			<div id="profile_img">
-				<!-- <img src="assets/img/member_detail/cycoding_img.png"> -->
-				<%-- <img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}"> --%>
-				<img id ="target_img" src="${pageContext.request.contextPath}/resources/upload/${member.MEMBER_IMAGE}">
+			<img id ="target_img" src="${pageContext.request.contextPath}/images/${member.MEMBER_IMAGE}">
+
 				<form action="editprofile" method="post" enctype="multipart/form-data" id="img_form">
 				<input type="hidden" id="id" name="id" value="${member.MEMBER_EMAIL}">
 				<input type="file" id="file" name="uploadFile" style="display:none;">
@@ -62,17 +61,17 @@
                   <li class="itemlist"><span class="item">비밀번호</span><input
                      type="password" id="password" name="password" class="info" value="password"
                      readonly>
-                     <button type="button" class="modify_items m-btn">수정</button></li>
+                     <button type="button" class="modify_items m-btn" id="m_pwd">수정</button></li>
                   <li class="itemlist"><span class="item">닉네임</span><input
                      type="text" class="info" id="nick"
                      value="${member.MEMBER_NICKNAME}" readonly>
-                     <button type="button" class="modify_items m-btn">수정</button></li>
+                     <button type="button" class="modify_items m-btn" id="m_nickname">수정</button></li>
                   <li class="itemlist"><span class="item">이름</span><input
                      type="text" class="info" id="m_name" value="${member.MEMBER_NAME}" readonly>
                      <button type="button" class="modify_items m-btn hid" disabled>NONE</button></li>
                   <li class="itemlist"><span class="item">휴대폰</span><input
                      type="text" class="info" id="m_phone" value="${member.MEMBER_PHONE}" readonly>
-                     <button type="button" class="modify_items m-btn">수정</button></li>
+                     <button type="button" class="modify_items m-btn" id="m_phone">수정</button></li>
                   <li class="itemlist"><span class="item">포인트</span><input
                      type="text" class="info" id="point" value="${member.HAVE_POINT}점" readonly>
                      
@@ -265,16 +264,16 @@
 												<i class="fas fa-eraser del_exbox"></i>
 											</div>
 										
-											<span class="ex_count">#${status.count}</span><input type="text" class="exp_title exp_title_input" name="exp_title_input" value="${experiences.EXP_TITLE}" readonly/>
+											<span class="ex_count">#${status.count}</span><input type="text" class="exp_title exp_title_input" name="exp_title_input" value="${experiences.exp_title}" readonly/>
 										</div>
 										<div class="ex"><span class="name"> 담당 업무</span>
-											<input type="text"  name="ex_position_input" class="ex_position_input" value="${experiences.EX_POSITION}" readonly/></div>
+											<input type="text"  name="ex_position_input" class="ex_position_input" value="${experiences.ex_position}" readonly/></div>
 										<div class="ex"><span class="name">사용 기술</span>
-											<input type="text"  name="ex_skill_input" class="ex_skill_input" value="${experiences.EX_SKILL}" readonly/></div>
+											<input type="text"  name="ex_skill_input" class="ex_skill_input" value="${experiences.ex_skill}" readonly/></div>
 										<div class="ex"><span class="name">소요 기간</span>
-											<input type="text"  name="ex_duration_input" class="ex_duration_input" value="${experiences.EX_DURATION}" readonly/></div>
+											<input type="text"  name="ex_duration_input" class="ex_duration_input" value="${experiences.ex_duration}" readonly/></div>
 										<div class="ex"><span class="name">설명</span>
-											<input type="text"  name="ex_content_input"  class="ex_content_input"value="${experiences.EX_CONTENT}" readonly/></div>
+											<input type="text"  name="ex_content_input"  class="ex_content_input"value="${experiences.ex_content}" readonly/></div>
 										
 										</div>
 										</form>

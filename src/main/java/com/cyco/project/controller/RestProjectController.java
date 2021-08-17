@@ -315,6 +315,7 @@ public class RestProjectController {
 		} else {
 			returnUrl = "false";
 		}
+		ChangeAuth chau = new ChangeAuth("ROLE_MEMBER");
 
 		return returnUrl;
 	}
@@ -514,7 +515,7 @@ public class RestProjectController {
 	}
 
 	// 플젝 완료
-	@RequestMapping(value = "projectcomplete", method = RequestMethod.GET)
+	@RequestMapping(value = "projectcomplete", method = RequestMethod.POST)
 	public String projectComplete(HttpSession session, P_DetailVo p_detail) {
 		String returnURL = "false";
 

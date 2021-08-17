@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,6 @@ public class LoginController {
 		  
 		  memberservice.checkDeleteDate(String.valueOf(map.get("MEMBER_ID")));
 		  ModelMap mmp = new ModelMap();
-		  
 
 		  session.setAttribute("nickname", map.get("MEMBER_NICKNAME"));
 		  session.setAttribute("member_id", map.get("MEMBER_ID"));		 

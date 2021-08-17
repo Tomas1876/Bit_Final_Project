@@ -1,77 +1,96 @@
 $(document).ready(function() {
 
 	//About Cycoder 부분의 정보 각각 비동기로 변경하기
-	// 개인정보 담을 변수
-	let before;
-	let atfer;
+	//개인정보 담을 변수
+	//바꾸기 전의 input 태그의 값 미리 담아두고
+	let before = $(this).prev().val();
 
-	//수정 버튼 누르면 수정창 생성
 	$(document).on("click", ".m-btn", function() {
-
-
-		//바꾸기 전의 input 태그의 값 미리 담아두고
-		before = $(this).prev().val();
-
-		//input 태그의 읽기 전용 비활성화, 기존 값은 placeholder로 바꾼다
-		$(this).prev().prop("readonly", false);
-		$(this).prev().attr("placeholder", before);
-		$(this).prev().addClass("info-mdf");
-
-		//버튼 글씨 바꾸기
-		$(this).text("확인");
-		$(this).removeClass("m-btn");
-		$(this).addClass("c-btn");
-		
-		//이때 비밀번호라면 확인창 추가할것!
-		let code = $(this).prev().prev().text();
-		if(code == "비밀번호"){
-			
-			//확인창 하나 추가하고
-			$(this).parent().after(
-				 '<li class="itemlist" id="passwordC_li"><span class="item">비밀번호 확인</span>'
-				 +'<input type="password" id="passwordC" name="password" class="info info-mdf" value="password"></li>'
-			);
-			
-		}
-
+		make_modify_space($(this),before);
 	});
 
-	//확인 버튼 누르면 수정 내용 확정
 	$(document).on("click", ".c-btn", function() {
+		confirm_change($(this),before)
+	});
+	
+}); //document.ready 끝
+	
+	//수정 버튼 누르면 수정창 생성
+	make_modify_space = (target, before) =>{
+		
+		//input 태그의 읽기 전용 비활성화, 기존 값은 placeholder로 바꾼다
+		target.prev().prop("readonly", false);
+		target.prev().attr("placeholder", before);
+		target.prev().toggleClass("info-mdf");
 
+		//버튼 글씨 바꾸기
+		target.text("확인");
+		target.toggleClass("m-btn");
+		target.toggleClass("c-btn");
+		
+		//이때 비밀번호라면 확인창 추가할것!
+		let code = target.attr("id");
+		if(code == "m_pwd"){
+			
+			//확인창 하나 추가하고
+			target.parent().after(
+				 '<li class="itemlist" id="passwordC_li"><span class="item">비밀번호 확인</span>'
+				 +'<input type="password" id="passwordC" name="password" class="info info-mdf" value="password"></li>'
+			);			
+		}	
+	}
+	
+	//닉네임, 휴대폰 중복 검사 함수
+	duplicate_check = (type, value, code, button,after) => {
+		
+		console.log(value)
+		$.ajax({
+						url: "ajax/duplicatecheck",
+						data: {
+							"type" : type,
+							"value": value
+						},
+						type: "get",
+						dataType: "text",
+						success: function(data) {
+							if (data == 'able') {
 
-		atfer = $(this).prev().val();
-		//처음 작성할 때 도대체 무슨 생각이었는지 모르겠는데 이렇게 하면 안되는 거 같다
-		//아이디값 주거나 하면 되지 이게 무슨 번거로운 짓이란 말임...
-		let code = $(this).prev().prev().text();
-		console.log(code);
+								editMyDetail(code, button,after);
+
+							} else {
+
+								swal("이미 존재하는 정보입니다.", "", "error");
+							}
+						},
+						error: function(error) {
+							console.log(error);
+						}
+					});
+		
+	}
+	//확인 버튼 누르면 수정 내용 확정
+	confirm_change = (target, before) =>{
+		let after = target.prev().val();
+		let code = target.attr("id");
 		
 		//수정 눌렀는데 값이 변한게 없을 때
-		if (before == $(this).prev().val()) {
+		if (before == target.prev().val()) {
 			swal("수정할 내용이 없습니다", "", "warning");
 
-			$(this).prev().empty();
-			$(this).prev().val(atfer);
-			$(this).prev().prop("readonly", true);
-			$(this).prev().removeClass("info-mdf");
-			$(this).text("수정");
-			$(this).removeClass("c-btn");
-			$(this).addClass("m-btn");
+			target.prev().empty();
+			target.prev().val(atfer);
+			changeinfo(target);
 			
 			//비밀번호라면 확인창 없애기
-			if(code == "비밀번호"){
+			if(code == "m_pwd"){
 				$("#passwordC_li").remove();
 			}
-
-
 			//값이 변했을 때
 		} else {			
 			
-			let button = $(this);
-
-
+			let button = target;
 			//닉네임은 중복체크 먼저
-			if (code == "닉네임") {
+			if (code == "m_nickname") {
 				//닉네임 글자 수 제한
 				if ($("#nick").val().length > 10) {
 
@@ -79,32 +98,11 @@ $(document).ready(function() {
 					$("#nick").val($("#nick").val().substring(0, 10));
 
 				} else {
-
-					$.ajax({
-						url: "ajax/nicknamecheck",
-						data: {
-							nickName: $("#nick").val()
-						},
-						type: "get",
-						dataType: "text",
-						success: function(data) {
-							if (data == 'able') {
-
-								editMyDetail(code, button);
-
-							} else {
-
-								swal("이미 존재하는 닉네임입니다.", "", "error");
-							}
-						},
-						error: function(error) {
-							console.log(error);
-						}
-					});
-
+					
+					duplicate_check("nickname", $("#nick").val(), code, button,after)
 				}
 
-			} else if (code == "휴대폰") {
+			} else if (code == "m_phone") {
 
 				//휴대폰번호 유효성, 글자수 제한
 				var numberReg = /^[0-9]*$/;
@@ -120,31 +118,11 @@ $(document).ready(function() {
 				} else {
 					//위의 검사 통과한 경우
 					//휴대폰 번호도 중복체크
-					$.ajax({
-						url: "ajax/phonecheck",
-						data: {
-							phone: $("#m_phone").val()
-						},
-						type: "get",
-						dataType: "text",
-						success: function(data) {
-							if (data == 'able') {
-
-								editMyDetail(code, button);
-
-							} else {
-
-								swal("사용할 수 없는 번호입니다.", "", "error");
-							}
-						},
-						error: function(error) {
-							console.log(error);
-						}
-					});
+					duplicate_check("phone", $("#m_phone").val(), code, button,after)
 				}
 
-				//비밀번호는 유효성 검사도 해야 한다
-			} else if (code == "비밀번호") {
+			//비밀번호는 유효성 검사도 해야 한다
+			} else if (code == "m_pwd") {
 
 				let checking = true;
 				let password = $("#password").val();
@@ -152,24 +130,17 @@ $(document).ready(function() {
 				let num = password.search(/[0-9]/g);
 				let eng = password.search(/[a-z]/ig);
 
-
 				if (password.length < 8 || password.length > 13) {
 
 					swal("비밀번호는 8-20자리 이내로 입력하세요.", "", "error");
 					checking = false;
-
-
 
 				} else if (password.search(/\s/) != -1) {
 
 					swal("비밀번호는 공백을 입력할 수 없습니다.", "", "error");
 					checking = false;
 
-
-
-
 				} else if (num < 0 || eng < 0) {
-
 
 					swal("영문, 숫자를 포함하여 입력하세요.", "", "error");
 					checking = false;
@@ -180,75 +151,59 @@ $(document).ready(function() {
 					swal("비밀번호가 일치하지 않습니다","","error");
 					passwordC.val("");
 					
-					
 				}
-
 				if (checking) {
-					editMyDetail(code, button);
+					editMyDetail(code, button,after);
 					//비밀번호 확인창 없애기
 					$("#passwordC_li").remove();
 				}
-
-
 			} else {
 
-				editMyDetail(code, button);
-
+				editMyDetail(code, button,after);
 			}
-
-
 		}
-
-	});
-
-
+	}
+	
 	//수정 버튼 누르면 바뀌는 개인정보 디비에 실반영 하는 함수
-	function editMyDetail(code, button) {
+	function editMyDetail(code, button, after) {
 
 		$.ajax({
 
 			url: "ajax/editmydetail",
 			data: {
 				code: code,
-				info: atfer,
+				info: after,
 				userid: $("#m_id").val()
 			},
 			type: "get",
 			dataType: "text",
 			success: function(data) {
 
-				if (data == "success" && code != "비밀번호") {
+				if (data == "success" && code != "m_pwd") {
 
 					button.prev().empty();
-					button.prev().val(atfer);
-					button.prev().prop("readonly", true);
-					button.prev().removeClass("info-mdf");
-					button.text("수정");
-					button.removeClass("c-btn");
-					button.addClass("m-btn");
-
+					button.prev().val(after);
+					changeinfo(button);
 					swal("수정되었습니다", "", "success");
 
 					//닉네임 수정할 경우 프사 밑의 닉네임도 변경
-					if (code == "닉네임") {
+					if (code == "m_nickname") {
 						$("#cycoder").children().text("");
 						$("#cycoder").children().text($("#nick").val());
+						
 					}
 
-				} else if (data == "success" && code == "비밀번호") {
+				} else if (data == "success" && code == "m_pwd") {
 
 					//비밀번호가 변경되었을 때는 인풋 태그의 값을 굳이 바꾸지 않는다
 					//암호화 된 거 엄청 길어서 사용자한테 그대로 보여주지 않을 것
 					button.prev().val("password");
-					button.prev().prop("readonly", true);
-					button.prev().removeClass("info-mdf");
-					button.text("수정");
-					button.removeClass("c-btn");
-					button.addClass("m-btn");
+					changeinfo(button);
 
 					swal("수정되었습니다", "", "success");
 
 				} else {
+					console.log(`data ${data} code ${code}`)
 					swal("수정에 실패했습니다", "", "error");
 				}
 
@@ -268,9 +223,25 @@ $(document).ready(function() {
 	//detail영역 스탯 모달창
 	$('.trigger').on('click', function() {
 		$('.modal-wrapper').toggleClass('open');
-		//console.log($(this));
+		
 		return false;
 	});
+	
+	//사용자가 클릭할 때마다 태그의 클래스와 위치 바꾸기 함수
+	changeClass = (target, add, remove, area)=>{
+		
+		if(area == "#selectedarea"){	
+			add.forEach((v)=>target.addClass(v))			
+			target.removeClass(remove);
+			
+			
+		} else{
+
+			target.addClass(add);
+			remove.forEach((v)=>target.removeClass(v))			
+		}		
+		$(area).append(target);	
+	}
 
 	//기술/기간 클릭하면 태그 선택
 	$(document).on("click", ".tags", function() {
@@ -281,14 +252,11 @@ $(document).ready(function() {
 
 		if (selected.length > 2) {
 
-			swal("세 개까지만 선택 가능합니다");
+			swal("세 개까지만 선택 가능합니다","","warning");
 
 		} else {
 
-			$(this).addClass("clicked");
-			$(this).addClass("chosen");
-			$(this).removeClass("tags");
-			$("#selectedarea").append($(this));
+			changeClass($(this), ["clicked","chosen"], "tags", "#selectedarea")
 		}
 
 	});
@@ -296,45 +264,36 @@ $(document).ready(function() {
 	//기술/기간 클릭하면 태그 선택 해제
 	$(document).on("click", ".clicked", function() {
 
-		// let name = $(this).text();
-
-		$(this).removeClass("clicked");
-		$(this).removeClass("chosen");
-		$(this).addClass("tags");
-		$("#tagarea").append($(this));
+		changeClass($(this), "tags",["clicked","chosen"], "#tagarea")
 
 	});
 
 	//클릭하면 포지션 태그 선택
 	$(document).on("click", ".positions", function() {
 
-		let name = $(this).text();
 		selected = $(".p_clicked");
-
 		if (selected.length > 0) {
-
-			swal("하나만 선택 가능합니다");
-
+			swal("하나만 선택 가능합니다","","warning");
 		} else {
+			changeClass($(this), ["p_clicked","chosen"], "positions", "#selectedarea")
 
-			$(this).addClass("p_clicked");
-			$(this).addClass("chosen");
-			$(this).removeClass("positions");
-			$("#selectedarea").append($(this));
 		}
 
 	});
 
 	//클릭하면 포지션 태그 선택 해제
 	$(document).on("click", ".p_clicked", function() {
-		let name = $(this).text();
-		$(this).removeClass("p_clicked");
-		$(this).removeClass("chosen");
-		$(this).addClass("positions");
-		$("#tagarea").append($(this));
+		changeClass($(this), "positions",["p_clicked","chosen"], "#tagarea")
 	});
 
-}); //document.ready 끝
+
+changeinfo = (button)=>{
+	button.prev().prop("readonly", true);
+	button.prev().toggleClass("info-mdf");
+	button.text("수정");
+	button.toggleClass("c-btn");
+	button.toggleClass("m-btn");
+}
 
 //모달창에 스탯 리스트 뿌리기
 function edit_modal(code) {
@@ -372,75 +331,46 @@ function edit_modal(code) {
 
 	}
 
-
-
 	let key = "";
 	let originStat = [];
 	function getStat(key) {
 
 		key = key;
-		let link;
-
-		if (key == "skill") {
-
-			link = "ajax/getskills";
-
-		} else if (key == "experience") {
-
+		
+		if (key == "experience") {
 			$("#m_experience").addClass("show");
 			$(".exarea").remove();
 			addEx();
-
 			if ($("#have").length == 0) {
-
 				$(".exarea").remove();
 			}
-
 			return;
-
-		} else if (key == "position") {
-
-			link = "ajax/getposition";
-
-		} else if (key == "duration") {
-
-			link = "ajax/getdurations";
-
-		}
+		} 
 
 		$.ajax({
-
-			url: link,
+			url: "ajax/gettags",
 			data: {
-
-				userid: $("#m_id").val()
-
+				"type":key,
 			},
-			type: "get",
+			type: "post",
 			dataType: "json",
 			success: function(response) {
 				console.log(response);
 				$("#tagarea").empty();
 
 				if (key == "skill") {
-
 					$.each(response, function(index, obj) {
-
-
 						$("#tagarea").append(
-
-							"<div class='tags' id='" + obj.skill_code + "'>" + obj.skill_name + "</div>"
+							`<div class='tags' id="${obj.skill_code}">${obj.skill_name}</div>`
 						);
-
 					});
 
 				} else if (key == "position") {
-
 					$.each(response, function(index, obj) {
 
 						$("#tagarea").append(
 
-							"<div class='positions' id='" + obj.position_id + "'>" + obj.position_name + "</div>"
+							`<div class='positions' id='${obj.position_id}'>${obj.position_name}</div>`
 						);
 
 					});
@@ -451,13 +381,10 @@ function edit_modal(code) {
 
 						$("#tagarea").append(
 
-							"<div class='tags' id='" + obj.duration_id + "'>" + obj.duration_date + "</div>"
+							`<div class='tags' id='${obj.duration_id}'>${obj.duration_date}</div>`
 						);
-
 					});
 				}
-
-
 			},
 			error: function(xhr) {
 				console.log(xhr);
@@ -466,7 +393,6 @@ function edit_modal(code) {
 		});
 	}
 }
-
 
 //모달창 닫으며 데이터 태그 초기화하기
 $("#cancel").on("click", function() {
@@ -482,12 +408,7 @@ $("#cancel").on("click", function() {
 //동적 쿼리 쓰는 거로 바꾸자
 $("#edit-btn").on("click", function() {
 
-	let first = $("#selectedarea :nth-child(1)").attr("id");
-	let second = $("#selectedarea :nth-child(2)").attr("id");
-	let third = $("#selectedarea :nth-child(3)").attr("id");
-
-	console.log(first, second, third);
-
+	let selected = $("#selectedarea").children().attr("id");
 	let arr = [];
 
 	if (third == undefined && second == undefined && first == undefined) {
@@ -498,47 +419,24 @@ $("#edit-btn").on("click", function() {
 		if ($("#stat").val() != "position") {
 
 			del($("#stat").val());
-
-			if (third == undefined && second == undefined && first != undefined) {
-				edit(first);
-
-
-			} else if (third == undefined && second != undefined) {
-
-				arr.push(first);
-				arr.push(second);
-
-				$.each(arr, function(index, item) {
-					edit(item);
-				});
-
-			} else if (third != undefined) {
-
-				arr.push(first);
-				arr.push(second);
-				arr.push(third);
-
-				$.each(arr, function(index, item) {
-					edit(item);
-				});
-
-			}
-
-		} else if ($("#stat").val() == "position") {
-
-			edit(first);
-
+			let tags = document.getElementsByClassName("chosen")
+			console.log(tags)
+			Array.from(tags).forEach((v)=>{
+				arr.push(v.getAttribute("id"))
+			})
+			edit(arr)
+			
+		} else {
+			edit(selected);
 		}
-
 		modifyStatView($("#stat").val());
 
 		//수정 버튼 눌렀을 때 아직 미입력 스탯 있는지 체크해서 문구 보여주기
 		let insert_btn = $(".detail_section").children().children().children(".insert");
 
-		console.log(insert_btn);
+		//모든 정보를 채워 입력 버튼이 하나도 없을 경우
 		if (insert_btn.length == 0) {
 			$(".sub_title").empty();
-
 			//권한 업데이트
 			givePoint();
 		} else {
@@ -548,14 +446,50 @@ $("#edit-btn").on("click", function() {
 	}
 
 });
+//새로 선택된 스탯들 인서트 하는 함수
+function edit(stat) {
 
+	let url = "";
+	let stats = [];
+	let keyword = $("#stat").val();
+
+	if (keyword == 'skill') {
+
+		url = "ajax/editskills";
+		stat.forEach((v,i)=> stats.push({ms_count:i+1,skill_code:v, member_id: $("#m_id").val()}))
+		console.log("그래서 기술?" + stats)
+
+	} else if (keyword == 'position') {
+
+		url = "ajax/updateposition";
+		stats.push({position_id:stat, member_id: $("#m_id").val()});
+
+	} else if (keyword == 'duration') {
+		stat.forEach((v)=> stats.push({duration_id:v, member_id: $("#m_id").val()}))
+		url = "ajax/editdurations";
+
+	}
+	$.ajax({
+		url: url,
+		data:JSON.stringify(stats),
+		contentType:"application/json",
+		traditional:true,
+		type:"post",
+		dataType:"text",
+		async:false,
+		success:function(data) {
+
+		},
+		error: function(xhr) {
+			console.log(xhr);
+		}
+	});
+}
 //기존 스탯들 삭제하는 함수
 function del(type) {
 
 	let url = "";
 	$.ajax({
-
-		//url:url,
 		url: "ajax/deletestat",
 		data: {
 			memberid: $("#m_id").val(),
@@ -570,48 +504,6 @@ function del(type) {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
-	});
-}
-
-
-//새로 선택된 스탯들 인서트 하는 함수
-function edit(stats) {
-
-	let url = "";
-	let keyword = $("#stat").val();
-
-	if (keyword == 'skill') {
-
-		url = "ajax/editskills";
-
-	} else if (keyword == 'position') {
-
-		url = "ajax/updateposition";
-
-	} else if (keyword == 'duration') {
-
-		url = "ajax/editdurations";
-
-	}
-
-	$.ajax({
-
-		url: url,
-		data: {
-			memberid: $("#m_id").val(),
-			stat: stats
-		},
-		type: "post",
-		dataType: "text",
-		async: false,
-		success: function(data) {
-
-		},
-		error: function(xhr) {
-			console.log(xhr);
-		}
-
 	});
 }
 
@@ -633,67 +525,43 @@ function modifyStatView(type) {
 		success: function(data) {
 
 			if (type == "skill") {
-
 				$(".skillarea").empty();
-
 				$.each(data, function(index, obj) {
-
 					if (index == 0) {
-
 						$(".skillarea").append(
-
 							'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 							+ '<i class="fa fa-star" id=star></i>'
 							+ '<div class="info_tags main_skill skill">'
 							+ obj.skill_name + '</div></a>'
-
 						);
-
 					} else {
-
 						$(".skillarea").append(
-
 							'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 							+ '<div class="info_tags skill">'
 							+ obj.skill_name + '</div></a>'
-
 						);
-
 					}
-
 				});
 
 			} else if (type == "position") {
-
 				$(".positionarea").empty();
-
 				$.each(data, function(index, obj) {
-
 					$(".positionarea").append(
 						'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 						+ '<div class="info_tags position">' + obj.position_name + '</div></a>'
 					);
-
 				});
-
 			} else if (type == "duration") {
-
 				$(".durationarea").empty();
-
 				$.each(data, function(index, obj) {
-
 					$(".durationarea").append(
 
 						'<a href="#m_stat" class="trigger-btn" data-toggle="modal">'
 						+ '<div class="info_tags duration">'
 						+ obj.du_date + '</div></a>'
-
 					);
-
 				});
-
 			}
-
 			swal("수정되었습니다", "", "success");
 
 			$("#tagarea").empty();
@@ -703,62 +571,44 @@ function modifyStatView(type) {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 }
 // 여기까지가 보유 기술, 선호 포지션, 기간 수정 및 화면 반영
 ///////////////////////////////////////////////////////////////////////////////////////
 //프로젝트 경험 여부 관련 함수
 // '없음' 선택하면 입력 완료로 바꾸기
 $("#never").on("click", function() {
-
 	$(this).toggleClass("insert");
 	$(this).toggleClass("info_tags");
 	$(this).css("margin", "10px auto");
-
 	console.log($("#have").length);
-
 	if ($("#have").length != 0) {
-
 		$(this).parent().attr("id", "ex_toggle");
-
 		$("#have").remove();
 		$("#ex_btn").find("a").remove();
-
 		// 회원 상세 테이블에 프로젝트 경험컬럼 null에서 0으로 업데이트
 		haveExperience("never");
-
 		//모달창, 모달이 아닌 페이지에서 정보 입력했을 때 매번 이게 마지막 정보인지 확인해야 한다
 		//프로젝트 경험 없음으로 선택했으니(모달이 아니니) 여기서도 한 번 체크
 		let insert_btn = $(".detail_section").children().children().children(".insert");
-
 		console.log(insert_btn.length);
-
 		console.log(insert_btn);
 		if (insert_btn.length == 0) {
 			$(".sub_title").empty();
-
 			givePoint();
-
 		} else {
 			$(".sub_title").text("모든 항목을 입력해야 프로젝트에 지원할 수 있어요!");
 		}
-
 	} else {
-
 		$("#ex_toggle").append(
 
-			`<a href="#m_experience" class="trigger-btn" data-toggle="modal">
-												<div class="insert experience" id="have">있음</div></a>`
-
+			`<a href="#m_experience" class="trigger-btn" data-toggle="modal"><div class="insert experience" id="have">있음</div></a>`
 		);
 	}
 });
 
 //회원 상세 테이블에 프로젝트 경험여부 업데이트 하기
 function haveExperience(answer) {
-
 	$.ajax({
 
 		url: "ajax/updateexperience",
@@ -769,30 +619,23 @@ function haveExperience(answer) {
 		type: "post",
 		dataType: "text",
 		success: function(res) {
-
 		},
 		erroe: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 }
 
 // 프로젝트 경험 추가 기입
 $(document).on("click", ".add_ex", function() {
-
 	// + 버튼 눌러서 폼 추가
 	addEx();
-
 });
 
 // 프로젝트 경험 추가폼 삭제
 $(document).on("click", ".del_ex", function() {
-
 	// - 버튼 눌러서 폼 삭제
 	$(this).parent().parent().remove();
-
 });
 
 //추가 버튼 클릭시 폼 생성
@@ -822,58 +665,51 @@ $(document).on("input", ".exinput", function() {
 	$.each($(".exinput"), function(index, obj) {
 
 		if ($(this).val() == "") {
-
 			check = false;
 			$("#insert_ex").text("대기");
 			$("#insert_ex").attr("disabled", true);
 
-
 		} else {
 			check = true;
 		}
-
 	});
 
 	if (check) {
-
 		$("#insert_ex").text("추가");
 		$("#insert_ex").attr("disabled", false);
-
 	}
 
 })
 
 //수정 버튼 누르면 폼에 입력한 프로젝트 경험들 인서트
 $("#insert_ex").on("click", function() {
-
-	let mex = [];
+	let newEx = [];
 	$.each($("div[class=exarea]"), function(index, item) {
-
 		console.log($(this));
-
-		var ex_data = {
-			ID: $(this).children(".MEMBER_ID").val(),
-			EXP_TITLE: $(this).children(".EXP_TITLE").val(),
-			EX_POSITION: $(this).children(".EX_POSITION").val(),
-			EX_SKILL: $(this).children(".EX_SKILL").val(),
-			EX_CONTENT: $(this).children(".EX_CONTENT").val(),
-			EX_DURATION: $(this).children(".EX_DURATION").val()
+		var  ex = {
+			member_id: $(this).children(".MEMBER_ID").val(),
+			exp_title: $(this).children(".EXP_TITLE").val(),
+			ex_position: $(this).children(".EX_POSITION").val(),
+			ex_skill: $(this).children(".EX_SKILL").val(),
+			ex_content: $(this).children(".EX_CONTENT").val(),
+			ex_duration: $(this).children(".EX_DURATION").val()
 		}
-
-		insertExperiences(ex_data);
+		newEx.push(ex)
+		
 	});
+	insertExperiences(newEx);
 
 })
-
-//폼에 입력한 프로젝트 경험들 서버에 보내기
-function insertExperiences(ex_data) {
+function insertExperiences(newEx) {
 
 	$.ajax({
 
 		url: $(".ex_form").attr("action"),
 		type: "post",
 		dataType: "text",
-		data: ex_data,
+		data: JSON.stringify(newEx),
+		contentType:"application/json",
+		traditional:true,
 		success: function(res) {
 			console.log(res);
 
@@ -884,36 +720,26 @@ function insertExperiences(ex_data) {
 				// + 프로젝트 경험의 경우, 추가할 때 입력하기 버튼이 생성되므로 이번이 최초 입력인지 확인하기 위해
 				//입력해야 프로젝트 지원할 수 있다는 문구도 표시되어있는지 확인
 				let insert_btn = $(".detail_section").children().children().children(".insert");
-
 				console.log(insert_btn.length);
 
 				if (insert_btn.length == 1 && $(".sub_title").text() != "") {
 					$(".sub_title").empty();
-
 					givePoint();
-
 				} else {
 					$(".sub_title").text("모든 항목을 입력해야 프로젝트에 지원할 수 있어요!");
 				}
 			})
-
-
-
 		},
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 }
-
 //서버에서 비동기로 새로 추가된 경험 불러오기
 function getNewExperiences() {
 	return new Promise(function(resolve, reject) {
 
 		$.ajax({
-
 			url: "ajax/getnewexperiences",
 			type: "post",
 			dataType: "json",
@@ -928,27 +754,26 @@ function getNewExperiences() {
 					$("#exlistarea").append(
 
 						`<form action="ajax/updateexperiences" class="ex_edit_form">
-                    <div class="ex_box" id="`+ obj.ex_count + `">										
+                    <div class="ex_box" id="${obj.ex_count}">										
                         <div class="ex ex_titlebox">
                             <div id="exicons">
                                 <i class="fas fa-edit edit_exbox"></i>
                                 <i class="fas fa-eraser del_exbox"></i>
                             </div>
-                            <span class="ex_count">#`+ obj.ex_count + `</span>
-                            <input type="text" class="ex_title exp_title_input" name="exp_title_input" value="`+ obj.exp_TITLE + `" readonly/>
+                            <span class="ex_count">#${obj.ex_count}</span>
+                            <input type="text" class="ex_title exp_title_input" name="exp_title_input" value="${obj.exp_title}" readonly/>
                             </div>
                             <div class="ex"><span class="name">담당 업무</span>
-                            <input type="text"  name="ex_position" class="ex_position_input" name="ex_position_input" value="`+ obj.ex_POSITION + `" readonly/></div>
+                            <input type="text"  name="ex_position" class="ex_position_input" name="ex_position_input" value="${obj.ex_position}" readonly/></div>
                             <div class="ex"><span class="name">사용 기술</span>
-                            <input type="text"  name="ex_skill" class="ex_skill_input" name="ex_skill_input" value="`+ obj.ex_SKILL + `" readonly/></div>
+                            <input type="text"  name="ex_skill" class="ex_skill_input" name="ex_skill_input" value="${obj.ex_skill}" readonly/></div>
                             <div class="ex"><span class="name">소요 기간</span>
-                            <input type="text"  name="ex_duration" class="ex_duration_input" name="ex_duration_input" value="`+ obj.ex_DURATION + `" readonly/></div>
+                            <input type="text"  name="ex_duration" class="ex_duration_input" name="ex_duration_input" value="${obj.ex_duration}" readonly/></div>
                             <div class="ex"><span class="name">설명</span>
-                            <input type="text"  name="ex_content"  class="ex_content_input" name="ex_content_input" value="`+ obj.ex_CONTENT + `" readonly/></div>               
+                            <input type="text"  name="ex_content"  class="ex_content_input" name="ex_content_input" value="${obj.ex_content}" readonly/></div>               
                     </div></form>`
 
 					);
-
 				});
 
 				$("#exlistarea").append(
@@ -956,7 +781,6 @@ function getNewExperiences() {
                 <div class="add experience" id="have">추가</div></a>`
 				);
 
-				console.log("어펜드 끝")
 			},
 			error: function(xhr) {
 				console.log(xhr);
@@ -969,26 +793,34 @@ function getNewExperiences() {
 
 //클릭하면 경험 수 체크하고 삭제 모든 경험 삭제는 안되게 막기(뷰단처리)
 $(document).on("click", ".del_exbox", function() {
-
-	console.log("삭제");
-	if ($(".ex_box").length == 1) {
-
-		swal("경험을 모두 삭제하실 수는 없습니다");
-
-	} else {
-
-		$(this).parent().parent().parent().remove();
-
-		$.each($(".ex_count"), function(index, item) {
-
-			$(this).empty();
-			$(this).text("#" + (index + 1));
-
-		});
-
-		deleteExperience($(this));
-	}
-
+	
+	swal({
+	  title: "정말 삭제하시겠습니까?",
+	  text: "삭제 후 복구가 불가능합니다",
+	  icon: "warning",
+	  buttons: true,
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
+	  if (willDelete) {
+		
+		if ($(".ex_box").length == 1) {
+			swal("경험을 모두 삭제하실 수는 없습니다");
+		} else {
+	
+			$(this).parent().parent().parent().remove();	
+			$.each($(".ex_count"), function(index, item) {
+	
+				$(this).empty();
+				$(this).text("#" + (index + 1));	
+			});
+			deleteExperience($(this));
+		}
+   
+	  } else {
+	    swal("삭제가 취소되었습니다");
+	  }
+	});	
 });
 
 //프로젝트 경험 삭제 디비 반영
@@ -1014,7 +846,7 @@ function deleteExperience(del_btn) {
 	});
 }
 
-//프로젝트 경험 수정!!!!!!!!!!!!
+//프로젝트 경험 수정
 $(document).on("click", ".edit_exbox", function() {
 
 	let exbox = $(this).parent().parent().parent().children();
@@ -1035,25 +867,25 @@ $(document).on("click", ".confirm_edit", function() {
 	let exbox = $(this).parent().parent().parent().children();
 	console.log(m_id);
 
-	var newEx = {
-		member_id_input: m_id,
-		ex_count_input: id,
-		exp_title_input: exbox.children(".exp_title_input").val(),
-		ex_position_input: exbox.children(".ex_position_input").val(),
-		ex_skill_input: exbox.children(".ex_skill_input").val(),
-		ex_duration_input: exbox.children(".ex_duration_input").val(),
-		ex_content_input: exbox.children(".ex_content_input").val()
+	let updateEx = {
+		member_id: m_id,
+		ex_count: id,
+		exp_title: exbox.children(".exp_title_input").val(),
+		ex_position: exbox.children(".ex_position_input").val(),
+		ex_skill: exbox.children(".ex_skill_input").val(),
+		ex_duration: exbox.children(".ex_duration_input").val(),
+		ex_content: exbox.children(".ex_content_input").val()
 	}
+	console.log(updateEx)
 
 	$.ajax({
 
 		//url:"ajax/updateexperiences",
 		url: exbox.parent().parent().attr("action"),
-		//data:JSON.stringify(newEx),
-		data: newEx,
+		data:JSON.stringify(updateEx),
+		dataType:"text",
 		type: "post",
-		//contentType: "application/json",
-		//contentType:'application/json; charset=utf-8',
+		contentType:'application/json; charset=utf-8',
 		success: function(res) {
 			console.log(res);
 			if (res == "success") {
@@ -1063,17 +895,21 @@ $(document).on("click", ".confirm_edit", function() {
 			}
 		},
 		error: function(xhr) {
+			swal("프로젝트 경험을 수정하지 못했습니다", "", "error");
 			console.log(xhr);
-			console.log("newEx : ", newEx);
 		}
 
 	});
-
+/*
 	$(this).removeClass("confirm_edit");
 	$(this).addClass("edit_exbox");
 	$(this).css("color", "#CA8FAB");
 	$(this).parent().parent().parent().children().children("input").removeClass("ex_mdf");
-
+*/
+	$(this).toggleClass("confirm_edit");
+	$(this).toggleClass("edit_exbox");
+	$(this).css("color", "#CA8FAB");
+	$(this).parent().parent().parent().children().children("input").removeClass("ex_mdf");
 
 })
 
@@ -1095,7 +931,6 @@ $('#file').change(function(event) {
 	//swal("프로필 이미지가 변경되었습니다!");
 
 	$("#img_form").submit();
-
 });
 
 //회원 탈퇴
@@ -1126,38 +961,31 @@ $("#quit").on("click", function() {
 		error: function(xhr) {
 			console.log(xhr);
 		}
-
 	});
-
 });
 
 //추가 정보 모두 기입시 포인트 지급
 function givePoint() {
-
 	//우선 premember인지부터 확인
 	if ($("#ismember").val() == "0") {
 
 		//최초 1회 지급이므로 사용 포인트, 보유 포인트가 있는지 서버에서 확인
 		$.ajax({
-
 			url: "ajax/givepoint",
 			type: "post",
 			data: {
 				member_id: $("#m_id").val()
 			},
 			success: function(res) {
-
 				if (res == "success") {
 
 					$("#point").val("50점");
 					makeMemberAuth();
 				}
-
 			},
 			error: function(xhr) {
 				console.log(xhr);
 			}
-
 		});
 
 	} else {
@@ -1168,8 +996,6 @@ function givePoint() {
 
 //추가 정보 모두 입력시 권한 업데이트
 function makeMemberAuth() {
-	console.log("makeMemberAuth 실행")
-
 	$.ajax({
 
 		url: "ajax/makememberauth",
@@ -1199,13 +1025,10 @@ function makeMemberAuth() {
 		error: function(xhr) {
 			console.log(xhr)
 		}
-
 	});
 }
-
 //권한 1인 경우 포인트 충전 막기
 $("#cannot_cahrge").on("click", function() {
-	console.log("충전 막기");
 	swal("PLEASE FILL YOUR PROFILE", "추가 정보를 먼저 채워주세요", "error");
 });
 
@@ -1213,12 +1036,10 @@ $("#charge-btn").on("click", function() {
 	payment();
 });
 
-
 //포인트 충전	
 function payment() {
 	var IMP = window.IMP; // 생략가능
 	IMP.init('imp80764682');
-
 	var money = $('input[name="cp_item"]:checked').val();
 	var email = $('input[id="m_email"]').val();
 	var name = $('input[id="m_name"]').val();
@@ -1233,13 +1054,6 @@ function payment() {
 	if (money == 450) {
 		money = '15000';
 	}
-
-
-	console.log('value값 : ' + money);
-	console.log('회원메일 : ' + email);
-	console.log('회원이름 : ' + name);
-	console.log('회원폰 : ' + phone);
-
 	let originalpoint = $("#point").val().replace("점", "");
 	let plus = $("input[name=cp_item]:checked").val();
 	IMP.request_pay({
@@ -1286,7 +1100,6 @@ function payment() {
 						alert("실패")
 						console.log(msg);
 					}
-
 				},
 				error: function(param) {
 					alert("에러");
@@ -1299,10 +1112,5 @@ function payment() {
 			console.log(msg);
 			swal("실패", "결제에 실패하였습니다.", "error")
 		}
-		//    console.log("실행완료");
 	});
 }
-
-
-
-

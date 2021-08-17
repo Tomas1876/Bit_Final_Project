@@ -115,7 +115,8 @@ $(document).ready(function() {
 				}
 
 				card += "	</div>										"
-				card += "	<a href='/project/detail?project_id=" + project_list[current].project_id + "'><img	class='m_img_size'	src='/assets/img/projectimg/" + project_list[current].p_image + "'></a>							"
+
+				card += "	<a href='/project/detail?project_id=" + project_list[current].project_id + "'><img	class='m_img_size'	src='/images/" + project_list[current].p_image + "'></a>							"
 				card += "	</div>										"
 				card += "	<!--	프로젝트이름,	주언어	-->							"
 				card += "	<div	class='card-body'>									"
