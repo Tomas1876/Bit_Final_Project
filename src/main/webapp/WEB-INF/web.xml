@@ -19,13 +19,12 @@
 	    <error-code>404</error-code>
 	    <location>/WEB-INF/views/Main/ErrorPage.jsp</location>
 	</error-page>
-	<!--  
+
 	<error-page>
 	    <error-code>500</error-code>
 	    <location>/WEB-INF/views/Main/ErrorPage.jsp</location>
 	</error-page>
-   -->
-   
+
       <!-- UTF-8 관련 파라미터 설정 -->
 <filter>
         <filter-name>encodingFilterUTF8</filter-name>
