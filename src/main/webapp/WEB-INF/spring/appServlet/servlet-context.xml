@@ -37,7 +37,6 @@
                 <beans:property name="paramName" value="lang" />
             </beans:bean>
     </interceptors>
-    
-<!--     <beans:bean id="localeResolver"  class="org.springframework.web.servlet.i18n.CookieLocaleResolver" /> -->
 	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+	
 </beans:beans>
